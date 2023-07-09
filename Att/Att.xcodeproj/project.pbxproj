@@ -13,6 +13,10 @@
 		3A2202A42A5AB7DA009DB223 /* Att.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A2202A22A5AB7DA009DB223 /* Att.xcdatamodeld */; };
 		3A2202A62A5AB7DB009DB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A2202A52A5AB7DB009DB223 /* Assets.xcassets */; };
 		3A2202A92A5AB7DB009DB223 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A2202A72A5AB7DB009DB223 /* LaunchScreen.storyboard */; };
+		3AC996742A5AE22700030AAD /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996732A5AE22700030AAD /* CombineCocoa */; };
+		3AC996772A5AE23500030AAD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996762A5AE23500030AAD /* SnapKit */; };
+		3AC9967A2A5AE29600030AAD /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996792A5AE29600030AAD /* CombineMoya */; };
+		3AC9967C2A5AE29600030AAD /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC9967B2A5AE29600030AAD /* Moya */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +35,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AC996742A5AE22700030AAD /* CombineCocoa in Frameworks */,
+				3AC996772A5AE23500030AAD /* SnapKit in Frameworks */,
+				3AC9967C2A5AE29600030AAD /* Moya in Frameworks */,
+				3AC9967A2A5AE29600030AAD /* CombineMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +227,12 @@
 			dependencies = (
 			);
 			name = Att;
+			packageProductDependencies = (
+				3AC996732A5AE22700030AAD /* CombineCocoa */,
+				3AC996762A5AE23500030AAD /* SnapKit */,
+				3AC996792A5AE29600030AAD /* CombineMoya */,
+				3AC9967B2A5AE29600030AAD /* Moya */,
+			);
 			productName = Att;
 			productReference = 3A2202962A5AB7DA009DB223 /* Att.app */;
 			productType = "com.apple.product-type.application";
@@ -247,6 +261,11 @@
 				Base,
 			);
 			mainGroup = 3A22028D2A5AB7DA009DB223;
+			packageReferences = (
+				3AC996722A5AE22700030AAD /* XCRemoteSwiftPackageReference "CombineCocoa" */,
+				3AC996752A5AE23500030AAD /* XCRemoteSwiftPackageReference "SnapKit" */,
+				3AC996782A5AE29600030AAD /* XCRemoteSwiftPackageReference "Moya" */,
+			);
 			productRefGroup = 3A2202972A5AB7DA009DB223 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -482,6 +501,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3AC996722A5AE22700030AAD /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.1;
+			};
+		};
+		3AC996752A5AE23500030AAD /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		3AC996782A5AE29600030AAD /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3AC996732A5AE22700030AAD /* CombineCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AC996722A5AE22700030AAD /* XCRemoteSwiftPackageReference "CombineCocoa" */;
+			productName = CombineCocoa;
+		};
+		3AC996762A5AE23500030AAD /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AC996752A5AE23500030AAD /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		3AC996792A5AE29600030AAD /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AC996782A5AE29600030AAD /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		3AC9967B2A5AE29600030AAD /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AC996782A5AE29600030AAD /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		3A2202A22A5AB7DA009DB223 /* Att.xcdatamodeld */ = {
