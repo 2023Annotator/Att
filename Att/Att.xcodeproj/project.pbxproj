@@ -19,6 +19,7 @@
 		3AC996772A5AE23500030AAD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996762A5AE23500030AAD /* SnapKit */; };
 		3AC9967A2A5AE29600030AAD /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996792A5AE29600030AAD /* CombineMoya */; };
 		3AC9967C2A5AE29600030AAD /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC9967B2A5AE29600030AAD /* Moya */; };
+		3AECF7552A65225D0086C5F2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 3AECF7542A65225D0086C5F2 /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		3A2202AA2A5AB7DB009DB223 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A5D0BDF2A61542800064DCB /* Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraints.swift; sourceTree = "<group>"; };
 		3A5D0BE12A61553100064DCB /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
+		3AECF7542A65225D0086C5F2 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +54,7 @@
 		3A22028D2A5AB7DA009DB223 = {
 			isa = PBXGroup;
 			children = (
+				3AECF7542A65225D0086C5F2 /* .swiftlint.yml */,
 				3A2202982A5AB7DA009DB223 /* Att */,
 				3A2202972A5AB7DA009DB223 /* Products */,
 			);
@@ -227,6 +230,7 @@
 				3A2202922A5AB7DA009DB223 /* Sources */,
 				3A2202932A5AB7DA009DB223 /* Frameworks */,
 				3A2202942A5AB7DA009DB223 /* Resources */,
+				3AECF7532A6521D50086C5F2 /* SwiftLint Script */,
 			);
 			buildRules = (
 			);
@@ -286,12 +290,34 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AECF7552A65225D0086C5F2 /* .swiftlint.yml in Resources */,
 				3A2202A92A5AB7DB009DB223 /* LaunchScreen.storyboard in Resources */,
 				3A2202A62A5AB7DB009DB223 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3AECF7532A6521D50086C5F2 /* SwiftLint Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "SwiftLint Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3A2202922A5AB7DA009DB223 /* Sources */ = {
@@ -453,7 +479,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jhHwang.Att;
+				PRODUCT_BUNDLE_IDENTIFIER = com.annotator.att;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -479,7 +505,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jhHwang.Att;
+				PRODUCT_BUNDLE_IDENTIFIER = com.annotator.att;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
