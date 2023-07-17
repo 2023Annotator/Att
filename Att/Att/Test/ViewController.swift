@@ -101,8 +101,6 @@ final class ViewController: UIViewController {
             .sink {
                 print("Pressed!")
             }.store(in: &cancellables)
-        
-        sampleButton.addTarget
     }
     
     // MARK: ViewModel Stuff - Optional
