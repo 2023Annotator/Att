@@ -15,6 +15,9 @@
 		3A2202A92A5AB7DB009DB223 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A2202A72A5AB7DB009DB223 /* LaunchScreen.storyboard */; };
 		3A5D0BE02A61542800064DCB /* Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BDF2A61542800064DCB /* Constraints.swift */; };
 		3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BE12A61553100064DCB /* TestViewModel.swift */; };
+		3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BE32A62B9AF00064DCB /* UIFont+.swift */; };
+		3A8E64C82A6526E3006E1E1E /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3A8E64C72A6526E3006E1E1E /* Pretendard-Regular.otf */; };
+		3A8E64CA2A6527BD006E1E1E /* WixMadeforDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A8E64C92A6527BD006E1E1E /* WixMadeforDisplay-Bold.ttf */; };
 		3AC996742A5AE22700030AAD /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996732A5AE22700030AAD /* CombineCocoa */; };
 		3AC996772A5AE23500030AAD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996762A5AE23500030AAD /* SnapKit */; };
 		3AC9967A2A5AE29600030AAD /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996792A5AE29600030AAD /* CombineMoya */; };
@@ -33,6 +36,9 @@
 		3A2202AA2A5AB7DB009DB223 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A5D0BDF2A61542800064DCB /* Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraints.swift; sourceTree = "<group>"; };
 		3A5D0BE12A61553100064DCB /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
+		3A5D0BE32A62B9AF00064DCB /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
+		3A8E64C72A6526E3006E1E1E /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		3A8E64C92A6527BD006E1E1E /* WixMadeforDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WixMadeforDisplay-Bold.ttf"; sourceTree = "<group>"; };
 		3AECF7542A65225D0086C5F2 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +113,7 @@
 		3A701F772A5ABEA000D6913A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				3A5D0BE32A62B9AF00064DCB /* UIFont+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -177,6 +184,8 @@
 		3A701F802A5ABECF00D6913A /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				3A8E64C72A6526E3006E1E1E /* Pretendard-Regular.otf */,
+				3A8E64C92A6527BD006E1E1E /* WixMadeforDisplay-Bold.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -291,6 +300,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AECF7552A65225D0086C5F2 /* .swiftlint.yml in Resources */,
+				3A8E64C82A6526E3006E1E1E /* Pretendard-Regular.otf in Resources */,
+				3A8E64CA2A6527BD006E1E1E /* WixMadeforDisplay-Bold.ttf in Resources */,
 				3A2202A92A5AB7DB009DB223 /* LaunchScreen.storyboard in Resources */,
 				3A2202A62A5AB7DB009DB223 /* Assets.xcassets in Resources */,
 			);
@@ -324,6 +335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */,
 				3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */,
 				3A22029E2A5AB7DA009DB223 /* ViewController.swift in Sources */,
 				3A2202A42A5AB7DA009DB223 /* Att.xcdatamodeld in Sources */,
