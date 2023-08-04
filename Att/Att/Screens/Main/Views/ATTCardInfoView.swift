@@ -15,6 +15,7 @@ final class ATTCardInfoView: UIView {
         let label = UILabel()
         label.font = .title3
         label.textAlignment = .left
+        label.textColor = .black
         label.text = Date().weekday() // TEST
         return label
     }()
@@ -22,6 +23,7 @@ final class ATTCardInfoView: UIView {
         let label = UILabel()
         label.font = .title3
         label.textAlignment = .right
+        label.textColor = .black
         label.text = Date().date() // TEST
         return label
     }()

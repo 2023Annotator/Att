@@ -16,6 +16,7 @@ final class TitleDescriptionView: UIView {
         let label = UILabel()
         label.font = .subtitle3
         label.textAlignment = .left
+        label.textColor = .black
         return label
     }()
     
@@ -23,6 +24,7 @@ final class TitleDescriptionView: UIView {
         let label = UILabel()
         label.font = .caption2
         label.textAlignment = .left
+        label.textColor = .black
         return label
     }()
     

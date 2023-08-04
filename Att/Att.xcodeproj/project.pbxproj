@@ -24,7 +24,7 @@
 		3AC9967A2A5AE29600030AAD /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996792A5AE29600030AAD /* CombineMoya */; };
 		3AC9967C2A5AE29600030AAD /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC9967B2A5AE29600030AAD /* Moya */; };
 		3AECF7552A65225D0086C5F2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 3AECF7542A65225D0086C5F2 /* .swiftlint.yml */; };
-		3AF9C0562A7CE3F500A5A036 /* ATTCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0552A7CE3F500A5A036 /* ATTCardView.swift */; };
+		3AF9C0562A7CE3F500A5A036 /* RecordExistCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0552A7CE3F500A5A036 /* RecordExistCardView.swift */; };
 		3AF9C0582A7CE5F500A5A036 /* TitleDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0572A7CE5F500A5A036 /* TitleDescriptionView.swift */; };
 		3AF9C05C2A7CEBCC00A5A036 /* ATTCardInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C05B2A7CEBCC00A5A036 /* ATTCardInfoView.swift */; };
 		3AF9C0612A7CF09200A5A036 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0602A7CF09200A5A036 /* MainViewController.swift */; };
@@ -32,6 +32,9 @@
 		3AF9C0652A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0642A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift */; };
 		3AF9C0672A7CFDBC00A5A036 /* CardInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0662A7CFDBC00A5A036 /* CardInfoType.swift */; };
 		3AF9C0692A7CFE4300A5A036 /* ATTFromYesterdayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0682A7CFE4300A5A036 /* ATTFromYesterdayView.swift */; };
+		3AF9C06C2A7D0B0000A5A036 /* RecordStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C06B2A7D0B0000A5A036 /* RecordStatus.swift */; };
+		3AF9C06F2A7D0BB900A5A036 /* RecordNonExistCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C06E2A7D0BB900A5A036 /* RecordNonExistCardView.swift */; };
+		3AF9C0712A7D0FD900A5A036 /* ATTCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0702A7D0FD900A5A036 /* ATTCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,7 +53,7 @@
 		3A8E64C72A6526E3006E1E1E /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		3A8E64C92A6527BD006E1E1E /* WixMadeforDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WixMadeforDisplay-Bold.ttf"; sourceTree = "<group>"; };
 		3AECF7542A65225D0086C5F2 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		3AF9C0552A7CE3F500A5A036 /* ATTCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTCardView.swift; sourceTree = "<group>"; };
+		3AF9C0552A7CE3F500A5A036 /* RecordExistCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordExistCardView.swift; sourceTree = "<group>"; };
 		3AF9C0572A7CE5F500A5A036 /* TitleDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleDescriptionView.swift; sourceTree = "<group>"; };
 		3AF9C05B2A7CEBCC00A5A036 /* ATTCardInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTCardInfoView.swift; sourceTree = "<group>"; };
 		3AF9C0602A7CF09200A5A036 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +61,9 @@
 		3AF9C0642A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTWeekdayCollectionViewCell.swift; sourceTree = "<group>"; };
 		3AF9C0662A7CFDBC00A5A036 /* CardInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardInfoType.swift; sourceTree = "<group>"; };
 		3AF9C0682A7CFE4300A5A036 /* ATTFromYesterdayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTFromYesterdayView.swift; sourceTree = "<group>"; };
+		3AF9C06B2A7D0B0000A5A036 /* RecordStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStatus.swift; sourceTree = "<group>"; };
+		3AF9C06E2A7D0BB900A5A036 /* RecordNonExistCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNonExistCardView.swift; sourceTree = "<group>"; };
+		3AF9C0702A7D0FD900A5A036 /* ATTCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,9 +189,6 @@
 		3A701F7D2A5ABEBF00D6913A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3AF9C0552A7CE3F500A5A036 /* ATTCardView.swift */,
-				3AF9C05B2A7CEBCC00A5A036 /* ATTCardInfoView.swift */,
-				3AF9C0572A7CE5F500A5A036 /* TitleDescriptionView.swift */,
 				3AF9C0682A7CFE4300A5A036 /* ATTFromYesterdayView.swift */,
 			);
 			path = Views;
@@ -236,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				3AF9C0662A7CFDBC00A5A036 /* CardInfoType.swift */,
+				3AF9C06B2A7D0B0000A5A036 /* RecordStatus.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -260,8 +264,21 @@
 			isa = PBXGroup;
 			children = (
 				3AF9C0602A7CF09200A5A036 /* MainViewController.swift */,
+				3AF9C06D2A7D0B5E00A5A036 /* Views */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		3AF9C06D2A7D0B5E00A5A036 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3AF9C0702A7D0FD900A5A036 /* ATTCardView.swift */,
+				3AF9C0552A7CE3F500A5A036 /* RecordExistCardView.swift */,
+				3AF9C06E2A7D0BB900A5A036 /* RecordNonExistCardView.swift */,
+				3AF9C05B2A7CEBCC00A5A036 /* ATTCardInfoView.swift */,
+				3AF9C0572A7CE5F500A5A036 /* TitleDescriptionView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -371,18 +388,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AF9C0632A7CF74500A5A036 /* Date+.swift in Sources */,
-				3AF9C0562A7CE3F500A5A036 /* ATTCardView.swift in Sources */,
+				3AF9C0562A7CE3F500A5A036 /* RecordExistCardView.swift in Sources */,
 				3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */,
 				3A5D0BE62A62B9B800064DCB /* UIColor+.swift in Sources */,
+				3AF9C06F2A7D0BB900A5A036 /* RecordNonExistCardView.swift in Sources */,
 				3AF9C0612A7CF09200A5A036 /* MainViewController.swift in Sources */,
 				3AF9C0652A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift in Sources */,
 				3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */,
 				3AF9C0692A7CFE4300A5A036 /* ATTFromYesterdayView.swift in Sources */,
 				3A22029E2A5AB7DA009DB223 /* ViewController.swift in Sources */,
 				3AF9C0672A7CFDBC00A5A036 /* CardInfoType.swift in Sources */,
+				3AF9C06C2A7D0B0000A5A036 /* RecordStatus.swift in Sources */,
 				3A2202A42A5AB7DA009DB223 /* Att.xcdatamodeld in Sources */,
 				3AF9C0582A7CE5F500A5A036 /* TitleDescriptionView.swift in Sources */,
 				3AF9C05C2A7CEBCC00A5A036 /* ATTCardInfoView.swift in Sources */,
+				3AF9C0712A7D0FD900A5A036 /* ATTCardView.swift in Sources */,
 				3A5D0BE02A61542800064DCB /* Constraints.swift in Sources */,
 				3A22029A2A5AB7DA009DB223 /* AppDelegate.swift in Sources */,
 				3A22029C2A5AB7DA009DB223 /* SceneDelegate.swift in Sources */,

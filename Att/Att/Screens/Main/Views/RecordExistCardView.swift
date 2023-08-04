@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class ATTCardView: UIView {
+final class RecordExistCardView: ATTCardView {
 
     // MARK: property 선언부
     private lazy var musicThumbnailView: UIImageView = {
@@ -26,10 +26,9 @@ final class ATTCardView: UIView {
     }()
     
     // MARK: Init 선언부
-    init() {
-        super.init(frame: CGRect.zero)
+    override init() {
+        super.init()
         setUpConstraints()
-        setUpstyle(mood: .lightGray)
     }
     
     required init?(coder: NSCoder) {
@@ -57,8 +56,7 @@ final class ATTCardView: UIView {
         }
     }
     
-    private func setUpstyle(mood: UIColor) {
+    private func setUpstyle() {
         layer.cornerRadius = 20
-        backgroundColor = mood
     }
 }

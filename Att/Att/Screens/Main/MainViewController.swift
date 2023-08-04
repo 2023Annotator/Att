@@ -31,7 +31,8 @@ final class MainViewController: UIViewController {
     }()
     
     private lazy var cardView: ATTCardView = {
-        let view = ATTCardView()
+//        let view = RecordExistCardView()
+        let view = RecordNonExistCardView()
         return view
     }()
     
@@ -74,7 +75,8 @@ final class MainViewController: UIViewController {
         
         view.addSubview(cardView)
         cardView.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
+            make.centerX.equalToSuperview() // TEMP
+            make.centerY.equalToSuperview().offset(64) // TEMP
             make.width.equalTo(330)
             make.height.equalTo(508)
         }
@@ -88,8 +90,6 @@ final class MainViewController: UIViewController {
         navigationController?.navigationBar.topItem?.title = "Annotation"
         navigationItem.leftBarButtonItem = mypageButton
         navigationItem.rightBarButtonItem = calendarButton
-        
-        print(navigationController?.navigationItem.title)
     }
     // MARK: TabPulisher etc - Optional
     private func setUpAction() { }
