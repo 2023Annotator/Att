@@ -50,9 +50,9 @@ final class RecordExistCardView: ATTCardView {
         addSubview(cardInfoview)
         cardInfoview.snp.makeConstraints { make in
             make.top.equalTo(musicThumbnailView.snp.bottom).offset(constraints.space20)
-            make.bottom.equalTo(self.snp.bottom).offset(-constraints.space20)
-            make.leading.equalTo(self.snp.leading).offset(constraints.space22)
-            make.trailing.equalTo(self.snp.trailing).offset(-constraints.space22)
+            make.bottom.equalToSuperview().offset(-constraints.space20)
+            make.leading.equalToSuperview().offset(constraints.space22)
+            make.trailing.equalToSuperview().offset(-constraints.space22)
         }
     }
     

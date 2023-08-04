@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 
+class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<String?, Int> { }
+
 final class MainViewController: UIViewController {
 
     // MARK: property 선언부
@@ -30,11 +32,25 @@ final class MainViewController: UIViewController {
         return view
     }()
     
-    private lazy var cardView: ATTCardView = {
-//        let view = RecordExistCardView()
-        let view = RecordNonExistCardView()
+    private lazy var cardCollectionView: UICollectionView = {
+        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: setUpCollectionViewLayout())
+        view.isScrollEnabled = true
+        view.contentInsetAdjustmentBehavior = .never
+        view.showsVerticalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
+        
+        view.decelerationRate = .fast
         return view
     }()
+    
+    private var cardCollectionDiffableDataSource: RecordCardCollectionViewDiffableDataSource!
+    private var snapshot = NSDiffableDataSourceSnapshot<String?, Int>()
+    
+//    private lazy var cardView: ATTCardView = {
+////        let view = RecordExistCardView()
+//        let view = RecordNonExistCardView()
+//        return view
+//    }()
     
     // MARK: Init 선언부
     init() {
@@ -56,8 +72,11 @@ final class MainViewController: UIViewController {
         setUpConstriants()
         setUpStyle()
         setUpNavigationBar()
+        setUpCollectionViewDataSource()
+        performCell()
         setUpAction()
         bind()
+        
     }
     
     // MARK: Components 간의 위치 설정
@@ -73,12 +92,11 @@ final class MainViewController: UIViewController {
             make.height.equalTo(100)
         }
         
-        view.addSubview(cardView)
-        cardView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview() // TEMP
-            make.centerY.equalToSuperview().offset(64) // TEMP
-            make.width.equalTo(330)
-            make.height.equalTo(508)
+        view.addSubview(cardCollectionView)
+        cardCollectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(95)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(540) // ORIGIN: 507.94
         }
     }
     
@@ -91,9 +109,61 @@ final class MainViewController: UIViewController {
         navigationItem.leftBarButtonItem = mypageButton
         navigationItem.rightBarButtonItem = calendarButton
     }
+
     // MARK: TabPulisher etc - Optional
     private func setUpAction() { }
     
     // MARK: ViewModel Stuff - Optional
     private func bind() { }
+}
+
+extension MainViewController {
+    private func setUpCollectionViewDataSource() {
+        cardCollectionView.register(RecordCardCollectionViewCell.self, forCellWithReuseIdentifier: RecordCardCollectionViewCell.identifier)
+        cardCollectionDiffableDataSource = RecordCardCollectionViewDiffableDataSource(collectionView: cardCollectionView) { (collectionView, indexPath, cellNumber) ->
+            RecordCardCollectionViewCell? in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecordCardCollectionViewCell.identifier, for: indexPath) as? RecordCardCollectionViewCell else {
+                return RecordCardCollectionViewCell()
+            }
+            
+            // TEST
+            cell.setUpComponent(data: cellNumber)
+            return cell
+        }
+    }
+    
+    private func performCell() {
+        let cellNum: [Int] = (0..<10).map { Int($0) }
+        
+        var snapShot = NSDiffableDataSourceSnapshot<String?, Int>()
+        snapShot.appendSections(["TEMP"])
+        snapShot.appendItems(cellNum)
+        cardCollectionDiffableDataSource.apply(snapShot)
+    }
+    
+    private func setUpCollectionViewLayout() -> UICollectionViewLayout {
+        let layout: UICollectionViewCompositionalLayout = {
+            let itemSpacing: CGFloat = 7
+            let config = UICollectionViewCompositionalLayoutConfiguration()
+            config.scrollDirection = .horizontal
+            
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .fractionalHeight(1)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: itemSpacing, bottom: 0, trailing: itemSpacing)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(0.88),
+                heightDimension: .fractionalHeight(0.94)
+            )
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            
+            let section = NSCollectionLayoutSection(group: group)
+            return UICollectionViewCompositionalLayout(section: section, configuration: config)
+        }()
+        
+        return layout
+    }
 }

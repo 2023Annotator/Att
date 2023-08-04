@@ -35,6 +35,7 @@
 		3AF9C06C2A7D0B0000A5A036 /* RecordStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C06B2A7D0B0000A5A036 /* RecordStatus.swift */; };
 		3AF9C06F2A7D0BB900A5A036 /* RecordNonExistCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C06E2A7D0BB900A5A036 /* RecordNonExistCardView.swift */; };
 		3AF9C0712A7D0FD900A5A036 /* ATTCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0702A7D0FD900A5A036 /* ATTCardView.swift */; };
+		3AF9C0732A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0722A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		3AF9C06B2A7D0B0000A5A036 /* RecordStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStatus.swift; sourceTree = "<group>"; };
 		3AF9C06E2A7D0BB900A5A036 /* RecordNonExistCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNonExistCardView.swift; sourceTree = "<group>"; };
 		3AF9C0702A7D0FD900A5A036 /* ATTCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTCardView.swift; sourceTree = "<group>"; };
+		3AF9C0722A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCardCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +199,7 @@
 		3A701F7E2A5ABEC400D6913A /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				3AF9C0722A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift */,
 				3AF9C0642A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift */,
 			);
 			path = Cells;
@@ -396,6 +399,7 @@
 				3AF9C0652A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift in Sources */,
 				3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */,
 				3AF9C0692A7CFE4300A5A036 /* ATTFromYesterdayView.swift in Sources */,
+				3AF9C0732A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift in Sources */,
 				3A22029E2A5AB7DA009DB223 /* ViewController.swift in Sources */,
 				3AF9C0672A7CFDBC00A5A036 /* CardInfoType.swift in Sources */,
 				3AF9C06C2A7D0B0000A5A036 /* RecordStatus.swift in Sources */,
