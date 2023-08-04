@@ -13,12 +13,14 @@ class ATTWeekdayCollectionViewCell: UICollectionViewCell {
     private lazy var dayLabel: UILabel = {
         let label = UILabel()
         label.font = .caption3
+        label.textColor = .black
         return label
     }()
     
     private lazy var weekdayLabel: UILabel = {
         let label = UILabel()
         label.font = .caption3
+        label.textColor = .black
         return label
     }()
     

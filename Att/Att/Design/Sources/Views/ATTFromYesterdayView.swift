@@ -14,6 +14,7 @@ final class ATTFromYesterdayView: UIView {
         let label = UILabel()
         label.font = .caption1
         label.textAlignment = .left
+        label.textColor = .black
         label.text = CardInfoType.fromYesterday.name
         return label
     }()
@@ -22,6 +23,7 @@ final class ATTFromYesterdayView: UIView {
         let label = UILabel()
         label.font = .caption2
         label.textAlignment = .left
+        label.textColor = .black
         return label
     }()
     
