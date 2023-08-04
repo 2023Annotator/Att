@@ -11,6 +11,19 @@ import SnapKit
 final class MainViewController: UIViewController {
 
     // MARK: property 선언부
+    private let mypageButton: UIBarButtonItem = {
+        let testImage = UIImage() // TEST
+        testImage.withTintColor(.yellow)
+        let button = UIBarButtonItem(image: testImage)
+        return button
+    }()
+    
+    private let calendarButton: UIBarButtonItem = {
+        let testImage = UIImage() // TEST
+        testImage.withTintColor(.yellow)
+        let button = UIBarButtonItem(image: testImage)
+        return button
+    }()
     
     private lazy var fromYesterdayView: ATTFromYesterdayView = {
         let view = ATTFromYesterdayView()
@@ -41,6 +54,7 @@ final class MainViewController: UIViewController {
     private func configure() {
         setUpConstriants()
         setUpStyle()
+        setUpNavigationBar()
         setUpAction()
         bind()
     }
@@ -69,7 +83,14 @@ final class MainViewController: UIViewController {
     // MARK: 최상위 뷰의 Style 지정 (layer.cornerRadius etc) - Optional
     // 최상위 뷰를 제외한 나머지 UI Components는 각 Components 클로저 내부에서 Style 설정을 완료할 수 있게 만들기
     private func setUpStyle() { }
-    
+
+    private func setUpNavigationBar() {
+        navigationController?.navigationBar.topItem?.title = "Annotation"
+        navigationItem.leftBarButtonItem = mypageButton
+        navigationItem.rightBarButtonItem = calendarButton
+        
+        print(navigationController?.navigationItem.title)
+    }
     // MARK: TabPulisher etc - Optional
     private func setUpAction() { }
     
