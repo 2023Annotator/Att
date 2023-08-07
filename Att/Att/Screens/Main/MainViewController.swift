@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<String?, Int> { }
+final class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<String?, Int> { }
 
 final class MainViewController: UIViewController {
 
@@ -33,25 +33,27 @@ final class MainViewController: UIViewController {
     }()
     
     private lazy var cardCollectionView: UICollectionView = {
-        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: setUpCollectionViewLayout())
+        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: CardCollectionViewFlowLayout())
         view.isScrollEnabled = true
-        view.contentInsetAdjustmentBehavior = .never
+        view.contentInsetAdjustmentBehavior = .always
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
-        
         view.decelerationRate = .fast
         return view
     }()
     
+    // TODO: currentPageIndicatorTintColor 변경 관련 메소드 작성
+    private lazy var pageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.numberOfPages = 7 // TEST
+        pageControl.pageIndicatorTintColor = .systemGray // TEMP: Default로 특정 색상 지정 예정
+        pageControl.currentPageIndicatorTintColor = .red // TEMP: VM로부터 데이터를 받아서 지정 예정
+        return pageControl
+    }()
+    
     private var cardCollectionDiffableDataSource: RecordCardCollectionViewDiffableDataSource!
     private var snapshot = NSDiffableDataSourceSnapshot<String?, Int>()
-    
-//    private lazy var cardView: ATTCardView = {
-////        let view = RecordExistCardView()
-//        let view = RecordNonExistCardView()
-//        return view
-//    }()
-    
+
     // MARK: Init 선언부
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -71,6 +73,7 @@ final class MainViewController: UIViewController {
     private func configure() {
         setUpConstriants()
         setUpStyle()
+        setUpDelegate()
         setUpNavigationBar()
         setUpCollectionViewDataSource()
         performCell()
@@ -89,14 +92,26 @@ final class MainViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(constraints.space16)// TEMP
             make.leading.equalToSuperview().offset(constraints.space16)
             make.trailing.equalToSuperview().offset(-constraints.space16)
-            make.height.equalTo(100)
+            make.height.equalTo(61)
         }
         
+        let width = UIScreen.main.bounds.width
+        let viewMargin: CGFloat = 20
+        let itemWidth = width - viewMargin * 2
+        let viewHeight = itemWidth * 1.62
         view.addSubview(cardCollectionView)
         cardCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(95)
+            make.top.equalTo(fromYesterdayView.snp.bottom).offset(constraints.space12)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(540) // ORIGIN: 507.94
+//            make.height.equalTo(viewHeight) // ORIGIN: 507.94
+            make.height.equalTo(viewHeight)
+        }
+        
+        view.addSubview(pageControl)
+        pageControl.snp.makeConstraints { make in
+            make.top.equalTo(cardCollectionView.snp.bottom).offset(constraints.space24) // ORIGIN: 23.06
+            make.centerX.equalToSuperview()
+            make.height.equalTo(15)
         }
     }
     
@@ -104,6 +119,8 @@ final class MainViewController: UIViewController {
     // 최상위 뷰를 제외한 나머지 UI Components는 각 Components 클로저 내부에서 Style 설정을 완료할 수 있게 만들기
     private func setUpStyle() { }
 
+    private func setUpDelegate() { }
+    
     private func setUpNavigationBar() {
         navigationController?.navigationBar.topItem?.title = "Annotation"
         navigationItem.leftBarButtonItem = mypageButton
@@ -139,31 +156,5 @@ extension MainViewController {
         snapShot.appendSections(["TEMP"])
         snapShot.appendItems(cellNum)
         cardCollectionDiffableDataSource.apply(snapShot)
-    }
-    
-    private func setUpCollectionViewLayout() -> UICollectionViewLayout {
-        let layout: UICollectionViewCompositionalLayout = {
-            let itemSpacing: CGFloat = 7
-            let config = UICollectionViewCompositionalLayoutConfiguration()
-            config.scrollDirection = .horizontal
-            
-            let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1),
-                heightDimension: .fractionalHeight(1)
-            )
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: itemSpacing, bottom: 0, trailing: itemSpacing)
-            
-            let groupSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(0.88),
-                heightDimension: .fractionalHeight(0.94)
-            )
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-            
-            let section = NSCollectionLayoutSection(group: group)
-            return UICollectionViewCompositionalLayout(section: section, configuration: config)
-        }()
-        
-        return layout
     }
 }

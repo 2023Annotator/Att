@@ -17,13 +17,6 @@ class ATTWeekdayCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    private lazy var weekdayLabel: UILabel = {
-        let label = UILabel()
-        label.font = .caption3
-        label.textColor = .black
-        return label
-    }()
-    
     // MARK: Init 선언부
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -47,22 +40,17 @@ class ATTWeekdayCollectionViewCell: UICollectionViewCell {
         
         addSubview(dayLabel)
         dayLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(constraints.space8)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(18)
-        }
-        
-        addSubview(weekdayLabel)
-        weekdayLabel.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(constraints.space10)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(18)
+            make.top.bottom.leading.trailing.equalToSuperview()
+            
         }
     }
     
     // MARK: 최상위 뷰의 Style 지정 (layer.cornerRadius etc) - Optional
     // 최상위 뷰를 제외한 나머지 UI Components는 각 Components 클로저 내부에서 Style 설정을 완료할 수 있게 만들기
     private func setUpStyle() {
+        backgroundColor = .gray100
         layer.cornerRadius = 8
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.gray50.cgColor
     }
 }

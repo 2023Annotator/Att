@@ -46,22 +46,22 @@ final class ATTFromYesterdayView: UIView {
         
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(constraints.space16)
-            make.leading.equalToSuperview().offset(constraints.space22)
-            make.trailing.equalToSuperview().offset(-constraints.space22)
+            make.top.equalToSuperview().offset(constraints.space8)
+            make.leading.equalToSuperview().offset(constraints.space16)
+            make.trailing.equalToSuperview().offset(-constraints.space16)
             make.height.equalTo(19)
         }
         
         addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(constraints.space8)
+            make.top.equalTo(titleLabel.snp.bottom).offset(constraints.space4)
             make.leading.trailing.equalTo(titleLabel)
         }
         descriptionLabel.sizeToFit()
     }
     
     private func setUpStyle() {
-        layer.cornerRadius = 12
+        layer.cornerRadius = 10
         backgroundColor = .white
     }
     // TEST

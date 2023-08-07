@@ -33,7 +33,6 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
     // MARK: Components 간의 위치 설정
     // MARK: Constraints 설정 순서는 top - bottom - leading - trailing - centerX - centerY - width - height 순으로
     private func setUpConstriants(recordStatus: RecordStatus) {
-        let constraints = Constraints.shared
         
         switch recordStatus {
         case .exist:
@@ -46,7 +45,6 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
         addSubview(cardView)
         cardView.snp.makeConstraints { make in
             make.top.bottom.leading.trailing.equalToSuperview()
-//            make.top.bottom.leading.trailing.equalToSuperview().inset(constraints.space16)
         }
     }
     

@@ -36,6 +36,7 @@
 		3AF9C06F2A7D0BB900A5A036 /* RecordNonExistCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C06E2A7D0BB900A5A036 /* RecordNonExistCardView.swift */; };
 		3AF9C0712A7D0FD900A5A036 /* ATTCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0702A7D0FD900A5A036 /* ATTCardView.swift */; };
 		3AF9C0732A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0722A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift */; };
+		3AF9C0752A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0742A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		3AF9C06E2A7D0BB900A5A036 /* RecordNonExistCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordNonExistCardView.swift; sourceTree = "<group>"; };
 		3AF9C0702A7D0FD900A5A036 /* ATTCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTCardView.swift; sourceTree = "<group>"; };
 		3AF9C0722A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCardCollectionViewCell.swift; sourceTree = "<group>"; };
+		3AF9C0742A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,6 +282,7 @@
 				3AF9C06E2A7D0BB900A5A036 /* RecordNonExistCardView.swift */,
 				3AF9C05B2A7CEBCC00A5A036 /* ATTCardInfoView.swift */,
 				3AF9C0572A7CE5F500A5A036 /* TitleDescriptionView.swift */,
+				3AF9C0742A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -403,6 +406,7 @@
 				3A22029E2A5AB7DA009DB223 /* ViewController.swift in Sources */,
 				3AF9C0672A7CFDBC00A5A036 /* CardInfoType.swift in Sources */,
 				3AF9C06C2A7D0B0000A5A036 /* RecordStatus.swift in Sources */,
+				3AF9C0752A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift in Sources */,
 				3A2202A42A5AB7DA009DB223 /* Att.xcdatamodeld in Sources */,
 				3AF9C0582A7CE5F500A5A036 /* TitleDescriptionView.swift in Sources */,
 				3AF9C05C2A7CEBCC00A5A036 /* ATTCardInfoView.swift in Sources */,
