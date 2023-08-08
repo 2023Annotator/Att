@@ -15,7 +15,7 @@ final class ViewController: UIViewController {
     private lazy var sampleButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .yellow
-        button.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
+        button.titleLabel?.font = .title1
         button.setTitleColor(.black, for: .normal)
         button.setTitle("Sample Button", for: .normal)
         button.layer.cornerRadius = 12
@@ -24,7 +24,7 @@ final class ViewController: UIViewController {
     
     private lazy var sampleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .subtitle1
         label.textAlignment = .center
         label.numberOfLines = 1
         label.textColor = .black
@@ -114,4 +114,3 @@ final class ViewController: UIViewController {
     
     // ETC 각각에 맞는 Method...
 }
-

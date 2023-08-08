@@ -11,14 +11,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
         
         self.window = window
-        let vc = ViewController(viewModel: TestViewModel())
-        window.rootViewController =  vc
+        let viewController = ViewController(viewModel: TestViewModel())
+        window.rootViewController =  viewController
         window.makeKeyAndVisible()
     }
 
@@ -52,7 +51,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Save changes in the application's managed object context when the application transitions to the background.
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
-
-
 }
-
