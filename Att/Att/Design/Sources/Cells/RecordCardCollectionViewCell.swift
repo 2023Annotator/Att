@@ -13,6 +13,16 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
     // MARK: property 선언부
     static let identifier = "RecordCardCollectionViewCell"
     
+    private var blurEffectView: UIVisualEffectView = {
+        
+        let effect = UIBlurEffect(style: .dark)
+        let view = UIVisualEffectView(effect: effect)
+        view.layer.cornerRadius = 20
+        view.clipsToBounds = true
+        view.alpha = 0.8
+        return view
+    }()
+    
     private var cardView: ATTCardView?
     
     // MARK: Init 선언부
@@ -46,10 +56,19 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
         cardView.snp.makeConstraints { make in
             make.top.bottom.leading.trailing.equalToSuperview()
         }
+        
+        cardView.addSubview(blurEffectView)
+        blurEffectView.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
     
     // TEMPORARY parameter is Int -> Model
     func setUpComponent(data: Int) {
-        print("GOOD")
+//        print("GOOD")
+    }
+    
+    func blurEffect(isHidden: Bool) {
+        blurEffectView.isHidden = isHidden
     }
 }

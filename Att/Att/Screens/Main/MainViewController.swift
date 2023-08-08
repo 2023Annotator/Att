@@ -46,8 +46,8 @@ final class MainViewController: UIViewController {
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = 7 // TEST
-        pageControl.pageIndicatorTintColor = .systemGray // TEMP: Default로 특정 색상 지정 예정
-        pageControl.currentPageIndicatorTintColor = .red // TEMP: VM로부터 데이터를 받아서 지정 예정
+        pageControl.pageIndicatorTintColor = .gray100 // TEMP: Default로 특정 색상 지정 예정
+        pageControl.currentPageIndicatorTintColor = .green // TEMP: VM로부터 데이터를 받아서 지정 예정
         return pageControl
     }()
     
@@ -79,7 +79,6 @@ final class MainViewController: UIViewController {
         performCell()
         setUpAction()
         bind()
-        
     }
     
     // MARK: Components 간의 위치 설정
@@ -90,8 +89,8 @@ final class MainViewController: UIViewController {
         view.addSubview(fromYesterdayView)
         fromYesterdayView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(constraints.space16)// TEMP
-            make.leading.equalToSuperview().offset(constraints.space16)
-            make.trailing.equalToSuperview().offset(-constraints.space16)
+            make.leading.equalToSuperview().offset(constraints.space20)
+            make.trailing.equalToSuperview().offset(-constraints.space20)
             make.height.equalTo(61)
         }
         
@@ -103,15 +102,14 @@ final class MainViewController: UIViewController {
         cardCollectionView.snp.makeConstraints { make in
             make.top.equalTo(fromYesterdayView.snp.bottom).offset(constraints.space12)
             make.leading.trailing.equalToSuperview()
-//            make.height.equalTo(viewHeight) // ORIGIN: 507.94
             make.height.equalTo(viewHeight)
         }
         
         view.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
-            make.top.equalTo(cardCollectionView.snp.bottom).offset(constraints.space24) // ORIGIN: 23.06
+            make.top.equalTo(cardCollectionView.snp.bottom).offset(constraints.space8)
             make.centerX.equalToSuperview()
-            make.height.equalTo(15)
+            make.height.equalTo(12)
         }
     }
     
@@ -119,7 +117,9 @@ final class MainViewController: UIViewController {
     // 최상위 뷰를 제외한 나머지 UI Components는 각 Components 클로저 내부에서 Style 설정을 완료할 수 있게 만들기
     private func setUpStyle() { }
 
-    private func setUpDelegate() { }
+    private func setUpDelegate() {
+        cardCollectionView.delegate = self
+    }
     
     private func setUpNavigationBar() {
         navigationController?.navigationBar.topItem?.title = "Annotation"
@@ -150,11 +150,33 @@ extension MainViewController {
     }
     
     private func performCell() {
-        let cellNum: [Int] = (0..<10).map { Int($0) }
+        // TEMP & TEST
+        let cellNum: [Int] = (0..<7).map { Int($0) }
         
         var snapShot = NSDiffableDataSourceSnapshot<String?, Int>()
         snapShot.appendSections(["TEMP"])
         snapShot.appendItems(cellNum)
         cardCollectionDiffableDataSource.apply(snapShot)
+    }
+}
+
+extension MainViewController: UICollectionViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        detectCenteredCard()
+    }
+        
+    func detectCenteredCard() {
+        let centerPoint = view.convert(view.center, to: cardCollectionView)
+        if let centerIndexPath = cardCollectionView.indexPathForItem(at: centerPoint) {
+            for cell in cardCollectionView.visibleCells {
+                guard let cell = cell as? RecordCardCollectionViewCell else { return }
+                if cardCollectionView.cellForItem(at: centerIndexPath) == cell {
+                    cell.blurEffect(isHidden: true)
+                } else {
+                    cell.blurEffect(isHidden: false)
+                }
+            }
+            pageControl.currentPage = centerIndexPath.row
+        }
     }
 }

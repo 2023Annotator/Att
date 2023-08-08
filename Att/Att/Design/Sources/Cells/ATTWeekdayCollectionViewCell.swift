@@ -36,12 +36,9 @@ class ATTWeekdayCollectionViewCell: UICollectionViewCell {
     // MARK: Components 간의 위치 설정
     // MARK: Constraints 설정 순서는 top - bottom - leading - trailing - centerX - centerY - width - height 순으로
     private func setUpConstriants() {
-        let constraints = Constraints.shared
-        
         addSubview(dayLabel)
         dayLabel.snp.makeConstraints { make in
             make.top.bottom.leading.trailing.equalToSuperview()
-            
         }
     }
     

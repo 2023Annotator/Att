@@ -27,7 +27,6 @@ class CardCollectionViewFlowLayout: UICollectionViewFlowLayout {
         itemHeight = itemWidth * 1.53// 소수점 세번째 자리 이후 Ceil
         itemSize = CGSize(width: itemWidth, height: itemHeight)
         
-        print(itemSize)
         yPositionFactor = itemHeight * 0.12
         yOffset = yPositionFactor * 0.7
     }
@@ -62,7 +61,6 @@ class CardCollectionViewFlowLayout: UICollectionViewFlowLayout {
                 attributes.zIndex = Int(zoom.rounded())
                 attributes.center.y -= yPositionFactor * (1 - normalizedDistance.magnitude)
             }
-            
         }
         
         return rectAttributes
