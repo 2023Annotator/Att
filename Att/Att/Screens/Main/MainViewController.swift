@@ -5,10 +5,13 @@
 //  Created by 황정현 on 2023/08/04.
 //
 
+import Combine
+import CombineCocoa
 import UIKit
 import SnapKit
 
 final class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<String?, Int> { }
+final class WeekdayCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<String?, Int> { }
 
 final class MainViewController: UIViewController {
 
@@ -52,11 +55,32 @@ final class MainViewController: UIViewController {
     }()
     
     private var cardCollectionDiffableDataSource: RecordCardCollectionViewDiffableDataSource!
-    private var snapshot = NSDiffableDataSourceSnapshot<String?, Int>()
+    private var cardCollectionViewSnapshot = NSDiffableDataSourceSnapshot<String?, Int>()
 
+    private lazy var weekdayCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.itemSize = CGSize(width: 44, height: 56)
+        flowLayout.scrollDirection = .horizontal
+        flowLayout.minimumLineSpacing = Constraints.shared.space12
+        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
+        view.isScrollEnabled = true
+        view.isPagingEnabled = true
+        view.contentInsetAdjustmentBehavior = .always
+        view.showsVerticalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
+        view.decelerationRate = .fast
+        return view
+    }()
+    
+    private var weekdayCollectionDiffableDataSource: WeekdayCollectionViewDiffableDataSource!
+    private var weekdayCollectionViewSnapshot = NSDiffableDataSourceSnapshot<String?, Int>()
+    
+    private var viewModel: MainViewModel?
+    private var cancellables = Set<AnyCancellable>()
     // MARK: Init 선언부
-    init() {
+    init(viewModel: MainViewModel) {
         super.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
     }
     
     required init?(coder: NSCoder) {
@@ -75,8 +99,10 @@ final class MainViewController: UIViewController {
         setUpStyle()
         setUpDelegate()
         setUpNavigationBar()
-        setUpCollectionViewDataSource()
-        performCell()
+        setUpCardCollectionViewDataSource()
+        performCardCollectionViewCell()
+        setUpWeekdayCollectionViewDataSource()
+        performWeekdayCollectionViewCell()
         setUpAction()
         bind()
     }
@@ -104,12 +130,19 @@ final class MainViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(viewHeight)
         }
-        
+
         view.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
             make.top.equalTo(cardCollectionView.snp.bottom).offset(constraints.space8)
             make.centerX.equalToSuperview()
             make.height.equalTo(12)
+        }
+        
+        view.addSubview(weekdayCollectionView)
+        weekdayCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(pageControl.snp.bottom).offset(constraints.space24)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(56)
         }
     }
     
@@ -128,14 +161,39 @@ final class MainViewController: UIViewController {
     }
 
     // MARK: TabPulisher etc - Optional
-    private func setUpAction() { }
+    private func setUpAction() {
+        let upSwipeGesture = UISwipeGestureRecognizer(target: nil, action: nil)
+        upSwipeGesture.direction = .up
+        let downSwipeGesture = UISwipeGestureRecognizer(target: nil, action: nil)
+        downSwipeGesture.direction = .down
+        
+        [
+            upSwipeGesture,
+            downSwipeGesture
+        ].forEach {
+            view.addGestureRecognizer($0)
+        }
+        
+        let input = MainViewModel.Input(
+            upSwipePublisher: upSwipeGesture.swipePublisher,
+            downSwipePublisher: downSwipeGesture.swipePublisher
+        )
+        
+        _ = viewModel?.transform(input: input)
+        viewModel?.$weekdayVisibleStatus
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] status in
+                self?.weekdayCollectionViewVisible(as: status)
+                self?.fromYesterdayViewVisible(as: status)
+            }.store(in: &cancellables)
+    }
     
     // MARK: ViewModel Stuff - Optional
     private func bind() { }
 }
 
 extension MainViewController {
-    private func setUpCollectionViewDataSource() {
+    private func setUpCardCollectionViewDataSource() {
         cardCollectionView.register(RecordCardCollectionViewCell.self, forCellWithReuseIdentifier: RecordCardCollectionViewCell.identifier)
         cardCollectionDiffableDataSource = RecordCardCollectionViewDiffableDataSource(collectionView: cardCollectionView) { (collectionView, indexPath, cellNumber) ->
             RecordCardCollectionViewCell? in
@@ -149,14 +207,36 @@ extension MainViewController {
         }
     }
     
-    private func performCell() {
+    private func performCardCollectionViewCell() {
         // TEMP & TEST
         let cellNum: [Int] = (0..<7).map { Int($0) }
         
-        var snapShot = NSDiffableDataSourceSnapshot<String?, Int>()
-        snapShot.appendSections(["TEMP"])
-        snapShot.appendItems(cellNum)
-        cardCollectionDiffableDataSource.apply(snapShot)
+        cardCollectionViewSnapshot.appendSections(["TEMP"])
+        cardCollectionViewSnapshot.appendItems(cellNum)
+        cardCollectionDiffableDataSource.apply(cardCollectionViewSnapshot)
+    }
+    
+    private func setUpWeekdayCollectionViewDataSource() {
+        weekdayCollectionView.register(ATTWeekdayCollectionViewCell.self, forCellWithReuseIdentifier: ATTWeekdayCollectionViewCell.identifier)
+        weekdayCollectionDiffableDataSource = WeekdayCollectionViewDiffableDataSource(collectionView: weekdayCollectionView) { (collectionView, indexPath, cellNumber) ->
+            ATTWeekdayCollectionViewCell? in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ATTWeekdayCollectionViewCell.identifier, for: indexPath) as? ATTWeekdayCollectionViewCell else {
+                return ATTWeekdayCollectionViewCell()
+            }
+            
+            // TEST
+            cell.setUpComponent(data: cellNumber)
+            return cell
+        }
+    }
+    
+    private func performWeekdayCollectionViewCell() {
+        // TEMP & TEST
+        let cellNum: [Int] = (0..<7).map { Int($0) }
+        
+        weekdayCollectionViewSnapshot.appendSections(["EE"])
+        weekdayCollectionViewSnapshot.appendItems(cellNum)
+        weekdayCollectionDiffableDataSource.apply(weekdayCollectionViewSnapshot)
     }
 }
 
@@ -178,5 +258,31 @@ extension MainViewController: UICollectionViewDelegate {
             }
             pageControl.currentPage = centerIndexPath.row
         }
+    }
+}
+
+// MARK: ViewModel Status에 따른 View Constraints 및 Hidden 상태 겳정 관련 코드부
+extension MainViewController {
+    func weekdayCollectionViewVisible(as status: Bool) {
+        UIView.transition(with: weekdayCollectionView, duration: 0.3,
+                          options: .transitionCrossDissolve,
+                          animations: { [weak self] in
+            self?.weekdayCollectionView.isHidden = !status
+        })
+    }
+    
+    func fromYesterdayViewVisible(as status: Bool) {
+        let value: CGFloat = status == true ? Constraints.shared.space16 - 61 : Constraints.shared.space16
+        UIView.transition(with: fromYesterdayView, duration: 0.3,
+                          options: .transitionCrossDissolve,
+                          animations: { [weak self] in
+            guard let self = self else { return }
+            self.fromYesterdayView.snp.updateConstraints { make in
+                make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(value)
+            }
+            self.fromYesterdayView.superview?.layoutIfNeeded()
+            
+            self.fromYesterdayView.isHidden = status
+        })
     }
 }

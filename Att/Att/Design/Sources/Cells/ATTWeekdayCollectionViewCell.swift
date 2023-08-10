@@ -8,12 +8,14 @@
 import UIKit
 
 class ATTWeekdayCollectionViewCell: UICollectionViewCell {
+    static let identifier = "ATTWeekdayCollectionViewCell"
     
     // MARK: property 선언부
     private lazy var dayLabel: UILabel = {
         let label = UILabel()
-        label.font = .caption3
-        label.textColor = .black
+        label.font = .caption2
+        label.textAlignment = .center
+        label.textColor = .white
         return label
     }()
     
@@ -49,5 +51,10 @@ class ATTWeekdayCollectionViewCell: UICollectionViewCell {
         layer.cornerRadius = 8
         layer.borderWidth = 2
         layer.borderColor = UIColor.gray50.cgColor
+    }
+    
+    // TEMPORARY parameter is Int -> Model
+    func setUpComponent(data: Int) {
+        dayLabel.text = "\(data)"
     }
 }
