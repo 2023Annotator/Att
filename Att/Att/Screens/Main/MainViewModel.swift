@@ -17,6 +17,7 @@ protocol ViewModelType {
 }
 
 class MainViewModel: ViewModelType {
+    @Published var centeredIdx: IndexPath = IndexPath(row: 0, section: 0)
     @Published var weekdayVisibleStatus: Bool = false
     
     private var cancellables = Set<AnyCancellable>()
@@ -44,5 +45,9 @@ class MainViewModel: ViewModelType {
             }
             print("UP!")
         }.store(in: &cancellables)
+    }
+    
+    func changeCenteredItemIdx(as idx: IndexPath) {
+        centeredIdx = idx
     }
 }

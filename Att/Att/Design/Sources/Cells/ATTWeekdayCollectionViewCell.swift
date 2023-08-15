@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum CellStatus {
+    case selected
+    case deselected
+}
+
 class ATTWeekdayCollectionViewCell: UICollectionViewCell {
     static let identifier = "ATTWeekdayCollectionViewCell"
     
@@ -47,14 +52,23 @@ class ATTWeekdayCollectionViewCell: UICollectionViewCell {
     // MARK: 최상위 뷰의 Style 지정 (layer.cornerRadius etc) - Optional
     // 최상위 뷰를 제외한 나머지 UI Components는 각 Components 클로저 내부에서 Style 설정을 완료할 수 있게 만들기
     private func setUpStyle() {
-        backgroundColor = .gray100
         layer.cornerRadius = 8
-        layer.borderWidth = 2
         layer.borderColor = UIColor.gray50.cgColor
     }
     
     // TEMPORARY parameter is Int -> Model
     func setUpComponent(data: Int) {
         dayLabel.text = "\(data)"
+    }
+    
+    func updateSelectedCellDesign(status: CellStatus) {
+        switch status {
+        case .selected:
+            backgroundColor = .gray100
+            layer.borderWidth = 2
+        case .deselected:
+            backgroundColor = .black
+            layer.borderWidth = 0
+        }
     }
 }

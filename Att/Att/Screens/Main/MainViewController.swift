@@ -51,6 +51,7 @@ final class MainViewController: UIViewController {
         pageControl.numberOfPages = 7 // TEST
         pageControl.pageIndicatorTintColor = .gray100 // TEMP: Default로 특정 색상 지정 예정
         pageControl.currentPageIndicatorTintColor = .green // TEMP: VM로부터 데이터를 받아서 지정 예정
+        pageControl.isUserInteractionEnabled = false
         return pageControl
     }()
     
@@ -77,6 +78,8 @@ final class MainViewController: UIViewController {
     
     private var viewModel: MainViewModel?
     private var cancellables = Set<AnyCancellable>()
+    
+    var isScrolling = true
     // MARK: Init 선언부
     init(viewModel: MainViewModel) {
         super.init(nibName: nil, bundle: nil)
@@ -152,6 +155,7 @@ final class MainViewController: UIViewController {
 
     private func setUpDelegate() {
         cardCollectionView.delegate = self
+        weekdayCollectionView.delegate = self
     }
     
     private func setUpNavigationBar() {
@@ -189,7 +193,36 @@ final class MainViewController: UIViewController {
     }
     
     // MARK: ViewModel Stuff - Optional
-    private func bind() { }
+    private func bind() {
+        viewModel?.$centeredIdx
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] indexPath in
+                guard let cardCollectionView = self?.cardCollectionView else { return }
+                
+                for cell in cardCollectionView.visibleCells {
+                    guard let cell = cell as? RecordCardCollectionViewCell else { return }
+                    if cardCollectionView.cellForItem(at: indexPath) == cell {
+                        cell.blurEffect(isHidden: true)
+                    } else {
+                        cell.blurEffect(isHidden: false)
+                    }
+                }
+                
+                cardCollectionView.superview?.layoutIfNeeded()
+                
+                self?.pageControl.currentPage = indexPath.row
+                
+                guard let weekdayCollectionView = self?.weekdayCollectionView else { return }
+                for cell in weekdayCollectionView.visibleCells {
+                    guard let cell = cell as? ATTWeekdayCollectionViewCell else { return }
+                    if weekdayCollectionView.cellForItem(at: indexPath) == cell {
+                        cell.updateSelectedCellDesign(status: .selected)
+                    } else {
+                        cell.updateSelectedCellDesign(status: .deselected)
+                    }
+                }
+            }.store(in: &cancellables)
+    }
 }
 
 extension MainViewController {
@@ -232,7 +265,7 @@ extension MainViewController {
     
     private func performWeekdayCollectionViewCell() {
         // TEMP & TEST
-        let cellNum: [Int] = (0..<7).map { Int($0) }
+        let cellNum: [Int] = (1...21).map { Int($0) }
         
         weekdayCollectionViewSnapshot.appendSections(["EE"])
         weekdayCollectionViewSnapshot.appendItems(cellNum)
@@ -241,22 +274,40 @@ extension MainViewController {
 }
 
 extension MainViewController: UICollectionViewDelegate {
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if isScrolling {
+            detectCenteredCard()
+        }
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        isScrolling = true
         detectCenteredCard()
     }
-        
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch collectionView {
+        case cardCollectionView:
+            // TODO: Record Page 연결
+            print("SHOW RECORD PAGE")
+        case weekdayCollectionView:
+            isScrolling = false
+            guard let viewModel = viewModel else { return }
+            viewModel.changeCenteredItemIdx(as: indexPath)
+            cardCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        default:
+            print("he")
+        }
+    }
+}
+
+// MARK: CollectionView Centered Item Index 갱신 관련 코드부
+extension MainViewController {
     func detectCenteredCard() {
         let centerPoint = view.convert(view.center, to: cardCollectionView)
         if let centerIndexPath = cardCollectionView.indexPathForItem(at: centerPoint) {
-            for cell in cardCollectionView.visibleCells {
-                guard let cell = cell as? RecordCardCollectionViewCell else { return }
-                if cardCollectionView.cellForItem(at: centerIndexPath) == cell {
-                    cell.blurEffect(isHidden: true)
-                } else {
-                    cell.blurEffect(isHidden: false)
-                }
-            }
-            pageControl.currentPage = centerIndexPath.row
+            viewModel?.changeCenteredItemIdx(as: centerIndexPath)
         }
     }
 }
