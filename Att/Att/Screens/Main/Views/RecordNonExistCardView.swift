@@ -11,48 +11,30 @@ import SnapKit
 final class RecordNonExistCardView: ATTCardView {
 
     // MARK: property 선언부
-    private lazy var dateLabel: UILabel = {
-        let label = UILabel()
-        label.font = .title1
-        label.textAlignment = .center
-        label.numberOfLines = 2
-        label.textColor = .black
-        label.text = "\(Date().year())\n\(Date().monthAndDay())" // TEST
-        return label
+    private let stackView: UIStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        view.alignment = .center
+        view.spacing = 12
+        view.distribution = .equalSpacing
+        return view
     }()
     
-    private lazy var dayNameLabel: UILabel = {
-        let label = UILabel()
-        label.font = .subtitle1
-        label.textAlignment = .center
-        label.textColor = .black
-        label.text = Date().weekday() // TEST
-        return label
-    }()
-    
+    // TODO: 이미지 삽입
     private let ticketImageView: UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = 40
-        view.layer.borderColor = UIColor.black.cgColor
+        view.layer.borderColor = UIColor.white.cgColor
         view.layer.borderWidth = 2
         return view
     }()
     
     private let ticketCaptionLabel: UILabel = {
         let label = UILabel()
-        label.font = .caption3
-        label.textAlignment = .center
-        label.textColor = .black
-        label.text = "Click to add record"
-        return label
-    }()
-    
-    private let descriptionLabel: UILabel = {
-        let label = UILabel()
         label.font = .caption1
         label.textAlignment = .center
-        label.numberOfLines = 0
-        label.textColor = .black
+        label.textColor = .white
+        label.text = "오늘 기록을 추가해주세요!"
         return label
     }()
     
@@ -60,7 +42,6 @@ final class RecordNonExistCardView: ATTCardView {
     override init() {
         super.init()
         setUpConstraints()
-        setUpComponent() // TEST
     }
     
     required init?(coder: NSCoder) {
@@ -72,48 +53,32 @@ final class RecordNonExistCardView: ATTCardView {
     private func setUpConstraints() {
         let constraints = Constraints.shared
         
-        addSubview(dateLabel)
-        dateLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(59)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(85)
-        }
-        
-        addSubview(dayNameLabel)
-        dayNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(dateLabel.snp.bottom).offset(constraints.space12) // ORGIN: 11
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(24)
-        }
-        
-        addSubview(ticketImageView)
-        ticketImageView.snp.makeConstraints { make in
+        addSubview(stackView)
+        stackView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
+            make.width.equalToSuperview()
+            make.height.equalTo(110)
+        }
+        
+        [
+            ticketImageView,
+            ticketCaptionLabel
+        ].forEach {
+            stackView.addArrangedSubview($0)
+        }
+        
+        ticketImageView.snp.makeConstraints { make in
             make.width.height.equalTo(80)
         }
         
-        addSubview(ticketCaptionLabel)
         ticketCaptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(ticketImageView.snp.bottom).offset(constraints.space8) // ORGIN: 11
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(18)
-        }
-        
-        addSubview(descriptionLabel)
-        descriptionLabel.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-42) // ORGIN: 42.94
-            make.leading.equalToSuperview().offset(constraints.space22)
-            make.trailing.equalToSuperview().offset(-constraints.space22)
-            make.height.equalTo(100) // ORIGIN: 101
         }
     }
     
     override func setUpStyle() {
         super.setUpStyle()
-        backgroundColor = .darkGray // TEMP
-    }
-    // TEST
-    private func setUpComponent() {
-        descriptionLabel.text = "당신의 기록 하나하나가 쌓여\n아름다운 일년을 만들어주고 어쩌고\n아무튼 감명깊고 유저에게 이 컨텐츠가\n모여서 대충 분석을 제공할 거란 노티"
+        backgroundColor = .gray100
     }
 }

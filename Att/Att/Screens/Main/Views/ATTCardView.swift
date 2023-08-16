@@ -21,6 +21,5 @@ class ATTCardView: UIView {
     
     func setUpStyle() {
         layer.cornerRadius = 20
-        backgroundColor = .white // TEST
     }
 }

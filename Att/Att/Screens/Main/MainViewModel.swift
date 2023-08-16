@@ -12,11 +12,9 @@ import UIKit
 protocol ViewModelType {
     associatedtype Input
     associatedtype Output
-    
-//    func transform(input: Input) -> Output
 }
 
-class MainViewModel: ViewModelType {
+final class MainViewModel: ViewModelType {
     @Published var centeredIdx: IndexPath = IndexPath(row: 0, section: 0)
     @Published var weekdayVisibleStatus: Bool = false
     
@@ -36,14 +34,12 @@ class MainViewModel: ViewModelType {
             if self?.weekdayVisibleStatus == true {
                 self?.weekdayVisibleStatus = false
             }
-            print("DOWN!")
         }.store(in: &cancellables)
         
         input.upSwipePublisher.sink { [weak self] _ in
             if self?.weekdayVisibleStatus == false {
                 self?.weekdayVisibleStatus = true
             }
-            print("UP!")
         }.store(in: &cancellables)
     }
     

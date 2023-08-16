@@ -99,13 +99,9 @@ final class MainViewController: UIViewController {
     // MARK: viewDidLoad 시 1회성 호출을 필요로하는 method 일괄
     private func configure() {
         setUpConstriants()
-        setUpStyle()
         setUpDelegate()
         setUpNavigationBar()
-        setUpCardCollectionViewDataSource()
-        performCardCollectionViewCell()
-        setUpWeekdayCollectionViewDataSource()
-        performWeekdayCollectionViewCell()
+        setUpCollectionView()
         setUpAction()
         bind()
     }
@@ -148,10 +144,6 @@ final class MainViewController: UIViewController {
             make.height.equalTo(56)
         }
     }
-    
-    // MARK: 최상위 뷰의 Style 지정 (layer.cornerRadius etc) - Optional
-    // 최상위 뷰를 제외한 나머지 UI Components는 각 Components 클로저 내부에서 Style 설정을 완료할 수 있게 만들기
-    private func setUpStyle() { }
 
     private func setUpDelegate() {
         cardCollectionView.delegate = self
@@ -163,7 +155,14 @@ final class MainViewController: UIViewController {
         navigationItem.leftBarButtonItem = mypageButton
         navigationItem.rightBarButtonItem = calendarButton
     }
-
+    
+    private func setUpCollectionView() {
+        setUpCardCollectionViewDataSource()
+        performCardCollectionViewCell()
+        setUpWeekdayCollectionViewDataSource()
+        performWeekdayCollectionViewCell()
+    }
+    
     // MARK: TabPulisher etc - Optional
     private func setUpAction() {
         let upSwipeGesture = UISwipeGestureRecognizer(target: nil, action: nil)
@@ -225,6 +224,7 @@ final class MainViewController: UIViewController {
     }
 }
 
+// MARK: CollectionView Data Setting 관련 코드부
 extension MainViewController {
     private func setUpCardCollectionViewDataSource() {
         cardCollectionView.register(RecordCardCollectionViewCell.self, forCellWithReuseIdentifier: RecordCardCollectionViewCell.identifier)
@@ -273,8 +273,8 @@ extension MainViewController {
     }
 }
 
+// MARK: CollectionView Delegate
 extension MainViewController: UICollectionViewDelegate {
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if isScrolling {
             detectCenteredCard()
@@ -297,7 +297,7 @@ extension MainViewController: UICollectionViewDelegate {
             viewModel.changeCenteredItemIdx(as: indexPath)
             cardCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         default:
-            print("he")
+            return
         }
     }
 }
@@ -312,7 +312,7 @@ extension MainViewController {
     }
 }
 
-// MARK: ViewModel Status에 따른 View Constraints 및 Hidden 상태 겳정 관련 코드부
+// MARK: ViewModel Status에 따른 View Constraints 및 Hidden 상태 관련 코드부
 extension MainViewController {
     func weekdayCollectionViewVisible(as status: Bool) {
         UIView.transition(with: weekdayCollectionView, duration: 0.3,

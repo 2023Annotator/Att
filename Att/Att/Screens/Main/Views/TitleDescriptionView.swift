@@ -102,9 +102,9 @@ final class TitleDescriptionView: UIView {
     private func setUpDescription(cardInfotype: CardInfoType) {
         switch cardInfotype {
         case .diary:
-            descriptionLabel.text = "아니...일케 살아도 되는 것임...?"
+            descriptionLabel.text = "Something Something Some"
         case .music:
-            return descriptionLabel.text = "アイドル - YOASOBI"
+            return descriptionLabel.text = "---------"
         default: break
         }
     }

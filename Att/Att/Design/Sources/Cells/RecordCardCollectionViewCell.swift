@@ -26,6 +26,7 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
     private var cardView: ATTCardView?
     
     // MARK: Init 선언부
+    // TODO: RecordStatus에 따라 Configure 메소드 호출부 변경
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure(recordStatus: .exist)
