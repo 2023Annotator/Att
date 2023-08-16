@@ -29,6 +29,14 @@ final class MainViewController: UIViewController {
         return button
     }()
     
+    private lazy var segmentedControl: ATTSegmentedControl = {
+        let control = ATTSegmentedControl(items: ["Rec.", "Analysis"])
+//        control.insertSegment(withTitle: "Rec.", at: 0, animated: true)
+//        control.insertSegment(withTitle: "Analysis.", at: 1, animated: true)
+//        control.selectedSegmentIndex = 0
+        return control
+    }()
+    
     private lazy var fromYesterdayView: ATTFromYesterdayView = {
         let view = ATTFromYesterdayView()
         return view
@@ -41,6 +49,7 @@ final class MainViewController: UIViewController {
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
         view.decelerationRate = .fast
+        view.backgroundColor = .clear
         return view
     }()
     
@@ -57,11 +66,7 @@ final class MainViewController: UIViewController {
     }()
     
     private lazy var weekdayCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: 44, height: 56)
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumLineSpacing = Constraints.shared.space12
-        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
+        let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: WeekdayCollectionViewFlowLayout())
         view.isScrollEnabled = true
         view.isPagingEnabled = true
         view.contentInsetAdjustmentBehavior = .always
@@ -107,9 +112,17 @@ final class MainViewController: UIViewController {
     private func setUpConstriants() {
         let constraints = Constraints.shared
         
+        view.addSubview(segmentedControl)
+        segmentedControl.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(constraints.space14)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(150)
+            make.height.equalTo(30)
+        }
+        
         view.addSubview(fromYesterdayView)
         fromYesterdayView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(constraints.space16)// TEMP
+            make.top.equalTo(segmentedControl.snp.bottom).offset(constraints.space12)// TEMP
             make.leading.equalToSuperview().offset(constraints.space20)
             make.trailing.equalToSuperview().offset(-constraints.space20)
             make.height.equalTo(61)
@@ -128,14 +141,14 @@ final class MainViewController: UIViewController {
 
         view.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
-            make.top.equalTo(cardCollectionView.snp.bottom).offset(constraints.space8)
+            make.top.equalTo(cardCollectionView.snp.bottom)
             make.centerX.equalToSuperview()
             make.height.equalTo(12)
         }
         
         view.addSubview(weekdayCollectionView)
         weekdayCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(pageControl.snp.bottom).offset(constraints.space24)
+            make.top.equalTo(pageControl.snp.bottom).offset(constraints.space16)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(56)
         }
@@ -317,13 +330,14 @@ extension MainViewController {
     }
     
     func fromYesterdayViewVisible(as status: Bool) {
-        let value: CGFloat = status == true ? Constraints.shared.space16 - 61 : Constraints.shared.space16
+//        let value: CGFloat = status == true ? Constraints.shared.space16 - 61 : Constraints.shared.space16
+        let value: CGFloat = status == true ? 0 : 61
         UIView.transition(with: fromYesterdayView, duration: 0.3,
                           options: .transitionCrossDissolve,
                           animations: { [weak self] in
             guard let self = self else { return }
             self.fromYesterdayView.snp.updateConstraints { make in
-                make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(value)
+                make.height.equalTo(value)
             }
             self.fromYesterdayView.superview?.layoutIfNeeded()
             
