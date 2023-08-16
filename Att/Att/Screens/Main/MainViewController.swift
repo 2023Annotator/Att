@@ -15,18 +15,17 @@ final class WeekdayCollectionViewDiffableDataSource: UICollectionViewDiffableDat
 
 final class MainViewController: UIViewController {
 
-    // MARK: property 선언부
     private let mypageButton: UIBarButtonItem = {
         let testImage = UIImage() // TEST
         testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(named: "testImage"))
+        let button = UIBarButtonItem(image: UIImage(systemName: "person")?.withTintColor(.white, renderingMode: .alwaysOriginal))
         return button
     }()
     
     private let calendarButton: UIBarButtonItem = {
         let testImage = UIImage() // TEST
         testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(named: "testImage"))
+        let button = UIBarButtonItem(image: UIImage(named: "calendar")?.withTintColor(.white, renderingMode: .alwaysOriginal))
         return button
     }()
     
@@ -48,12 +47,11 @@ final class MainViewController: UIViewController {
     private var cardCollectionDiffableDataSource: RecordCardCollectionViewDiffableDataSource!
     private var cardCollectionViewSnapshot = NSDiffableDataSourceSnapshot<String?, Int>()
 
-    // TODO: currentPageIndicatorTintColor 변경 관련 메소드 작성
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = 7 // TEST
-        pageControl.pageIndicatorTintColor = .gray100 // TEMP: Default로 특정 색상 지정 예정
-        pageControl.currentPageIndicatorTintColor = .green // TEMP: VM로부터 데이터를 받아서 지정 예정
+        pageControl.pageIndicatorTintColor = .gray100
+        pageControl.currentPageIndicatorTintColor = .green
         pageControl.isUserInteractionEnabled = false
         return pageControl
     }()
