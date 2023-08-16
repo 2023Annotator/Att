@@ -10,7 +10,6 @@ import SnapKit
 
 final class RecordCardCollectionViewCell: UICollectionViewCell {
     
-    // MARK: property 선언부
     static let identifier = "RecordCardCollectionViewCell"
     
     private var blurEffectView: UIVisualEffectView = {
@@ -25,7 +24,6 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
     
     private var cardView: ATTCardView?
     
-    // MARK: Init 선언부
     // TODO: RecordStatus에 따라 Configure 메소드 호출부 변경
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,8 +39,6 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
         setUpConstriants(recordStatus: recordStatus)
     }
     
-    // MARK: Components 간의 위치 설정
-    // MARK: Constraints 설정 순서는 top - bottom - leading - trailing - centerX - centerY - width - height 순으로
     private func setUpConstriants(recordStatus: RecordStatus) {
         
         switch recordStatus {
@@ -64,7 +60,7 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // TEMPORARY parameter is Int -> Model
+    // TODO: TEMPORARY parameter is Int -> Model
     func setUpComponent(data: Int) {
 //        print("GOOD")
     }

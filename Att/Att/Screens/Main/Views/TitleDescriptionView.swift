@@ -11,7 +11,6 @@ import SnapKit
 // MARK: View Height = titleLabel.height + descriptionLabel.height = 22 + 18 = 40
 final class TitleDescriptionView: UIView {
     
-    // MARK: property 선언부
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .subtitle3
@@ -28,14 +27,13 @@ final class TitleDescriptionView: UIView {
         return label
     }()
     
-    // MARK: Only CardInfoType.music에서 사용
+    // Only CardInfoType.music에서 사용
     private lazy var musicImageView: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = .blue // TEST
+        view.image = UIImage(named: "headphone")
         return view
     }()
     
-    // MARK: Init 선언부
     init(cardInfoType: CardInfoType) {
         super.init(frame: CGRect.zero)
         setUpConstraints(cardInfoType: cardInfoType)
@@ -47,8 +45,6 @@ final class TitleDescriptionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Components 간의 위치 설정
-    // MARK: Constraints 설정 순서는 top - bottom - leading - trailing - centerX - centerY - width - height 순으로
     private func setUpConstraints(cardInfoType: CardInfoType) {
         let constraints = Constraints.shared
         
@@ -82,7 +78,7 @@ final class TitleDescriptionView: UIView {
         case .music:
             addSubview(musicImageView)
             musicImageView.snp.makeConstraints { make in
-                make.leading.equalTo(titleLabel.snp.leading).offset(constraints.space8)
+                make.leading.equalTo(titleLabel.snp.leading)
                 make.width.height.equalTo(17)
                 make.centerY.equalTo(descriptionLabel.snp.centerY)
             }

@@ -9,7 +9,6 @@ import UIKit
 
 class ATTCardView: UIView {
     
-    // MARK: Init 선언부
     init() {
         super.init(frame: CGRect.zero)
         setUpStyle()

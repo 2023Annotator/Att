@@ -9,7 +9,6 @@ import UIKit
 
 final class ATTFromYesterdayView: UIView {
 
-    // MARK: property 선언부
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .caption1
@@ -27,7 +26,6 @@ final class ATTFromYesterdayView: UIView {
         return label
     }()
     
-    // MARK: Init 선언부
     init() {
         super.init(frame: CGRect.zero)
         setUpConstraints()
@@ -39,8 +37,6 @@ final class ATTFromYesterdayView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Components 간의 위치 설정
-    // MARK: Constraints 설정 순서는 top - bottom - leading - trailing - centerX - centerY - width - height 순으로
     private func setUpConstraints() {
         let constraints = Constraints.shared
         

@@ -10,7 +10,6 @@ import SnapKit
 
 final class RecordExistCardView: ATTCardView {
 
-    // MARK: property 선언부
     private lazy var musicThumbnailView: UIImageView = {
         let view = UIImageView()
         view.clipsToBounds = true
@@ -25,7 +24,6 @@ final class RecordExistCardView: ATTCardView {
         return view
     }()
     
-    // MARK: Init 선언부
     override init() {
         super.init()
         setUpConstraints()
@@ -35,8 +33,6 @@ final class RecordExistCardView: ATTCardView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Components 간의 위치 설정
-    // MARK: Constraints 설정 순서는 top - bottom - leading - trailing - centerX - centerY - width - height 순으로
     private func setUpConstraints() {
         let constraints = Constraints.shared
         

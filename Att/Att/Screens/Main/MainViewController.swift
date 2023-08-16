@@ -19,14 +19,14 @@ final class MainViewController: UIViewController {
     private let mypageButton: UIBarButtonItem = {
         let testImage = UIImage() // TEST
         testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: testImage)
+        let button = UIBarButtonItem(image: UIImage(named: "testImage"))
         return button
     }()
     
     private let calendarButton: UIBarButtonItem = {
         let testImage = UIImage() // TEST
         testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: testImage)
+        let button = UIBarButtonItem(image: UIImage(named: "testImage"))
         return button
     }()
     
@@ -45,6 +45,9 @@ final class MainViewController: UIViewController {
         return view
     }()
     
+    private var cardCollectionDiffableDataSource: RecordCardCollectionViewDiffableDataSource!
+    private var cardCollectionViewSnapshot = NSDiffableDataSourceSnapshot<String?, Int>()
+
     // TODO: currentPageIndicatorTintColor 변경 관련 메소드 작성
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
@@ -55,9 +58,6 @@ final class MainViewController: UIViewController {
         return pageControl
     }()
     
-    private var cardCollectionDiffableDataSource: RecordCardCollectionViewDiffableDataSource!
-    private var cardCollectionViewSnapshot = NSDiffableDataSourceSnapshot<String?, Int>()
-
     private lazy var weekdayCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = CGSize(width: 44, height: 56)
@@ -79,8 +79,9 @@ final class MainViewController: UIViewController {
     private var viewModel: MainViewModel?
     private var cancellables = Set<AnyCancellable>()
     
+    // TODO: ViewModel 편입 여부 고려
     var isScrolling = true
-    // MARK: Init 선언부
+    
     init(viewModel: MainViewModel) {
         super.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
@@ -90,7 +91,6 @@ final class MainViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: View Life Cycle 선언부
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -106,8 +106,6 @@ final class MainViewController: UIViewController {
         bind()
     }
     
-    // MARK: Components 간의 위치 설정
-    // MARK: Constraints 설정 순서는 top - bottom - leading - trailing - centerX - centerY - width - height 순으로
     private func setUpConstriants() {
         let constraints = Constraints.shared
         
@@ -163,7 +161,6 @@ final class MainViewController: UIViewController {
         performWeekdayCollectionViewCell()
     }
     
-    // MARK: TabPulisher etc - Optional
     private func setUpAction() {
         let upSwipeGesture = UISwipeGestureRecognizer(target: nil, action: nil)
         upSwipeGesture.direction = .up
@@ -191,7 +188,6 @@ final class MainViewController: UIViewController {
             }.store(in: &cancellables)
     }
     
-    // MARK: ViewModel Stuff - Optional
     private func bind() {
         viewModel?.$centeredIdx
             .receive(on: DispatchQueue.main)
