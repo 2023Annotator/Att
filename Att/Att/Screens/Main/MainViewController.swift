@@ -119,7 +119,7 @@ final class MainViewController: UIViewController {
         
         view.addSubview(fromYesterdayView)
         fromYesterdayView.snp.makeConstraints { make in
-            make.top.equalTo(segmentedControl.snp.bottom).offset(constraints.space12)// TEMP
+            make.top.equalTo(segmentedControl.snp.bottom).offset(constraints.space12)
             make.leading.equalToSuperview().offset(constraints.space20)
             make.trailing.equalToSuperview().offset(-constraints.space20)
             make.height.equalTo(61)
