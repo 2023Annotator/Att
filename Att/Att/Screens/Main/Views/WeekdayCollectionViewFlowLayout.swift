@@ -12,7 +12,10 @@ final class WeekdayCollectionViewFlowLayout: UICollectionViewFlowLayout {
     override init() {
         super.init()
         scrollDirection = .horizontal
-        itemSize = ComponentsSet.set.weekdayCellSize
+        let height = UIScreen.main.bounds.height
+        let itemHeight = height * 0.066
+        let itemWidth = itemHeight * 0.79
+        itemSize = CGSize(width: itemWidth, height: itemHeight)
         minimumLineSpacing = 12
     }
     
@@ -21,11 +24,12 @@ final class WeekdayCollectionViewFlowLayout: UICollectionViewFlowLayout {
     }
     
     override func prepare() {
-        super.prepare()
         guard let collectionView = collectionView else { fatalError() }
         let visibleCellNum: CGFloat = 7
+        let verticalInsets = (collectionView.frame.height - collectionView.adjustedContentInset.top - collectionView.adjustedContentInset.bottom - itemSize.height) / 2
         let itemArea = (itemSize.width * visibleCellNum) + (minimumLineSpacing * (visibleCellNum - 1))
         let horizontalInsets = (collectionView.frame.width - itemArea) / 2
-        sectionInset = UIEdgeInsets(top: 0, left: horizontalInsets, bottom: 0, right: horizontalInsets)
+        sectionInset = UIEdgeInsets(top: verticalInsets, left: horizontalInsets, bottom: verticalInsets, right: horizontalInsets)
+        super.prepare()
     }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 
+// TODO: selectedSegmentIndex에 따라 페이지 연동
 final class ATTSegmentedControl: UISegmentedControl {
     
     private(set) lazy var radius: CGFloat = bounds.height / 2

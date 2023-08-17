@@ -31,9 +31,6 @@ final class MainViewController: UIViewController {
     
     private lazy var segmentedControl: ATTSegmentedControl = {
         let control = ATTSegmentedControl(items: ["Rec.", "Analysis"])
-//        control.insertSegment(withTitle: "Rec.", at: 0, animated: true)
-//        control.insertSegment(withTitle: "Analysis.", at: 1, animated: true)
-//        control.selectedSegmentIndex = 0
         return control
     }()
     
@@ -326,11 +323,11 @@ extension MainViewController {
                           options: .transitionCrossDissolve,
                           animations: { [weak self] in
             self?.weekdayCollectionView.isHidden = !status
+            self?.weekdayCollectionView.superview?.layoutIfNeeded()
         })
     }
     
     func fromYesterdayViewVisible(as status: Bool) {
-//        let value: CGFloat = status == true ? Constraints.shared.space16 - 61 : Constraints.shared.space16
         let value: CGFloat = status == true ? 0 : 61
         UIView.transition(with: fromYesterdayView, duration: 0.3,
                           options: .transitionCrossDissolve,
@@ -339,8 +336,8 @@ extension MainViewController {
             self.fromYesterdayView.snp.updateConstraints { make in
                 make.height.equalTo(value)
             }
+
             self.fromYesterdayView.superview?.layoutIfNeeded()
-            
             self.fromYesterdayView.isHidden = status
         })
     }
