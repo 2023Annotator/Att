@@ -21,6 +21,7 @@ extension UIFont {
         }
     }
     
+    static let title0 = UIFont(weight: .bold, size: 36)
     static let title1 = UIFont(weight: .bold, size: 32)
     static let title2 = UIFont(weight: .bold, size: 28)
     static let title3 = UIFont(weight: .bold, size: 22)
