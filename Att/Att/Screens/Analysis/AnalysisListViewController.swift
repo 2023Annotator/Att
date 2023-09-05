@@ -9,6 +9,11 @@ import UIKit
 
 class AnalysisListViewController: UIViewController {
     
+    private lazy var yearSelectorView: YearSelectorView = {
+        let view = YearSelectorView()
+        return view
+    }()
+    
     private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
         return view
@@ -61,9 +66,16 @@ class AnalysisListViewController: UIViewController {
     private func setUpConstriants() {
         let constraints = Constraints.shared
         
+        view.addSubview(yearSelectorView)
+        yearSelectorView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(54)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(28)
+        }
+        
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.top.equalTo(yearSelectorView.snp.bottom).offset(constraints.space8)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
@@ -120,37 +132,43 @@ class AnalysisListViewController: UIViewController {
 
 extension AnalysisListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-            return 1
-        }
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 12
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let monthNameArr: [String] = [
+            "JANUARY",
+            "FEBRUARY",
+            "MARCH",
+            "APRIL",
+            "MAY",
+            "JUNE",
+            "JULY",
+            "AUGUST",
+            "SEPTEMBER",
+            "OCTOBER",
+            "NOVEMBER",
+            "DECEMBER"
+        ]
         
-        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return 12
-        }
+        let sampleColors: [UIColor] = [.cherry, .blue, .yellow, .yellowGreen, .blue, .purple, .gray100] // TEST
         
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let monthNameArr: [String] = [
-                "JANUARY",
-                "FEBRUARY",
-                "MARCH",
-                "APRIL",
-                "MAY",
-                "JUNE",
-                "JULY",
-                "AUGUST",
-                "SEPTEMBER",
-                "OCTOBER",
-                "NOVEMBER",
-                "DECEMBER"
-            ]
-            
-            let sampleColors: [UIColor] = [.cherry, .blue, .yellow, .yellowGreen, .blue, .purple, .gray100] // TEST
-            
-            guard let cell = self.monthListView.monthCollectionView.dequeueReusableCell(
-                withReuseIdentifier: MonthCollectionViewCell.identifier,
-                for: indexPath) as? MonthCollectionViewCell else { return UICollectionViewCell() }
-            
-            cell.setUpCell(month: monthNameArr[indexPath.row], color: sampleColors[indexPath.row%7])
-            
-            return cell
-        }
+        guard let cell = self.monthListView.monthCollectionView.dequeueReusableCell(
+            withReuseIdentifier: MonthCollectionViewCell.identifier,
+            for: indexPath) as? MonthCollectionViewCell else { return UICollectionViewCell() }
+        
+        cell.setUpCell(month: monthNameArr[indexPath.row], color: sampleColors[indexPath.row%7])
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let targetVC = MonthlyAnalysisViewController()
+        targetVC.modalPresentationStyle = .automatic
+        self.present(targetVC, animated: true)
+    }
 }

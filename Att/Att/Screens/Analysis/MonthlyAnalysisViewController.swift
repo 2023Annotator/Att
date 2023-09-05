@@ -9,7 +9,15 @@ import UIKit
 
 final class MonthlyAnalysisViewController: UIViewController {
 
-    // MARK: property 선언부
+    private lazy var yearMonthLabel: UILabel = {
+        let label = UILabel()
+        label.font = .title3
+        label.textAlignment = .center
+        label.textColor = .white
+        label.text = "2023.04" // TEST
+        return label
+    }()
+    
     private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.showsVerticalScrollIndicator = false
@@ -71,6 +79,7 @@ final class MonthlyAnalysisViewController: UIViewController {
     // MARK: viewDidLoad 시 1회성 호출을 필요로하는 method 일괄
     private func configure() {
         setUpConstriants()
+        setUpStyle()
         setUpMonthlyMoodCollectionView()
         setUpAction()
         bind()
@@ -79,9 +88,16 @@ final class MonthlyAnalysisViewController: UIViewController {
     private func setUpConstriants() {
         let constraints = Constraints.shared
         
+        view.addSubview(yearMonthLabel)
+        yearMonthLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(constraints.space16)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(28)
+        }
+        
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.top.equalTo(yearMonthLabel.snp.bottom).offset(constraints.space8)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
@@ -137,6 +153,10 @@ final class MonthlyAnalysisViewController: UIViewController {
         }
     }
     
+    private func setUpStyle() {
+        view.backgroundColor = .black
+    }
+    
     private func setUpMonthlyMoodCollectionView() {
         monthlyMoodAnalysisView.moodCollectionView.dataSource = self
         monthlyMoodAnalysisView.moodCollectionView.delegate = self
@@ -170,4 +190,10 @@ extension MonthlyAnalysisViewController: UICollectionViewDelegate, UICollectionV
             
             return cell
         }
+}
+
+extension MonthlyAnalysisViewController {
+    func setUpYearMonthLabelText(as date: String) {
+        yearMonthLabel.text = date
+    }
 }
