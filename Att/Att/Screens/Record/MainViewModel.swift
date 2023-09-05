@@ -14,7 +14,7 @@ protocol ViewModelType {
     associatedtype Output
 }
 
-final class MainViewModel: ViewModelType {
+final class RecordViewModel: ViewModelType {
     @Published var centeredIdx: IndexPath = IndexPath(row: 0, section: 0)
     @Published var weekdayVisibleStatus: Bool = false
     

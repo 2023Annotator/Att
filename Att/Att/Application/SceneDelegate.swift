@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
 //        let viewController = ViewController(viewModel: TestViewModel())
 //        let viewController = MainViewController(viewModel: MainViewModel())
-        let viewController = AnalysisListViewController()
+        let viewController = MainPageViewController()
         window.rootViewController =  UINavigationController(rootViewController: viewController)
         window.makeKeyAndVisible()
     }

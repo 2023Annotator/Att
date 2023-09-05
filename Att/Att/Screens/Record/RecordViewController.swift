@@ -13,27 +13,7 @@ import SnapKit
 final class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<String?, Int> { }
 final class WeekdayCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<String?, Int> { }
 
-final class MainViewController: UIViewController {
-
-    private let mypageButton: UIBarButtonItem = {
-        let testImage = UIImage() // TEST
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(systemName: "person")?.withTintColor(.white, renderingMode: .alwaysOriginal))
-        return button
-    }()
-    
-    private let calendarButton: UIBarButtonItem = {
-        let testImage = UIImage() // TEST
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(named: "calendar")?.withTintColor(.white, renderingMode: .alwaysOriginal))
-        return button
-    }()
-    
-    private lazy var segmentedControl: ATTSegmentedControl = {
-        let control = ATTSegmentedControl(items: ["Rec.", "Analysis"])
-        return control
-    }()
-    
+final class RecordViewController: UIViewController {
     private lazy var fromYesterdayView: ATTFromYesterdayView = {
         let view = ATTFromYesterdayView()
         return view
@@ -76,13 +56,13 @@ final class MainViewController: UIViewController {
     private var weekdayCollectionDiffableDataSource: WeekdayCollectionViewDiffableDataSource!
     private var weekdayCollectionViewSnapshot = NSDiffableDataSourceSnapshot<String?, Int>()
     
-    private var viewModel: MainViewModel?
+    private var viewModel: RecordViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // TODO: ViewModel 편입 여부 고려
     var isScrolling = true
     
-    init(viewModel: MainViewModel) {
+    init(viewModel: RecordViewModel) {
         super.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
     }
@@ -100,7 +80,7 @@ final class MainViewController: UIViewController {
     private func configure() {
         setUpConstriants()
         setUpDelegate()
-        setUpNavigationBar()
+//        setUpNavigationBar()
         setUpCollectionView()
         setUpAction()
         bind()
@@ -109,17 +89,9 @@ final class MainViewController: UIViewController {
     private func setUpConstriants() {
         let constraints = Constraints.shared
         
-        view.addSubview(segmentedControl)
-        segmentedControl.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(constraints.space14)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(150)
-            make.height.equalTo(30)
-        }
-        
         view.addSubview(fromYesterdayView)
         fromYesterdayView.snp.makeConstraints { make in
-            make.top.equalTo(segmentedControl.snp.bottom).offset(constraints.space12)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(54)
             make.leading.equalToSuperview().offset(constraints.space20)
             make.trailing.equalToSuperview().offset(-constraints.space20)
             make.height.equalTo(61)
@@ -156,12 +128,6 @@ final class MainViewController: UIViewController {
         weekdayCollectionView.delegate = self
     }
     
-    private func setUpNavigationBar() {
-        navigationController?.navigationBar.topItem?.title = "Annotation"
-        navigationItem.leftBarButtonItem = mypageButton
-        navigationItem.rightBarButtonItem = calendarButton
-    }
-    
     private func setUpCollectionView() {
         setUpCardCollectionViewDataSource()
         performCardCollectionViewCell()
@@ -182,7 +148,7 @@ final class MainViewController: UIViewController {
             view.addGestureRecognizer($0)
         }
         
-        let input = MainViewModel.Input(
+        let input = RecordViewModel.Input(
             upSwipePublisher: upSwipeGesture.swipePublisher,
             downSwipePublisher: downSwipeGesture.swipePublisher
         )
@@ -229,7 +195,7 @@ final class MainViewController: UIViewController {
 }
 
 // MARK: CollectionView Data Setting 관련 코드부
-extension MainViewController {
+extension RecordViewController {
     private func setUpCardCollectionViewDataSource() {
         cardCollectionView.register(RecordCardCollectionViewCell.self, forCellWithReuseIdentifier: RecordCardCollectionViewCell.identifier)
         cardCollectionDiffableDataSource = RecordCardCollectionViewDiffableDataSource(collectionView: cardCollectionView) { (collectionView, indexPath, cellNumber) ->
@@ -278,7 +244,7 @@ extension MainViewController {
 }
 
 // MARK: CollectionView Delegate
-extension MainViewController: UICollectionViewDelegate {
+extension RecordViewController: UICollectionViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if isScrolling {
             detectCenteredCard()
@@ -307,7 +273,7 @@ extension MainViewController: UICollectionViewDelegate {
 }
 
 // MARK: CollectionView Centered Item Index 갱신 관련 코드부
-extension MainViewController {
+extension RecordViewController {
     func detectCenteredCard() {
         let centerPoint = view.convert(view.center, to: cardCollectionView)
         if let centerIndexPath = cardCollectionView.indexPathForItem(at: centerPoint) {
@@ -317,7 +283,7 @@ extension MainViewController {
 }
 
 // MARK: ViewModel Status에 따른 View Constraints 및 Hidden 상태 관련 코드부
-extension MainViewController {
+extension RecordViewController {
     func weekdayCollectionViewVisible(as status: Bool) {
         UIView.transition(with: weekdayCollectionView, duration: 0.3,
                           options: .transitionCrossDissolve,
