@@ -34,11 +34,6 @@ final class MonthlyAnalysisViewController: UIViewController {
         return view
     }()
     
-    private lazy var recordCountAnalysisView: TextContentView = {
-        let view = TextContentView(title: "평균 작성 횟수", content: "평균 하루 3회 기록을 남깁니다.")
-        return view
-    }()
-    
     private lazy var monthlyMoodAnalysisView: MonthlyMoodContentView = {
         let view = MonthlyMoodContentView()
         return view
@@ -59,7 +54,6 @@ final class MonthlyAnalysisViewController: UIViewController {
         return view
     }()
     
-    // MARK: Init 선언부
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -68,12 +62,9 @@ final class MonthlyAnalysisViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: View Life Cycle 선언부
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        
-        // Do any additional setup after loading the view.
     }
     
     // MARK: viewDidLoad 시 1회성 호출을 필요로하는 method 일괄
@@ -115,7 +106,6 @@ final class MonthlyAnalysisViewController: UIViewController {
         
         [
             timeAnalysisView,
-            recordCountAnalysisView,
             monthlyMoodAnalysisView,
             monthlyMoodSummaryAnalysisView,
             musicAnalysisView,
@@ -175,13 +165,12 @@ extension MonthlyAnalysisViewController: UICollectionViewDelegate, UICollectionV
             return 1
         }
         
-        // data가 없으니 일단 하드코딩
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
             return 35
         }
         
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let sampleColors: [UIColor] = [.cherry, .blue, .yellow, .yellowGreen, .blue, .purple, .gray100] // TEST
+            let sampleColors: [UIColor] = [.cherry, .blue, .yellow, .yellowGreen, .blue, .purple, .gray100]
             guard let cell = self.monthlyMoodAnalysisView.moodCollectionView.dequeueReusableCell(
                 withReuseIdentifier: MonthlyMoodCollectionViewCell.identifier,
                 for: indexPath) as? MonthlyMoodCollectionViewCell else { return UICollectionViewCell() }

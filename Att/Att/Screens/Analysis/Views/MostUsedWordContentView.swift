@@ -9,7 +9,6 @@ import UIKit
 
 final class MostUsedWordContentView: AnalysisDefaultView {
 
-    // MARK: property 선언부
     private lazy var contentView: UIView = {
         let view = UIView()
         view.backgroundColor = .green // TEST
@@ -26,8 +25,6 @@ final class MostUsedWordContentView: AnalysisDefaultView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Components 간의 위치 설정
-    // MARK: Constraints 설정 순서는 top - bottom - leading - trailing - centerX - centerY - width - height 순으로
     override func setUpConstraints() {
         let constraints = Constraints.shared
         

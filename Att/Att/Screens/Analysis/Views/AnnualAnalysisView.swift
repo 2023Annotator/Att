@@ -9,7 +9,6 @@ import UIKit
 
 class AnnualAnalysisView: AnalysisDefaultView {
 
-    // MARK: property 선언부
     private lazy var analysisView: UIView = {
         let view = UIView()
         view.backgroundColor = .white // TEST
@@ -27,7 +26,6 @@ class AnnualAnalysisView: AnalysisDefaultView {
         return label
     }()
     
-    // MARK: Init 선언부
     init() {
         super.init(title: "연간 분석")
         setUpConstraints()

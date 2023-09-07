@@ -27,8 +27,6 @@ final class MonthlyMoodContentView: AnalysisDefaultView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Components 간의 위치 설정
-    // MARK: Constraints 설정 순서는 top - bottom - leading - trailing - centerX - centerY - width - height 순으로
     override func setUpConstraints() {
         let constraints = Constraints.shared
         
@@ -50,6 +48,4 @@ final class MonthlyMoodContentView: AnalysisDefaultView {
             make.height.equalTo(viewHeight)
         }
     }
-    
-    // TODO: Mood 구획 나누기
 }

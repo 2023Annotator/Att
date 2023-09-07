@@ -34,9 +34,6 @@ final class YearSelectorView: UIView {
         return button
     }()
     
-    // MARK: property 선언부
-
-    // MARK: Init 선언부
     init() {
         super.init(frame: CGRect.zero)
         setUpConstraints()

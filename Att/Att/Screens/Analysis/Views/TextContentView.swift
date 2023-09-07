@@ -9,8 +9,6 @@ import UIKit
 
 final class TextContentView: AnalysisDefaultView {
 
-    // MARK: property 선언부
-    
     private lazy var contentLabelBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray100
@@ -54,8 +52,8 @@ final class TextContentView: AnalysisDefaultView {
         
         contentLabelBackgroundView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(constraints.space8)
-            make.leading.trailing.equalToSuperview().inset(constraints.space20)
             make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(constraints.space20)
         }
         
         contentLabel.snp.makeConstraints { make in

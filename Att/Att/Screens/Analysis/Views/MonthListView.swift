@@ -9,13 +9,11 @@ import UIKit
 
 final class MonthListView: AnalysisDefaultView {
 
-    // MARK: property 선언부
     lazy var monthCollectionView: UICollectionView = {
         let view = UICollectionView(frame: CGRect.zero, collectionViewLayout: MonthCollectionViewFlowLayout())
         return view
     }()
     
-    // MARK: Init 선언부
     init() {
         super.init(title: "월간 분석")
         setUpConstraints()

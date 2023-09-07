@@ -18,7 +18,6 @@ class AnalysisDefaultView: UIView {
         return label
     }()
     
-    // MARK: Init 선언부
     init(title: String) {
         super.init(frame: CGRect.zero)
         setUpConstraints()

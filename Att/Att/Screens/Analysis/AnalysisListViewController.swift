@@ -24,7 +24,6 @@ class AnalysisListViewController: UIViewController {
         return view
     }()
     
-    // MARK: property 선언부
     private lazy var annualView: AnnualAnalysisView = {
         let view = AnnualAnalysisView()
         return view
@@ -35,7 +34,6 @@ class AnalysisListViewController: UIViewController {
         return view
     }()
     
-    // MARK: Init 선언부
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -43,8 +41,7 @@ class AnalysisListViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    // MARK: View Life Cycle 선언부
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -52,7 +49,6 @@ class AnalysisListViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    // MARK: viewDidLoad 시 1회성 호출을 필요로하는 method 일괄
     private func configure() {
         setUpConstriants()
         setUpStyle()
@@ -61,8 +57,6 @@ class AnalysisListViewController: UIViewController {
         bind()
     }
     
-    // MARK: Components 간의 위치 설정
-    // MARK: Constraints 설정 순서는 top - bottom - leading - trailing - centerX - centerY - width - height 순으로
     private func setUpConstriants() {
         let constraints = Constraints.shared
         
@@ -113,9 +107,6 @@ class AnalysisListViewController: UIViewController {
             make.bottom.equalToSuperview()
         }
     }
-    // MARK: 최상위 뷰의 Style 지정 (layer.cornerRadius etc) - Optional
-    // 최상위 뷰를 제외한 나머지 UI Components는 각 Components 클로저 내부에서 Style 설정을 완료할 수 있게 만들기
-    private func setUpStyle() { }
     
     private func setUpMonthCollectionView() {
         monthListView.monthCollectionView.dataSource = self
@@ -140,6 +131,7 @@ extension AnalysisListViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // TEST
         let monthNameArr: [String] = [
             "JANUARY",
             "FEBRUARY",
