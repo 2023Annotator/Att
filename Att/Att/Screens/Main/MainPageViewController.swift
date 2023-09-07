@@ -37,7 +37,7 @@ class MainPageViewController: UIViewController {
         return viewController
     }()
     
-    private let recordViewController = RecordViewController(viewModel: RecordViewModel())
+    private let recordViewController = RecordViewController(recordViewModel: RecordViewModel(), dateViewModel: DateViewModel())
     private let analysisViewController = AnalysisListViewController()
     
     private var cancellables = Set<AnyCancellable>()
@@ -92,7 +92,6 @@ class MainPageViewController: UIViewController {
         navigationItem.rightBarButtonItem = calendarButton
     }
     
-    // MARK: TabPulisher etc - Optional
     private func setUpAction() {
         segmentedControl.selectedSegmentIndexPublisher
             .sink { [weak self] selectedIndex in

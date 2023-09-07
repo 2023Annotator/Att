@@ -61,7 +61,7 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
     }
     
     // TODO: TEMPORARY parameter is Int -> Model
-    func setUpComponent(data: Int) {
+    func setUpComponent(data: Date) {
 //        print("GOOD")
     }
     

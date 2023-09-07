@@ -51,7 +51,6 @@ class AnalysisListViewController: UIViewController {
     
     private func configure() {
         setUpConstriants()
-        setUpStyle()
         setUpMonthCollectionView()
         setUpAction()
         bind()

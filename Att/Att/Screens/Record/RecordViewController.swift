@@ -10,8 +10,8 @@ import CombineCocoa
 import UIKit
 import SnapKit
 
-final class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<String?, Int> { }
-final class WeekdayCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<String?, Int> { }
+final class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, Date> { }
+final class WeekdayCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, Date> { }
 
 final class RecordViewController: UIViewController {
     private lazy var fromYesterdayView: ATTFromYesterdayView = {
@@ -31,7 +31,6 @@ final class RecordViewController: UIViewController {
     }()
     
     private var cardCollectionDiffableDataSource: RecordCardCollectionViewDiffableDataSource!
-    private var cardCollectionViewSnapshot = NSDiffableDataSourceSnapshot<String?, Int>()
 
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
@@ -54,17 +53,19 @@ final class RecordViewController: UIViewController {
     }()
     
     private var weekdayCollectionDiffableDataSource: WeekdayCollectionViewDiffableDataSource!
-    private var weekdayCollectionViewSnapshot = NSDiffableDataSourceSnapshot<String?, Int>()
     
-    private var viewModel: RecordViewModel?
+    private var recordViewModel: RecordViewModel?
+    private var dateViewModel: DateViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // TODO: ViewModel 편입 여부 고려
     var isScrolling = true
+    var isAppear = false
     
-    init(viewModel: RecordViewModel) {
+    init(recordViewModel: RecordViewModel, dateViewModel: DateViewModel) {
         super.init(nibName: nil, bundle: nil)
-        self.viewModel = viewModel
+        self.recordViewModel = recordViewModel
+        self.dateViewModel = dateViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -75,13 +76,20 @@ final class RecordViewController: UIViewController {
         super.viewDidLoad()
         configure()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !isAppear {
+            scrollToInitialPosition()
+            isAppear.toggle()
+        }
+    }
 
     // MARK: viewDidLoad 시 1회성 호출을 필요로하는 method 일괄
     private func configure() {
         setUpConstriants()
         setUpDelegate()
-//        setUpNavigationBar()
-        setUpCollectionView()
+        setUpCollectionViewDataSource()
         setUpAction()
         bind()
     }
@@ -128,11 +136,9 @@ final class RecordViewController: UIViewController {
         weekdayCollectionView.delegate = self
     }
     
-    private func setUpCollectionView() {
+    private func setUpCollectionViewDataSource() {
         setUpCardCollectionViewDataSource()
-        performCardCollectionViewCell()
         setUpWeekdayCollectionViewDataSource()
-        performWeekdayCollectionViewCell()
     }
     
     private func setUpAction() {
@@ -153,8 +159,8 @@ final class RecordViewController: UIViewController {
             downSwipePublisher: downSwipeGesture.swipePublisher
         )
         
-        _ = viewModel?.transform(input: input)
-        viewModel?.$weekdayVisibleStatus
+        _ = recordViewModel?.transform(input: input)
+        recordViewModel?.$weekdayVisibleStatus
             .receive(on: DispatchQueue.main)
             .sink { [weak self] status in
                 self?.weekdayCollectionViewVisible(as: status)
@@ -163,7 +169,34 @@ final class RecordViewController: UIViewController {
     }
     
     private func bind() {
-        viewModel?.$centeredIdx
+        
+        dateViewModel?.$selectedIdx
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] indexPath in
+                guard let weekdayCollectionView = self?.weekdayCollectionView else { return }
+                for cell in weekdayCollectionView.visibleCells {
+                    guard let cell = cell as? ATTWeekdayCollectionViewCell else { return }
+                    if weekdayCollectionView.cellForItem(at: indexPath) == cell {
+                        cell.updateSelectedCellDesign(status: .selected)
+                    } else {
+                        cell.updateSelectedCellDesign(status: .deselected)
+                    }
+                }
+            }.store(in: &cancellables)
+        
+        dateViewModel?.$currentVisibleDates
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] dates in
+                self?.performCardCollectionViewCell(weekDates: dates)
+            }.store(in: &cancellables)
+
+        dateViewModel?.$weekDates
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] dates in
+                self?.performWeekdayCollectionViewCell(weekDates: dates)
+            }.store(in: &cancellables)
+        
+        recordViewModel?.$selectedIdx
             .receive(on: DispatchQueue.main)
             .sink { [weak self] indexPath in
                 guard let cardCollectionView = self?.cardCollectionView else { return }
@@ -178,19 +211,21 @@ final class RecordViewController: UIViewController {
                 }
                 
                 cardCollectionView.superview?.layoutIfNeeded()
-                
                 self?.pageControl.currentPage = indexPath.row
-                
-                guard let weekdayCollectionView = self?.weekdayCollectionView else { return }
-                for cell in weekdayCollectionView.visibleCells {
-                    guard let cell = cell as? ATTWeekdayCollectionViewCell else { return }
-                    if weekdayCollectionView.cellForItem(at: indexPath) == cell {
-                        cell.updateSelectedCellDesign(status: .selected)
-                    } else {
-                        cell.updateSelectedCellDesign(status: .deselected)
-                    }
-                }
+                self?.dateViewModel?.changeCurrentSelectedIdx(cardCollectionViewIndexPath: indexPath)
             }.store(in: &cancellables)
+    }
+    
+    private func scrollToInitialPosition() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
+            guard let cardCollectionViewIndex = self?.dateViewModel?.currentWeekdayIdx(),
+                  let dateCollectionViewIndex = self?.dateViewModel?.selectedIdx else { return }
+            
+            print(dateCollectionViewIndex)
+            self?.cardCollectionView.scrollToItem(at: IndexPath(row: cardCollectionViewIndex, section: 0), at: .centeredHorizontally, animated: true)
+            self?.weekdayCollectionView.scrollToItem(at: dateCollectionViewIndex, at: .centeredHorizontally, animated: true)
+        })
+        
     }
 }
 
@@ -198,48 +233,46 @@ final class RecordViewController: UIViewController {
 extension RecordViewController {
     private func setUpCardCollectionViewDataSource() {
         cardCollectionView.register(RecordCardCollectionViewCell.self, forCellWithReuseIdentifier: RecordCardCollectionViewCell.identifier)
-        cardCollectionDiffableDataSource = RecordCardCollectionViewDiffableDataSource(collectionView: cardCollectionView) { (collectionView, indexPath, cellNumber) ->
+        cardCollectionDiffableDataSource = RecordCardCollectionViewDiffableDataSource(collectionView: cardCollectionView) { (collectionView, indexPath, weekDates) ->
             RecordCardCollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecordCardCollectionViewCell.identifier, for: indexPath) as? RecordCardCollectionViewCell else {
                 return RecordCardCollectionViewCell()
             }
             
-            // TEST
-            cell.setUpComponent(data: cellNumber)
+            // TODO: Date 대신 Model로 치환
+            cell.setUpComponent(data: weekDates)
             return cell
         }
     }
     
-    private func performCardCollectionViewCell() {
-        // TEMP & TEST
-        let cellNum: [Int] = (0..<7).map { Int($0) }
-        
-        cardCollectionViewSnapshot.appendSections(["TEMP"])
-        cardCollectionViewSnapshot.appendItems(cellNum)
-        cardCollectionDiffableDataSource.apply(cardCollectionViewSnapshot)
+    private func performCardCollectionViewCell(weekDates: [Date]) {
+        // TODO: Date 대신 Model로 치환
+        var snapshot = NSDiffableDataSourceSnapshot<Int, Date>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(weekDates)
+        cardCollectionDiffableDataSource.apply(snapshot)
     }
     
     private func setUpWeekdayCollectionViewDataSource() {
         weekdayCollectionView.register(ATTWeekdayCollectionViewCell.self, forCellWithReuseIdentifier: ATTWeekdayCollectionViewCell.identifier)
-        weekdayCollectionDiffableDataSource = WeekdayCollectionViewDiffableDataSource(collectionView: weekdayCollectionView) { (collectionView, indexPath, cellNumber) ->
+        weekdayCollectionDiffableDataSource = WeekdayCollectionViewDiffableDataSource(collectionView: weekdayCollectionView) { (collectionView, indexPath, date) ->
             ATTWeekdayCollectionViewCell? in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ATTWeekdayCollectionViewCell.identifier, for: indexPath) as? ATTWeekdayCollectionViewCell else {
                 return ATTWeekdayCollectionViewCell()
             }
             
-            // TEST
-            cell.setUpComponent(data: cellNumber)
+            // TODO: Date 대신 Model로 치환
+            cell.setUpDate(date: date)
             return cell
         }
     }
     
-    private func performWeekdayCollectionViewCell() {
-        // TEMP & TEST
-        let cellNum: [Int] = (1...21).map { Int($0) }
-        
-        weekdayCollectionViewSnapshot.appendSections(["EE"])
-        weekdayCollectionViewSnapshot.appendItems(cellNum)
-        weekdayCollectionDiffableDataSource.apply(weekdayCollectionViewSnapshot)
+    private func performWeekdayCollectionViewCell(weekDates: [Date]) {
+        // TODO: Date 대신 Model로 치환
+        var snapshot = NSDiffableDataSourceSnapshot<Int, Date>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(weekDates)
+        weekdayCollectionDiffableDataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 
@@ -247,13 +280,28 @@ extension RecordViewController {
 extension RecordViewController: UICollectionViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if isScrolling {
-            detectCenteredCard()
+            detectSelectedCard()
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        switch scrollView {
+        case cardCollectionView:
+            break
+        case weekdayCollectionView:
+            if let centerIndexPath = indexPathForCenterCell(in: weekdayCollectionView) {
+                recordViewModel?.updateSelectedItemIdx()
+                dateViewModel?.updateDateInfo(as: centerIndexPath)
+                view.layoutIfNeeded()
+            }
+        default:
+            break
         }
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         isScrolling = true
-        detectCenteredCard()
+        detectSelectedCard()
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -263,9 +311,18 @@ extension RecordViewController: UICollectionViewDelegate {
             print("SHOW RECORD PAGE")
         case weekdayCollectionView:
             isScrolling = false
-            guard let viewModel = viewModel else { return }
-            viewModel.changeCenteredItemIdx(as: indexPath)
-            cardCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            let currentIndexPath = IndexPath(row: indexPath.row % 7, section: 0)
+            
+            for itemIndexPath in weekdayCollectionView.indexPathsForVisibleItems where itemIndexPath != indexPath {
+                collectionView.deselectItem(at: itemIndexPath, animated: false)
+            }
+            
+            guard let recordViewModel = recordViewModel else { return }
+            recordViewModel.changeSelectedItemIdx(as: currentIndexPath)
+            guard let dateViewModel = dateViewModel else { return }
+            dateViewModel.changeCurrentSelectedIdx(as: indexPath)
+            cardCollectionView.scrollToItem(at: currentIndexPath, at: .centeredHorizontally, animated: true)
+            
         default:
             return
         }
@@ -274,12 +331,26 @@ extension RecordViewController: UICollectionViewDelegate {
 
 // MARK: CollectionView Centered Item Index 갱신 관련 코드부
 extension RecordViewController {
-    func detectCenteredCard() {
+    func detectSelectedCard() {
         let centerPoint = view.convert(view.center, to: cardCollectionView)
-        if let centerIndexPath = cardCollectionView.indexPathForItem(at: centerPoint) {
-            viewModel?.changeCenteredItemIdx(as: centerIndexPath)
+        if let selectedIndexPath = cardCollectionView.indexPathForItem(at: centerPoint) {
+            recordViewModel?.changeSelectedItemIdx(as: selectedIndexPath)
         }
     }
+    
+    func indexPathForCenterCell(in collectionView: UICollectionView) -> IndexPath? {
+
+        let centerX = collectionView.contentOffset.x + collectionView.frame.width / 2
+        let centerY = collectionView.contentOffset.y + collectionView.frame.height / 2
+        let centerPoint = CGPoint(x: centerX, y: centerY)
+
+        if let centerIndexPath = collectionView.indexPathForItem(at: centerPoint) {
+            return centerIndexPath
+        }
+
+        return nil
+    }
+
 }
 
 // MARK: ViewModel Status에 따른 View Constraints 및 Hidden 상태 관련 코드부

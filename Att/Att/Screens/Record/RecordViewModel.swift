@@ -1,5 +1,5 @@
 //
-//  MainViewModel.swift
+//  RecordViewModel.swift
 //  Att
 //
 //  Created by 황정현 on 2023/08/10.
@@ -15,11 +15,15 @@ protocol ViewModelType {
 }
 
 final class RecordViewModel: ViewModelType {
-    @Published var centeredIdx: IndexPath = IndexPath(row: 0, section: 0)
-    @Published var weekdayVisibleStatus: Bool = false
+    @Published var selectedIdx: IndexPath = IndexPath(row: 0, section: 0)
+    @Published var weekdayVisibleStatus: Bool = true
+    @Published var today: Date
     
     private var cancellables = Set<AnyCancellable>()
     
+    init() {
+        today = Date()
+    }
     struct Input {
         let upSwipePublisher: AnyPublisher<UISwipeGestureRecognizer, Never>
         let downSwipePublisher: AnyPublisher<UISwipeGestureRecognizer, Never>
@@ -43,7 +47,11 @@ final class RecordViewModel: ViewModelType {
         }.store(in: &cancellables)
     }
     
-    func changeCenteredItemIdx(as idx: IndexPath) {
-        centeredIdx = idx
+    func changeSelectedItemIdx(as idx: IndexPath) {
+        selectedIdx = idx
+    }
+    
+    func updateSelectedItemIdx() {
+        selectedIdx = selectedIdx
     }
 }
