@@ -23,6 +23,22 @@
 		3A9321DE2A8C9A0D00C106DF /* ComponentsSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9321DD2A8C9A0D00C106DF /* ComponentsSet.swift */; };
 		3A9321E02A8C9C5000C106DF /* WeekdayCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9321DF2A8C9C5000C106DF /* WeekdayCollectionViewFlowLayout.swift */; };
 		3A9321E32A8CA0BB00C106DF /* ATTSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9321E22A8CA0BB00C106DF /* ATTSegmentedControl.swift */; };
+		3A93221C2AA5D82900C106DF /* AnalysisDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93221B2AA5D82900C106DF /* AnalysisDefaultView.swift */; };
+		3A93221E2AA5DAD300C106DF /* TextContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93221D2AA5DAD300C106DF /* TextContentView.swift */; };
+		3A9322202AA5DCDB00C106DF /* MusicContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93221F2AA5DCDB00C106DF /* MusicContentView.swift */; };
+		3A9322242AA5E69500C106DF /* MonthlyAnalysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9322232AA5E69500C106DF /* MonthlyAnalysisViewController.swift */; };
+		3A9322262AA5F14C00C106DF /* MonthlyMoodContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9322252AA5F14C00C106DF /* MonthlyMoodContentView.swift */; };
+		3A9322282AA5F16900C106DF /* MoodSummaryContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9322272AA5F16900C106DF /* MoodSummaryContentView.swift */; };
+		3A93222A2AA5F5F600C106DF /* MostUsedWordContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9322292AA5F5F600C106DF /* MostUsedWordContentView.swift */; };
+		3A93222E2AA60BA900C106DF /* MonthlyMoodCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93222D2AA60BA900C106DF /* MonthlyMoodCollectionViewFlowLayout.swift */; };
+		3A9322302AA60DCB00C106DF /* MonthlyMoodCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93222F2AA60DCB00C106DF /* MonthlyMoodCollectionViewCell.swift */; };
+		3A9322342AA7072C00C106DF /* AnalysisListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9322332AA7072C00C106DF /* AnalysisListViewController.swift */; };
+		3A9322362AA707EA00C106DF /* MonthCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9322352AA707EA00C106DF /* MonthCollectionViewFlowLayout.swift */; };
+		3A9322382AA70ACA00C106DF /* MonthCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9322372AA70ACA00C106DF /* MonthCollectionViewCell.swift */; };
+		3A93223C2AA70DD700C106DF /* MonthListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93223B2AA70DD700C106DF /* MonthListView.swift */; };
+		3A9322402AA70F5A00C106DF /* AnnualAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93223F2AA70F5A00C106DF /* AnnualAnalysisView.swift */; };
+		3A9322432AA73C4300C106DF /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9322422AA73C4300C106DF /* MainPageViewController.swift */; };
+		3A9322482AA7532900C106DF /* YearSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9322472AA7532900C106DF /* YearSelectorView.swift */; };
 		3AC996742A5AE22700030AAD /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996732A5AE22700030AAD /* CombineCocoa */; };
 		3AC996772A5AE23500030AAD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996762A5AE23500030AAD /* SnapKit */; };
 		3AC9967A2A5AE29600030AAD /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996792A5AE29600030AAD /* CombineMoya */; };
@@ -31,7 +47,7 @@
 		3AF9C0562A7CE3F500A5A036 /* RecordExistCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0552A7CE3F500A5A036 /* RecordExistCardView.swift */; };
 		3AF9C0582A7CE5F500A5A036 /* TitleDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0572A7CE5F500A5A036 /* TitleDescriptionView.swift */; };
 		3AF9C05C2A7CEBCC00A5A036 /* ATTCardInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C05B2A7CEBCC00A5A036 /* ATTCardInfoView.swift */; };
-		3AF9C0612A7CF09200A5A036 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0602A7CF09200A5A036 /* MainViewController.swift */; };
+		3AF9C0612A7CF09200A5A036 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0602A7CF09200A5A036 /* RecordViewController.swift */; };
 		3AF9C0632A7CF74500A5A036 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0622A7CF74500A5A036 /* Date+.swift */; };
 		3AF9C0652A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0642A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift */; };
 		3AF9C0672A7CFDBC00A5A036 /* CardInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0662A7CFDBC00A5A036 /* CardInfoType.swift */; };
@@ -62,11 +78,27 @@
 		3A9321DD2A8C9A0D00C106DF /* ComponentsSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentsSet.swift; sourceTree = "<group>"; };
 		3A9321DF2A8C9C5000C106DF /* WeekdayCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		3A9321E22A8CA0BB00C106DF /* ATTSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTSegmentedControl.swift; sourceTree = "<group>"; };
+		3A93221B2AA5D82900C106DF /* AnalysisDefaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisDefaultView.swift; sourceTree = "<group>"; };
+		3A93221D2AA5DAD300C106DF /* TextContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextContentView.swift; sourceTree = "<group>"; };
+		3A93221F2AA5DCDB00C106DF /* MusicContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicContentView.swift; sourceTree = "<group>"; };
+		3A9322232AA5E69500C106DF /* MonthlyAnalysisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAnalysisViewController.swift; sourceTree = "<group>"; };
+		3A9322252AA5F14C00C106DF /* MonthlyMoodContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyMoodContentView.swift; sourceTree = "<group>"; };
+		3A9322272AA5F16900C106DF /* MoodSummaryContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodSummaryContentView.swift; sourceTree = "<group>"; };
+		3A9322292AA5F5F600C106DF /* MostUsedWordContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostUsedWordContentView.swift; sourceTree = "<group>"; };
+		3A93222D2AA60BA900C106DF /* MonthlyMoodCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyMoodCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		3A93222F2AA60DCB00C106DF /* MonthlyMoodCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyMoodCollectionViewCell.swift; sourceTree = "<group>"; };
+		3A9322332AA7072C00C106DF /* AnalysisListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisListViewController.swift; sourceTree = "<group>"; };
+		3A9322352AA707EA00C106DF /* MonthCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		3A9322372AA70ACA00C106DF /* MonthCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthCollectionViewCell.swift; sourceTree = "<group>"; };
+		3A93223B2AA70DD700C106DF /* MonthListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthListView.swift; sourceTree = "<group>"; };
+		3A93223F2AA70F5A00C106DF /* AnnualAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualAnalysisView.swift; sourceTree = "<group>"; };
+		3A9322422AA73C4300C106DF /* MainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
+		3A9322472AA7532900C106DF /* YearSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearSelectorView.swift; sourceTree = "<group>"; };
 		3AECF7542A65225D0086C5F2 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		3AF9C0552A7CE3F500A5A036 /* RecordExistCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordExistCardView.swift; sourceTree = "<group>"; };
 		3AF9C0572A7CE5F500A5A036 /* TitleDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleDescriptionView.swift; sourceTree = "<group>"; };
 		3AF9C05B2A7CEBCC00A5A036 /* ATTCardInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTCardInfoView.swift; sourceTree = "<group>"; };
-		3AF9C0602A7CF09200A5A036 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		3AF9C0602A7CF09200A5A036 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		3AF9C0622A7CF74500A5A036 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		3AF9C0642A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTWeekdayCollectionViewCell.swift; sourceTree = "<group>"; };
 		3AF9C0662A7CFDBC00A5A036 /* CardInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardInfoType.swift; sourceTree = "<group>"; };
@@ -168,7 +200,9 @@
 		3A701F792A5ABEAB00D6913A /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				3AF9C05D2A7CF06F00A5A036 /* Main */,
+				3A9322462AA74A3000C106DF /* Main */,
+				3AF9C05D2A7CF06F00A5A036 /* Record */,
+				3A9322192AA5D7D200C106DF /* Analysis */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -213,6 +247,8 @@
 			children = (
 				3AF9C0722A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift */,
 				3AF9C0642A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift */,
+				3A93222F2AA60DCB00C106DF /* MonthlyMoodCollectionViewCell.swift */,
+				3A9322372AA70ACA00C106DF /* MonthCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -283,14 +319,50 @@
 			path = Controls;
 			sourceTree = "<group>";
 		};
-		3AF9C05D2A7CF06F00A5A036 /* Main */ = {
+		3A9322192AA5D7D200C106DF /* Analysis */ = {
+			isa = PBXGroup;
+			children = (
+				3A9322332AA7072C00C106DF /* AnalysisListViewController.swift */,
+				3A9322232AA5E69500C106DF /* MonthlyAnalysisViewController.swift */,
+				3A93221A2AA5D7ED00C106DF /* Views */,
+			);
+			path = Analysis;
+			sourceTree = "<group>";
+		};
+		3A93221A2AA5D7ED00C106DF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3A93221B2AA5D82900C106DF /* AnalysisDefaultView.swift */,
+				3A93221D2AA5DAD300C106DF /* TextContentView.swift */,
+				3A9322252AA5F14C00C106DF /* MonthlyMoodContentView.swift */,
+				3A9322272AA5F16900C106DF /* MoodSummaryContentView.swift */,
+				3A93221F2AA5DCDB00C106DF /* MusicContentView.swift */,
+				3A9322292AA5F5F600C106DF /* MostUsedWordContentView.swift */,
+				3A93222D2AA60BA900C106DF /* MonthlyMoodCollectionViewFlowLayout.swift */,
+				3A9322352AA707EA00C106DF /* MonthCollectionViewFlowLayout.swift */,
+				3A93223B2AA70DD700C106DF /* MonthListView.swift */,
+				3A93223F2AA70F5A00C106DF /* AnnualAnalysisView.swift */,
+				3A9322472AA7532900C106DF /* YearSelectorView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3A9322462AA74A3000C106DF /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				3A9322422AA73C4300C106DF /* MainPageViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		3AF9C05D2A7CF06F00A5A036 /* Record */ = {
 			isa = PBXGroup;
 			children = (
 				3A147B322A84EA130078050A /* MainViewModel.swift */,
-				3AF9C0602A7CF09200A5A036 /* MainViewController.swift */,
+				3AF9C0602A7CF09200A5A036 /* RecordViewController.swift */,
 				3AF9C06D2A7D0B5E00A5A036 /* Views */,
 			);
-			path = Main;
+			path = Record;
 			sourceTree = "<group>";
 		};
 		3AF9C06D2A7D0B5E00A5A036 /* Views */ = {
@@ -413,30 +485,46 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A9322432AA73C4300C106DF /* MainPageViewController.swift in Sources */,
 				3AF9C0632A7CF74500A5A036 /* Date+.swift in Sources */,
 				3AF9C0562A7CE3F500A5A036 /* RecordExistCardView.swift in Sources */,
+				3A9322402AA70F5A00C106DF /* AnnualAnalysisView.swift in Sources */,
+				3A9322382AA70ACA00C106DF /* MonthCollectionViewCell.swift in Sources */,
 				3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */,
+				3A93222E2AA60BA900C106DF /* MonthlyMoodCollectionViewFlowLayout.swift in Sources */,
 				3A5D0BE62A62B9B800064DCB /* UIColor+.swift in Sources */,
+				3A93221E2AA5DAD300C106DF /* TextContentView.swift in Sources */,
 				3AF9C06F2A7D0BB900A5A036 /* RecordNonExistCardView.swift in Sources */,
-				3AF9C0612A7CF09200A5A036 /* MainViewController.swift in Sources */,
+				3AF9C0612A7CF09200A5A036 /* RecordViewController.swift in Sources */,
 				3AF9C0652A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift in Sources */,
 				3A9321E32A8CA0BB00C106DF /* ATTSegmentedControl.swift in Sources */,
 				3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */,
 				3AF9C0692A7CFE4300A5A036 /* ATTFromYesterdayView.swift in Sources */,
 				3AF9C0732A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift in Sources */,
 				3A22029E2A5AB7DA009DB223 /* ViewController.swift in Sources */,
+				3A9322262AA5F14C00C106DF /* MonthlyMoodContentView.swift in Sources */,
 				3AF9C0672A7CFDBC00A5A036 /* CardInfoType.swift in Sources */,
+				3A9322342AA7072C00C106DF /* AnalysisListViewController.swift in Sources */,
+				3A9322242AA5E69500C106DF /* MonthlyAnalysisViewController.swift in Sources */,
+				3A93223C2AA70DD700C106DF /* MonthListView.swift in Sources */,
 				3AF9C06C2A7D0B0000A5A036 /* RecordStatus.swift in Sources */,
 				3A9321DE2A8C9A0D00C106DF /* ComponentsSet.swift in Sources */,
 				3AF9C0752A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift in Sources */,
 				3A2202A42A5AB7DA009DB223 /* Att.xcdatamodeld in Sources */,
+				3A9322282AA5F16900C106DF /* MoodSummaryContentView.swift in Sources */,
 				3AF9C0582A7CE5F500A5A036 /* TitleDescriptionView.swift in Sources */,
+				3A9322482AA7532900C106DF /* YearSelectorView.swift in Sources */,
 				3AF9C05C2A7CEBCC00A5A036 /* ATTCardInfoView.swift in Sources */,
 				3AF9C0712A7D0FD900A5A036 /* ATTCardView.swift in Sources */,
+				3A93221C2AA5D82900C106DF /* AnalysisDefaultView.swift in Sources */,
 				3A5D0BE02A61542800064DCB /* Constraints.swift in Sources */,
+				3A9322302AA60DCB00C106DF /* MonthlyMoodCollectionViewCell.swift in Sources */,
+				3A9322362AA707EA00C106DF /* MonthCollectionViewFlowLayout.swift in Sources */,
 				3A22029A2A5AB7DA009DB223 /* AppDelegate.swift in Sources */,
+				3A9322202AA5DCDB00C106DF /* MusicContentView.swift in Sources */,
 				3A22029C2A5AB7DA009DB223 /* SceneDelegate.swift in Sources */,
 				3A147B332A84EA130078050A /* MainViewModel.swift in Sources */,
+				3A93222A2AA5F5F600C106DF /* MostUsedWordContentView.swift in Sources */,
 				3A9321E02A8C9C5000C106DF /* WeekdayCollectionViewFlowLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
