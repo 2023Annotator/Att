@@ -57,6 +57,12 @@
 		3AF9C0712A7D0FD900A5A036 /* ATTCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0702A7D0FD900A5A036 /* ATTCardView.swift */; };
 		3AF9C0732A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0722A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift */; };
 		3AF9C0752A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0742A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift */; };
+		3F75EF902AAB38DB00E9FEEB /* AddRecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF8F2AAB38DB00E9FEEB /* AddRecordsViewController.swift */; };
+		3F75EF922AAB391600E9FEEB /* AddWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF912AAB391600E9FEEB /* AddWordsViewController.swift */; };
+		3F75EF952AAB39CE00E9FEEB /* AddColorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF942AAB39CE00E9FEEB /* AddColorViewController.swift */; };
+		3F75EF972AAB39EC00E9FEEB /* AddRhythmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF962AAB39EC00E9FEEB /* AddRhythmViewController.swift */; };
+		3F75EF992AAB3A1200E9FEEB /* NextButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF982AAB3A1200E9FEEB /* NextButtonView.swift */; };
+		3F75EF9B2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF9A2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,6 +114,12 @@
 		3AF9C0702A7D0FD900A5A036 /* ATTCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTCardView.swift; sourceTree = "<group>"; };
 		3AF9C0722A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCardCollectionViewCell.swift; sourceTree = "<group>"; };
 		3AF9C0742A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		3F75EF8F2AAB38DB00E9FEEB /* AddRecordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecordsViewController.swift; sourceTree = "<group>"; };
+		3F75EF912AAB391600E9FEEB /* AddWordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordsViewController.swift; sourceTree = "<group>"; };
+		3F75EF942AAB39CE00E9FEEB /* AddColorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddColorViewController.swift; sourceTree = "<group>"; };
+		3F75EF962AAB39EC00E9FEEB /* AddRhythmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRhythmViewController.swift; sourceTree = "<group>"; };
+		3F75EF982AAB3A1200E9FEEB /* NextButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextButtonView.swift; sourceTree = "<group>"; };
+		3F75EF9A2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecordTextFieldView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +212,7 @@
 		3A701F792A5ABEAB00D6913A /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				3F75EF8D2AAB389000E9FEEB /* AddRecord */,
 				3A9322462AA74A3000C106DF /* Main */,
 				3AF9C05D2A7CF06F00A5A036 /* Record */,
 				3A9322192AA5D7D200C106DF /* Analysis */,
@@ -379,6 +392,27 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		3F75EF8D2AAB389000E9FEEB /* AddRecord */ = {
+			isa = PBXGroup;
+			children = (
+				3F75EF942AAB39CE00E9FEEB /* AddColorViewController.swift */,
+				3F75EF962AAB39EC00E9FEEB /* AddRhythmViewController.swift */,
+				3F75EF8F2AAB38DB00E9FEEB /* AddRecordsViewController.swift */,
+				3F75EF912AAB391600E9FEEB /* AddWordsViewController.swift */,
+				3F75EF8E2AAB38A200E9FEEB /* View */,
+			);
+			path = AddRecord;
+			sourceTree = "<group>";
+		};
+		3F75EF8E2AAB38A200E9FEEB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3F75EF9A2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift */,
+				3F75EF982AAB3A1200E9FEEB /* NextButtonView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -490,9 +524,11 @@
 				3AF9C0562A7CE3F500A5A036 /* RecordExistCardView.swift in Sources */,
 				3A9322402AA70F5A00C106DF /* AnnualAnalysisView.swift in Sources */,
 				3A9322382AA70ACA00C106DF /* MonthCollectionViewCell.swift in Sources */,
+				3F75EF992AAB3A1200E9FEEB /* NextButtonView.swift in Sources */,
 				3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */,
 				3A93222E2AA60BA900C106DF /* MonthlyMoodCollectionViewFlowLayout.swift in Sources */,
 				3A5D0BE62A62B9B800064DCB /* UIColor+.swift in Sources */,
+				3F75EF9B2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift in Sources */,
 				3A93221E2AA5DAD300C106DF /* TextContentView.swift in Sources */,
 				3AF9C06F2A7D0BB900A5A036 /* RecordNonExistCardView.swift in Sources */,
 				3AF9C0612A7CF09200A5A036 /* RecordViewController.swift in Sources */,
@@ -505,6 +541,7 @@
 				3A9322262AA5F14C00C106DF /* MonthlyMoodContentView.swift in Sources */,
 				3AF9C0672A7CFDBC00A5A036 /* CardInfoType.swift in Sources */,
 				3A9322342AA7072C00C106DF /* AnalysisListViewController.swift in Sources */,
+				3F75EF972AAB39EC00E9FEEB /* AddRhythmViewController.swift in Sources */,
 				3A9322242AA5E69500C106DF /* MonthlyAnalysisViewController.swift in Sources */,
 				3A93223C2AA70DD700C106DF /* MonthListView.swift in Sources */,
 				3AF9C06C2A7D0B0000A5A036 /* RecordStatus.swift in Sources */,
@@ -515,11 +552,14 @@
 				3AF9C0582A7CE5F500A5A036 /* TitleDescriptionView.swift in Sources */,
 				3A9322482AA7532900C106DF /* YearSelectorView.swift in Sources */,
 				3AF9C05C2A7CEBCC00A5A036 /* ATTCardInfoView.swift in Sources */,
+				3F75EF952AAB39CE00E9FEEB /* AddColorViewController.swift in Sources */,
 				3AF9C0712A7D0FD900A5A036 /* ATTCardView.swift in Sources */,
 				3A93221C2AA5D82900C106DF /* AnalysisDefaultView.swift in Sources */,
 				3A5D0BE02A61542800064DCB /* Constraints.swift in Sources */,
+				3F75EF902AAB38DB00E9FEEB /* AddRecordsViewController.swift in Sources */,
 				3A9322302AA60DCB00C106DF /* MonthlyMoodCollectionViewCell.swift in Sources */,
 				3A9322362AA707EA00C106DF /* MonthCollectionViewFlowLayout.swift in Sources */,
+				3F75EF922AAB391600E9FEEB /* AddWordsViewController.swift in Sources */,
 				3A22029A2A5AB7DA009DB223 /* AppDelegate.swift in Sources */,
 				3A9322202AA5DCDB00C106DF /* MusicContentView.swift in Sources */,
 				3A22029C2A5AB7DA009DB223 /* SceneDelegate.swift in Sources */,
@@ -675,6 +715,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -708,6 +749,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
