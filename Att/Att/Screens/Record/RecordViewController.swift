@@ -160,6 +160,7 @@ final class RecordViewController: UIViewController {
         )
         
         _ = recordViewModel?.transform(input: input)
+        
         recordViewModel?.$weekdayVisibleStatus
             .receive(on: DispatchQueue.main)
             .sink { [weak self] status in
@@ -170,7 +171,15 @@ final class RecordViewController: UIViewController {
     
     private func bind() {
         
-        dateViewModel?.$selectedIdx
+        dateViewModel?.$isCalendarViewDismissed
+            .sink { [weak self] isDismissed in
+                if isDismissed {
+                    self?.isScrolling = false
+                    self?.scrollToInitialPosition()
+                }
+            }.store(in: &cancellables)
+        
+        dateViewModel?.$dateSelectedIdx
             .receive(on: DispatchQueue.main)
             .sink { [weak self] indexPath in
                 guard let weekdayCollectionView = self?.weekdayCollectionView else { return }
@@ -182,6 +191,12 @@ final class RecordViewController: UIViewController {
                         cell.updateSelectedCellDesign(status: .deselected)
                     }
                 }
+                
+                let currentIndexPath = IndexPath(row: indexPath.row % 7, section: 0)
+                guard let recordViewModel = self?.recordViewModel else { return }
+                recordViewModel.changeSelectedItemIdx(as: currentIndexPath)
+                
+                self?.dateViewModel?.printAllComponent()
             }.store(in: &cancellables)
         
         dateViewModel?.$currentVisibleDates
@@ -210,22 +225,17 @@ final class RecordViewController: UIViewController {
                     }
                 }
                 
-                cardCollectionView.superview?.layoutIfNeeded()
                 self?.pageControl.currentPage = indexPath.row
-                self?.dateViewModel?.changeCurrentSelectedIdx(cardCollectionViewIndexPath: indexPath)
             }.store(in: &cancellables)
     }
     
     private func scrollToInitialPosition() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { [weak self] in
-            guard let cardCollectionViewIndex = self?.dateViewModel?.currentWeekdayIdx(),
-                  let dateCollectionViewIndex = self?.dateViewModel?.selectedIdx else { return }
-            
-            print(dateCollectionViewIndex)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let dateSelectedIndex = self?.dateViewModel?.dateSelectedIdx else { return }
+            let cardCollectionViewIndex = dateSelectedIndex.row % 7
             self?.cardCollectionView.scrollToItem(at: IndexPath(row: cardCollectionViewIndex, section: 0), at: .centeredHorizontally, animated: true)
-            self?.weekdayCollectionView.scrollToItem(at: dateCollectionViewIndex, at: .centeredHorizontally, animated: true)
-        })
-        
+            self?.weekdayCollectionView.scrollToItem(at: dateSelectedIndex, at: .centeredHorizontally, animated: true)
+        }
     }
 }
 
@@ -291,7 +301,7 @@ extension RecordViewController: UICollectionViewDelegate {
         case weekdayCollectionView:
             if let centerIndexPath = indexPathForCenterCell(in: weekdayCollectionView) {
                 recordViewModel?.updateSelectedItemIdx()
-                dateViewModel?.updateDateInfo(as: centerIndexPath)
+                dateViewModel?.updateCenteredDate(as: centerIndexPath)
                 view.layoutIfNeeded()
             }
         default:
@@ -320,7 +330,7 @@ extension RecordViewController: UICollectionViewDelegate {
             guard let recordViewModel = recordViewModel else { return }
             recordViewModel.changeSelectedItemIdx(as: currentIndexPath)
             guard let dateViewModel = dateViewModel else { return }
-            dateViewModel.changeCurrentSelectedIdx(as: indexPath)
+            dateViewModel.changeCurrentSelectedDateIdx(as: indexPath)
             cardCollectionView.scrollToItem(at: currentIndexPath, at: .centeredHorizontally, animated: true)
             
         default:
@@ -335,6 +345,7 @@ extension RecordViewController {
         let centerPoint = view.convert(view.center, to: cardCollectionView)
         if let selectedIndexPath = cardCollectionView.indexPathForItem(at: centerPoint) {
             recordViewModel?.changeSelectedItemIdx(as: selectedIndexPath)
+            dateViewModel?.changeCurrentSelectedDateIdx(cardCollectionViewIndexPath: selectedIndexPath)
         }
     }
     

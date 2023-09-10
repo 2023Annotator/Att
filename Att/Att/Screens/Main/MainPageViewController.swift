@@ -37,10 +37,33 @@ class MainPageViewController: UIViewController {
         return viewController
     }()
     
-    private let recordViewController = RecordViewController(recordViewModel: RecordViewModel(), dateViewModel: DateViewModel())
-    private let analysisViewController = AnalysisListViewController()
+    private lazy var recordViewController: RecordViewController = {
+        guard let recordViewModel = recordViewModel,
+              let dateViewModel = dateViewModel else { return RecordViewController(recordViewModel: RecordViewModel(), dateViewModel: DateViewModel()) }
+        
+        let viewController = RecordViewController(recordViewModel: recordViewModel, dateViewModel: dateViewModel)
+        return viewController
+    }()
     
+    private lazy var analysisViewController: AnalysisListViewController = {
+        let viewController = AnalysisListViewController()
+        return viewController
+    }()
+    
+    private var recordViewModel: RecordViewModel?
+    private var dateViewModel: DateViewModel?
     private var cancellables = Set<AnyCancellable>()
+    
+    init(recordViewModel: RecordViewModel, dateViewModel: DateViewModel) {
+        super.init(nibName: nil, bundle: nil)
+        
+        self.recordViewModel = recordViewModel
+        self.dateViewModel = dateViewModel
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,6 +130,11 @@ class MainPageViewController: UIViewController {
                     break
                 }
             }.store(in: &cancellables)
+        
+        calendarButton.tapPublisher
+            .sink { [weak self] _ in
+                self?.showCalendar()
+            }.store(in: &cancellables)
     }
     
     // MARK: ViewModel Stuff - Optional
@@ -150,5 +178,14 @@ extension MainPageViewController {
         UIView.animate(withDuration: 0.2, animations: { [weak self] in
             self?.calendarButton.isHidden = status
         })
+    }
+    
+    private func showCalendar() {
+        guard let dateViewModel = dateViewModel else { return }
+        let calendarViewController = CalendarViewController(dateViewModel: dateViewModel)
+        if let sheetPresentationController = calendarViewController.sheetPresentationController {
+            sheetPresentationController.detents = [.medium()]
+        }
+        self.present(calendarViewController, animated: true, completion: nil)
     }
 }
