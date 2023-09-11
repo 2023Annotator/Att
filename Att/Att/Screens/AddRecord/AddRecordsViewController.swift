@@ -5,6 +5,9 @@
 //  Created by 정제인 on 2023/09/06.
 //
 
+import Combine
+import CombineCocoa
+import SnapKit
 import UIKit
 
 class AddRecordsViewController: UIViewController {
@@ -87,6 +90,8 @@ class AddRecordsViewController: UIViewController {
     }()
     
 
+    private var viewModel: TestViewModel?
+    private var cancellables = Set<AnyCancellable>()
     
 //    private let textViewHeight: CGFloat = 48
     
@@ -182,7 +187,12 @@ class AddRecordsViewController: UIViewController {
     }
     
     // MARK: TabPulisher etc - Optional
-    private func setUpAction() { }
+    private func setUpAction() {
+        nextButton.tapPublisher
+            .sink {
+                self.navigationController?.pushViewController(AddWordsViewController(), animated: false)
+            }.store(in: &cancellables)
+    }
     
     // MARK: ViewModel Stuff - Optional
     private func bind() { }
@@ -195,4 +205,5 @@ class AddRecordsViewController: UIViewController {
         svc.modalPresentationStyle = .fullScreen
         self.present(svc, animated: true, completion: nil)
     }
+    
 }

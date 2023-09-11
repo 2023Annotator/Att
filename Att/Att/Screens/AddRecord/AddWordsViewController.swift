@@ -5,6 +5,9 @@
 //  Created by 정제인 on 2023/09/08.
 //
 
+import Combine
+import CombineCocoa
+import SnapKit
 import UIKit
 
 class AddWordsViewController: UIViewController {
@@ -90,6 +93,9 @@ class AddWordsViewController: UIViewController {
         return button
     }()
     
+    
+    private var viewModel: TestViewModel?
+    private var cancellables = Set<AnyCancellable>()
 
 //    private let textViewHeight: CGFloat = 48
     
@@ -185,7 +191,12 @@ class AddWordsViewController: UIViewController {
     }
     
     // MARK: TabPulisher etc - Optional
-    private func setUpAction() { }
+    private func setUpAction() {
+        nextButton.tapPublisher
+            .sink {
+                self.navigationController?.pushViewController(AddRecordsViewController(), animated: false)
+            }.store(in: &cancellables)
+    }
     
     // MARK: ViewModel Stuff - Optional
     private func bind() { }

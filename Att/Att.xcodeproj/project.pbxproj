@@ -64,7 +64,7 @@
 		3F75EF992AAB3A1200E9FEEB /* NextButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF982AAB3A1200E9FEEB /* NextButtonView.swift */; };
 		3F75EF9B2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF9A2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift */; };
 		3F75EF9F2AACCB1D00E9FEEB /* RecordDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF9E2AACCB1D00E9FEEB /* RecordDetailViewController.swift */; };
-		3F75EFA32AAE3F2900E9FEEB /* AddMusicButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EFA22AAE3F2900E9FEEB /* AddMusicButtonView.swift */; };
+		3F95401E2AAF11E500FE75E7 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F95401D2AAF11E500FE75E7 /* ColorPickerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -123,7 +123,7 @@
 		3F75EF982AAB3A1200E9FEEB /* NextButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextButtonView.swift; sourceTree = "<group>"; };
 		3F75EF9A2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecordTextFieldView.swift; sourceTree = "<group>"; };
 		3F75EF9E2AACCB1D00E9FEEB /* RecordDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailViewController.swift; sourceTree = "<group>"; };
-		3F75EFA22AAE3F2900E9FEEB /* AddMusicButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMusicButtonView.swift; sourceTree = "<group>"; };
+		3F95401D2AAF11E500FE75E7 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -414,7 +414,7 @@
 			children = (
 				3F75EF982AAB3A1200E9FEEB /* NextButtonView.swift */,
 				3F75EF9A2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift */,
-				3F75EFA22AAE3F2900E9FEEB /* AddMusicButtonView.swift */,
+				3F95401D2AAF11E500FE75E7 /* ColorPickerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -474,6 +474,7 @@
 				3AC996722A5AE22700030AAD /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				3AC996752A5AE23500030AAD /* XCRemoteSwiftPackageReference "SnapKit" */,
 				3AC996782A5AE29600030AAD /* XCRemoteSwiftPackageReference "Moya" */,
+				3F95401F2AAF145800FE75E7 /* XCRemoteSwiftPackageReference "ColorSlider" */,
 			);
 			productRefGroup = 3A2202972A5AB7DA009DB223 /* Products */;
 			projectDirPath = "";
@@ -539,6 +540,7 @@
 				3AF9C06F2A7D0BB900A5A036 /* RecordNonExistCardView.swift in Sources */,
 				3AF9C0612A7CF09200A5A036 /* RecordViewController.swift in Sources */,
 				3AF9C0652A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift in Sources */,
+				3F95401E2AAF11E500FE75E7 /* ColorPickerView.swift in Sources */,
 				3A9321E32A8CA0BB00C106DF /* ATTSegmentedControl.swift in Sources */,
 				3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */,
 				3AF9C0692A7CFE4300A5A036 /* ATTFromYesterdayView.swift in Sources */,
@@ -559,7 +561,6 @@
 				3AF9C0582A7CE5F500A5A036 /* TitleDescriptionView.swift in Sources */,
 				3A9322482AA7532900C106DF /* YearSelectorView.swift in Sources */,
 				3AF9C05C2A7CEBCC00A5A036 /* ATTCardInfoView.swift in Sources */,
-				3F75EFA32AAE3F2900E9FEEB /* AddMusicButtonView.swift in Sources */,
 				3F75EF952AAB39CE00E9FEEB /* AddColorViewController.swift in Sources */,
 				3AF9C0712A7D0FD900A5A036 /* ATTCardView.swift in Sources */,
 				3A93221C2AA5D82900C106DF /* AnalysisDefaultView.swift in Sources */,
@@ -819,6 +820,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 15.0.0;
+			};
+		};
+		3F95401F2AAF145800FE75E7 /* XCRemoteSwiftPackageReference "ColorSlider" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gizmosachin/ColorSlider.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

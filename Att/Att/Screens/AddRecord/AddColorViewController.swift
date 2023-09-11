@@ -4,7 +4,9 @@
 //
 //  Created by 정제인 on 2023/09/08.
 //
-
+import Combine
+import CombineCocoa
+import SnapKit
 import UIKit
 
 class AddColorViewController: UIViewController {
@@ -71,8 +73,6 @@ class AddColorViewController: UIViewController {
         return label
     }()
     
-    // 하단 화살표
-    
     lazy var imageView: UIImageView = {
         // Set the size of UIImageView.
         let width: CGFloat = 20
@@ -87,16 +87,15 @@ class AddColorViewController: UIViewController {
             
         // Create UIImage.
         let image = UIImage(systemName: "arrowtriangle.down.fill")
-            
+        
             // Set the image to UIImageView.
         imageView.image = image
-            
+        
         return imageView
     }()
     
 
     //컬러피커 추가하기
-    
     
     
     //다음 버튼
@@ -105,6 +104,9 @@ class AddColorViewController: UIViewController {
         return button
     }()
     
+    
+    private var viewModel: TestViewModel?
+    private var cancellables = Set<AnyCancellable>()
 
     
 //    private let textViewHeight: CGFloat = 48
@@ -125,6 +127,8 @@ class AddColorViewController: UIViewController {
         
         // Do any additional setup after loading the view.
     }
+    
+    // private var cancellables = Set<AnyCancellable>()
     
     private func setUpNavigationBar() {
         navigationItem.leftBarButtonItem = chevronButton
@@ -183,9 +187,8 @@ class AddColorViewController: UIViewController {
         }
         imageView.snp.makeConstraints { make in
             make.top.equalTo(recordExplain2Label.snp.bottom).offset(constraints.space12)
-            make.leading.trailing.equalToSuperview()
         }
-        
+        imageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
@@ -201,8 +204,20 @@ class AddColorViewController: UIViewController {
     }
     
     // MARK: TabPulisher etc - Optional
-    private func setUpAction() { }
+    private func setUpAction() {
+        nextButton.tapPublisher
+            .sink {
+                let navVC = UINavigationController(rootViewController: AddRhythmViewController())
+                navVC.modalPresentationStyle = .overFullScreen
+                self.present(navVC, animated: false)
+
+            }.store(in: &cancellables)
+    }
     
     // MARK: ViewModel Stuff - Optional
     private func bind() { }
+    
+
+    
 }
+

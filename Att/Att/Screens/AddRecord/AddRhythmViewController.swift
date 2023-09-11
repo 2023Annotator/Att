@@ -5,6 +5,9 @@
 //  Created by 정제인 on 2023/09/08.
 //
 
+import Combine
+import CombineCocoa
+import SnapKit
 import UIKit
 
 class AddRhythmViewController: UIViewController {
@@ -74,11 +77,21 @@ class AddRhythmViewController: UIViewController {
     }()
     
     // + 버튼 만들고 AppleMusic Api랑 연결해서 앨범 표지 가져오기
-    private lazy var addMusicButton: AddMusicButtonView = {
-        let button = AddMusicButtonView()
+    private lazy var addMusicButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .gray100
+        button.layer.cornerRadius = 20
         return button
     }()
     
+    
+    
+    init(viewModel: TestViewModel?) {
+        super.init(nibName: nil, bundle: nil)
+        guard let viewModel = viewModel else { return }
+        self.viewModel = viewModel
+    }
+
     
     //다음 버튼
     private lazy var nextButton: NextButtonView = {
@@ -121,6 +134,9 @@ class AddRhythmViewController: UIViewController {
         bind()
     }
     
+    private var viewModel: TestViewModel?
+    private var cancellables = Set<AnyCancellable>()
+    
     private func setUpConstriants() {
         let constraints = Constraints.shared
         
@@ -131,6 +147,7 @@ class AddRhythmViewController: UIViewController {
             make.width.equalTo(view.snp.width)
             make.height.greaterThanOrEqualTo(view.snp.height)
         }
+        
         [
                 progressView,
                 recordLabel,
@@ -165,9 +182,9 @@ class AddRhythmViewController: UIViewController {
         
         view.addSubview(addMusicButton)
         addMusicButton.snp.makeConstraints { make in
-//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.center)
             make.top.equalTo(recordExplain2Label.snp.bottom).offset(constraints.space80)
-            make.leading.trailing.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.width.height.equalTo(258)
         }
         
         view.addSubview(nextButton)
@@ -176,6 +193,8 @@ class AddRhythmViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
         }
         
+        
+        
     }
     
     private func setUpStyle() {
@@ -183,8 +202,15 @@ class AddRhythmViewController: UIViewController {
     }
     
     // MARK: TabPulisher etc - Optional
-    private func setUpAction() { }
+    private func setUpAction() {
+        nextButton.tapPublisher
+            .sink {
+                self.navigationController?.pushViewController(AddRecordsViewController(), animated: false)
+            }.store(in: &cancellables)
+    }
     
     // MARK: ViewModel Stuff - Optional
-    private func bind() { }
+    private func bind() {
+
+    }
 }
