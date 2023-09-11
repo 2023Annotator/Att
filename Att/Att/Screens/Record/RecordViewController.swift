@@ -319,6 +319,9 @@ extension RecordViewController: UICollectionViewDelegate {
         case cardCollectionView:
             // TODO: Record Page 연결
             print("SHOW RECORD PAGE")
+            let recordBrowseViewController = RecordBrowseViewController()
+            recordBrowseViewController.modalPresentationStyle = .automatic
+            self.navigationController?.present(recordBrowseViewController, animated: true)
         case weekdayCollectionView:
             isScrolling = false
             let currentIndexPath = IndexPath(row: indexPath.row % 7, section: 0)
