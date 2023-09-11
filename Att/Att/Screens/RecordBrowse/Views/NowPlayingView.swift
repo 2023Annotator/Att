@@ -20,10 +20,9 @@ final class NowPlayingView: RecordBrowseInnerTitleDefaultView {
     
     private lazy var musicTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = .smallCaption
+        label.font = .caption3
         label.textAlignment = .left
         label.textColor = .white
-        label.text = "종강 - 종강하고 싶어요"
         return label
     }()
     

@@ -22,6 +22,13 @@ extension Date {
         return convertedDate
     }
     
+    func month() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM"
+        let convertedDate = dateFormatter.string(from: self)
+        return convertedDate
+    }
+    
     func monthAndDay() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMdd"
