@@ -25,7 +25,7 @@ final class RecordBrowseViewController: UIViewController {
     private lazy var editButton: UIButton = {
         let button = UIButton()
         button.setTitle("수정하기", for: .normal)
-        button.titleLabel?.font = .semibold15
+        button.titleLabel?.font = .caption
         button.setTitleColor(.black, for: .normal)
         return button
     }()
@@ -40,7 +40,7 @@ final class RecordBrowseViewController: UIViewController {
     
     private lazy var publicationTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = .caption4
+        label.font = .caption2
         label.textAlignment = .right
         label.textColor = .black
         return label
@@ -67,7 +67,7 @@ final class RecordBrowseViewController: UIViewController {
     }()
     
     private lazy var diaryView: DiaryView = {
-        let view = DiaryView(title: "Diary")
+        let view = DiaryView(title: "오늘의 일기")
         return view
     }()
     
@@ -208,7 +208,7 @@ final class RecordBrowseViewController: UIViewController {
     // MARK: ViewModel Stuff - Optional
     private func bind() {
         dateLabel.text = Date().date()
-        publicationTimeLabel.text = "발행시간 2023. 5. 25. KST 23:50"
+        publicationTimeLabel.text = "발행시간 2023. 9. 11. KST 23:50"
         todaysMoodView.setUpColor(color: .cherry)
         nowPlayingView.setUpComponent(title: "누군가 - 부르는 노래", image: UIImage())
         fromYesterdayView.setUpComponent(text: "열심히 무언가를 하다")
