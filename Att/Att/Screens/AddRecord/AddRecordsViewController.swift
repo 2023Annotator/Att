@@ -9,6 +9,7 @@ import UIKit
 
 class AddRecordsViewController: UIViewController {
     
+    
     // 좌측 뒤로가기버튼
     private let chevronButton: UIBarButtonItem = {
         let testImage = UIImage() // TEST
@@ -21,7 +22,7 @@ class AddRecordsViewController: UIViewController {
     private let xmarkButton: UIBarButtonItem = {
         let testImage = UIImage() // TEST
         testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(named: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal))
         return button
     }()
 
@@ -79,24 +80,13 @@ class AddRecordsViewController: UIViewController {
 
     
     //다음 버튼
-    
     private lazy var nextButton: NextButtonView = {
         let button = NextButtonView()
         
         return button
     }()
     
-    
-    lazy var stackView: UIStackView = {
-            // 배열을 사용하여 각각의 객체를 하나로 묶는 코드
-            let stView = UIStackView(arrangedSubviews: [recordLabel, recordExplainLabel, recordExplain2Label, addRecordTextFieldView, nextButton])
-        
-            stView.axis = .vertical  // 세로 묶음으로 정렬 (가로 묶음은 horizontal)
-            stView.distribution = .fillEqually  // 각 객체의 크기(간격) 분배 설정 (fillEqually: 여기서는 동일하게 분배)
-            stView.alignment = .fill  // 정렬 설정 (fill: 전부 채우는 설정)
-        
-            return stView
-    }()
+
     
 //    private let textViewHeight: CGFloat = 48
     
@@ -134,54 +124,54 @@ class AddRecordsViewController: UIViewController {
     private func setUpConstriants() {
         let constraints = Constraints.shared
         
-//        view.addSubview(setUpNavigationBar)
-        
         view.addSubview(contentView)
-        
-        contentView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(constraints.space8)
+        contentView.snp.makeConstraints{ make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
-//            make.bottom.equalTo(view.contentLayoutGuide.snp.bottom)
-//            make.leading.equalTo(view.contentLayoutGuide.snp.leading)
-//            make.trailing.equalTo(view.contentLayoutGuide.snp.trailing)
             make.width.equalTo(view.snp.width)
             make.height.greaterThanOrEqualTo(view.snp.height)
         }
-        
         [
-            recordLabel,
-            recordExplainLabel,
-            recordExplain2Label,
-            addRecordTextFieldView,
-        ].forEach {
-            contentView.addSubview($0)
+                progressView,
+                recordLabel,
+                recordExplainLabel,
+                recordExplain2Label,
+                addRecordTextFieldView,
+            ].forEach {
+                contentView.addSubview($0)
         }
         
-
-        recordLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(133)
+        let itemWidth = UIScreen.main.bounds.width * 0.85
+        progressView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(constraints.space18)
+            make.width.equalTo(itemWidth)
+            make.height.equalTo(4)
         }
-
+        progressView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        
+        recordLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(constraints.space42)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(48)
+        }
+        
         recordExplainLabel.snp.makeConstraints { make in
-            make.top.equalTo(recordLabel.snp.bottom).offset(constraints.space0)
+            make.top.equalTo(recordLabel.snp.bottom)
             make.leading.trailing.equalToSuperview()
         }
         recordExplain2Label.snp.makeConstraints { make in
             make.top.equalTo(recordExplainLabel.snp.bottom).offset(constraints.space28)
             make.leading.trailing.equalToSuperview()
         }
-
+        
         addRecordTextFieldView.snp.makeConstraints { make in
-            make.top.equalTo(recordExplain2Label.snp.bottom).offset(constraints.space28)
+            make.top.equalTo(recordExplain2Label.snp.bottom).offset(constraints.space100)
             make.leading.trailing.equalToSuperview()
-            
         }
-
+        
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(constraints.space054)
             make.leading.trailing.equalToSuperview()
         }
         
@@ -196,4 +186,13 @@ class AddRecordsViewController: UIViewController {
     
     // MARK: ViewModel Stuff - Optional
     private func bind() { }
+    
+    
+    private func setBtnTap() {
+        //present 방식
+
+        let svc = AddWordsViewController() //modalTransitionStyle은 원하는 거 선택
+        svc.modalPresentationStyle = .fullScreen
+        self.present(svc, animated: true, completion: nil)
+    }
 }

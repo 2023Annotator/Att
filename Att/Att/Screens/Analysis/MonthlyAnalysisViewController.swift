@@ -121,7 +121,7 @@ final class MonthlyAnalysisViewController: UIViewController {
         }
         
         monthlyMoodAnalysisView.snp.makeConstraints { make in
-            make.top.equalTo(timeAnalysisView.snp.bottom).offset(constraints.space40)
+            make.top.equalTo(timeAnalysisView.snp.bottom).offset(constraints.space42)
             make.leading.trailing.equalToSuperview()
         }
         

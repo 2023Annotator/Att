@@ -51,7 +51,6 @@ class AnalysisListViewController: UIViewController {
     
     private func configure() {
         setUpConstriants()
-        setUpStyle()
         setUpMonthCollectionView()
         setUpAction()
         bind()
@@ -101,7 +100,7 @@ class AnalysisListViewController: UIViewController {
         let itemWidth = UIScreen.main.bounds.width
         let itemHeight = itemWidth * 0.22
         monthListView.snp.makeConstraints { make in
-            make.top.equalTo(annualView.snp.bottom).offset(constraints.space40)
+            make.top.equalTo(annualView.snp.bottom).offset(constraints.space42)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(itemHeight * 12 + 50) // TODO: item 갯수 받아와서 높이 작성
             make.bottom.equalToSuperview()

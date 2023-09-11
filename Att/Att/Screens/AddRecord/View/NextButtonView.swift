@@ -14,6 +14,7 @@ class NextButtonView: UIButton {
         button.setTitle("다음", for: .normal)
         button.titleLabel?.font = .subtitle3
         button.backgroundColor = .green
+        button.setTitleColor(UIColor.black, for: .normal) 
         button.layer.cornerRadius = 24
         button.clipsToBounds = true
         button.isEnabled = false       // 버튼의 동작 설정 (처음에는 동작 off)
