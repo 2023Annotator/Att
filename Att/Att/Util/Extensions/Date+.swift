@@ -49,4 +49,20 @@ extension Date {
         let convertedDate = dateFormatter.string(from: self)
         return convertedDate
     }
+    
+    func publicationDate() -> String {
+        var convertedDate: String = ""
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY.MM.dd"
+        convertedDate.append(dateFormatter.string(from: self))
+        
+        let userTimeZone = TimeZone(abbreviation: "KST")
+        guard let timeZone = userTimeZone else { return "" }
+        convertedDate.append(" \(timeZone.identifier) ")
+        
+        dateFormatter.dateFormat = "HH:mm"
+        convertedDate.append(dateFormatter.string(from: self))
+        
+        return "발행 시간:\(convertedDate)"
+    }
 }

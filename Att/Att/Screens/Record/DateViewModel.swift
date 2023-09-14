@@ -10,63 +10,51 @@ import Foundation
 final class DateViewModel {
     
     var today: Date
-    var centeredIdx: IndexPath = IndexPath(row: 0, section: 0)
     
-    @Published var currentCenteredDate: Date = Date()
     @Published var weekDates: [Date] = []
-    @Published var currentVisibleDates: [Date] = []
-    @Published var dateSelectedIdx: IndexPath = IndexPath(row: 0, section: 0)
-    @Published var selectedDate: DateComponents?
+    @Published var visibleDates: [Date] = []
+    
+    @Published var centeredDate: Date = Date()
+    @Published var selectedDateIndexPath: IndexPath = IndexPath(row: 0, section: 0)
+    @Published var selectedCardIndexPath: IndexPath = IndexPath(row: 0, section: 0)
+    @Published var selectedDateComponents: DateComponents?
+    
     @Published var isCalendarViewDismissed: Bool = false
     
+    let weekday = 7
     let totalDataCount: Int = 35
+    
+    // TEST
+    @Published var dailyRecordList: [DailyRecord_] = []
+    @Published var currentPhraseFromYesterday: String?
+    @Published var currentDailyRecord: DailyRecord_?
     
     init() {
         today = Date()
         
-        centeredIdx = IndexPath(row: 17, section: 0)
-        dateSelectedIdx = IndexPath(row: 14 + currentWeekdayIdx(date: today), section: 0)
+        selectedDateIndexPath = IndexPath(row: weekday * 2 + weekdayIndex(date: today), section: 0)
         
-        currentCenteredDate = getCurrentCenteredDate(from: today)
+        centeredDate = getCurrentCenteredDate(from: today)
         weekDates = getCurrentWeekDates()
-        currentVisibleDates = getCurrentVisibleWeekDates()
-    }
-    
-    func lastDayOfMonth(year: Int, month: Int) -> Int? {
-        let calendar = Calendar.current
-        var dateComponents = DateComponents()
-        dateComponents.year = year
-        dateComponents.month = month
-        dateComponents.day = 1 // 월의 첫 날로 설정
+        visibleDates = getCurrentVisibleWeekDates()
         
-        if let firstDayOfNextMonth = calendar.date(from: dateComponents),
-           let lastDayOfMonth = calendar.date(byAdding: .day, value: -1, to: firstDayOfNextMonth) {
-            return calendar.component(.day, from: lastDayOfMonth)
-        }
-        return nil
+        // TEST
+        updateRecordList()
+        updateCurrentRecord()
     }
-    
-    func getTodayIdx() -> Int {
-//        let weekdayArr: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-        let weekdayArr: [String] = ["월", "화", "수", "목", "금", "토", "일"]
-        let todayStr = today.weekday()
-        guard let weekdayIdx = weekdayArr.firstIndex(of: todayStr) else { return  6 }
-        
-        return weekdayIdx
-    }
-    
-    func currentWeekdayIdx(date: Date) -> Int {
-//        let weekdayArr: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-        let weekdayArr: [String] = ["월", "화", "수", "목", "금", "토", "일"]
+
+    private func weekdayIndex(date: Date) -> Int {
+        let weekdayArr: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+//        let weekdayArr: [String] = ["월", "화", "수", "목", "금", "토", "일"]
         let currentDayStr = date.weekday()
         guard let weekdayIdx = weekdayArr.firstIndex(of: currentDayStr) else { return  6 }
         
         return weekdayIdx
     }
     
-    func getCurrentCenteredDate(from date: Date) -> Date {
+    private func getCurrentCenteredDate(from date: Date) -> Date {
         var adjustmentValue: Int = 0
-        let currentWeekdayIdx = currentWeekdayIdx(date: date)
+        let currentWeekdayIdx = weekdayIndex(date: date)
         if currentWeekdayIdx < 3 {
             adjustmentValue += 3 - currentWeekdayIdx
         } else if currentWeekdayIdx > 3 {
@@ -80,13 +68,13 @@ final class DateViewModel {
         return Date()
     }
     
-    func getCurrentWeekDates() -> [Date] {
+    private func getCurrentWeekDates() -> [Date] {
         var dates: [Date] = []
         let calendar = Calendar.current
         
         let range = totalDataCount/2
         for idx in -range ... range {
-            guard let date = calendar.date(byAdding: .day, value: idx, to: currentCenteredDate) else {
+            guard let date = calendar.date(byAdding: .day, value: idx, to: centeredDate) else {
                 return []
             }
             dates.append(date)
@@ -94,77 +82,89 @@ final class DateViewModel {
         return dates
     }
     
-    func getCurrentVisibleWeekDates() -> [Date] {
+    private func getCurrentVisibleWeekDates() -> [Date] {
         var dates: [Date] = []
         
-        for idx in centeredIdx.row - 3 ... centeredIdx.row + 3 {
+        for idx in centeredRange() {
             dates.append(weekDates[idx])
         }
         return dates
     }
     
-    func changeCurrentSelectedDateIdx(as idx: IndexPath) {
-        dateSelectedIdx = idx
-        updateSelectedDate()
+    private func updateSelectedDateComponents() {
+        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: weekDates[selectedDateIndexPath.row])
+        selectedDateComponents = dateComponents
     }
     
-    func changeCurrentSelectedDateIdx(cardCollectionViewIndexPath: IndexPath) {
-        let currentSelectedIdx = dateSelectedIdx.row % 7
-        if cardCollectionViewIndexPath.row > currentSelectedIdx {
-            dateSelectedIdx.row += cardCollectionViewIndexPath.row - currentSelectedIdx
-        } else {
-            dateSelectedIdx.row -= currentSelectedIdx - cardCollectionViewIndexPath.row
-        }
-        
-        updateSelectedDate()
+    private func updateCenteredDate(as date: Date) {
+        centeredDate = date
     }
     
-    func updateSelectedDate() {
-        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: weekDates[dateSelectedIdx.row])
-        selectedDate = dateComponents
-    }
-    
-    func updateCenteredDate(as idx: IndexPath) {
-        currentCenteredDate = weekDates[idx.row]
-        updateDateInfo()
-    }
-    
-    func updateCenteredDate(as date: Date) {
-        currentCenteredDate = date
-        updateDateInfo()
-        dateSelectedIdx = dateSelectedIdx
-    }
-    
-    func updateDateInfo() {
+    // MARK: COMP
+    func updateDates() {
         weekDates = getCurrentWeekDates()
-        currentVisibleDates = getCurrentVisibleWeekDates()
-    }
-    
-    func changeSelectedDate(as date: DateComponents) {
-        selectedDate = date
-        changeSelectedDate()
-    }
-    
-    func changeSelectedDate() {
-        guard let selectedDate = selectedDate?.date else { return }
-        guard let date = dateFromString(selectedDate.date()) else { return }
-        let weekDates = weekDates.map { $0.date() }
+        visibleDates = getCurrentVisibleWeekDates()
         
+        // TEST
+        updateRecordList()
+        updateCurrentRecord()
+    }
+    
+    // MARK: COMP
+    private func updateCenteredDateWithSelectedDate(date: Date) {
+        let weekDates = weekDates.map { $0.date() }
         if let idx = weekDates.firstIndex(of: date.date()) {
-            let centerIndexPath = IndexPath(row: 7  * (idx / 7) + 3, section: 0)
-            updateCenteredDate(as: centerIndexPath)
-            changeCurrentSelectedDateIdx(as: IndexPath(row: 14 + currentWeekdayIdx(date: date), section: 0))
+            let centerIndexPath = IndexPath(row: weekday  * (idx / weekday) + 3, section: 0)
+            updateCenteredDateWithIndexPath(as: centerIndexPath)
         } else {
             let centeredDate = getCurrentCenteredDate(from: date)
             updateCenteredDate(as: centeredDate)
+            updateDates()
         }
+    }
+}
+
+// MARK: internal Methods
+extension DateViewModel {
+    func updateCurrentSelectedDateIndexPath(as indexPath: IndexPath) {
+        selectedDateIndexPath = indexPath
+    }
+    
+    func updateCurrentSelectedDateIndexPath(cardCollectionViewIndexPath: IndexPath) {
+        let currentSelectedIdx = selectedDateIndexPath.row % weekday
+        if cardCollectionViewIndexPath.row > currentSelectedIdx {
+            selectedDateIndexPath.row += cardCollectionViewIndexPath.row - currentSelectedIdx
+        } else {
+            selectedDateIndexPath.row -= currentSelectedIdx - cardCollectionViewIndexPath.row
+        }
+        
+        updateSelectedDateComponents()
+        updateCurrentRecord()
+    }
+    
+    func updateSelectedCardIndexPath(as indexPath: IndexPath) {
+        selectedCardIndexPath = indexPath
+    }
+    
+    func updateCenteredDateWithIndexPath(as indexPath: IndexPath) {
+        centeredDate = weekDates[indexPath.row]
+        updateDates()
+    }
+    
+    func changeSelectedDateComponents(as date: DateComponents) {
+        selectedDateComponents = date
+        guard let selectedDateComponents = selectedDateComponents else { return }
+        let selectedDate = dateComponentsToDate(dateComponents: selectedDateComponents)
+        updateCenteredDateWithSelectedDate(date: selectedDate)
+        updateCurrentSelectedDateIndexPath(as: IndexPath(row: 14 + weekdayIndex(date: selectedDate), section: 0))
     }
     
     func dismissCalendarView() {
         isCalendarViewDismissed = true
     }
-    
-    func dateFromString(_ dateString: String) -> Date? {
+}
+extension DateViewModel {
+    private func dateFromString(_ dateString: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY/MM/dd"
         dateFormatter.locale = Locale(identifier: "ko-KR")
@@ -177,12 +177,48 @@ final class DateViewModel {
         }
     }
     
-    // TEST LOG
+    private func dateComponentsToDate(dateComponents: DateComponents) -> Date {
+        guard let selectedDate = selectedDateComponents?.date else { return Date() }
+        guard let date = dateFromString(selectedDate.date()) else { return Date() }
+        return date
+    }
+    
+    private func centeredRange() -> ClosedRange<Int> {
+        let centeredIdx = totalDataCount / 2
+        let deltaValue = weekday / 2
+        return centeredIdx - deltaValue...centeredIdx + deltaValue
+    }
+    
+    // TEST & DUMMY
     func printAllComponent() {
         print("====================================")
         print("S:\(weekDates[0].date()) E:\(weekDates[34].date())")
-        print("CS:\(currentVisibleDates[0].date()) CE:\(currentVisibleDates[6].date())")
-        print("CENTER: \(currentVisibleDates[3].date())")
-        print("SEL IDX: \(dateSelectedIdx) DATE: \(selectedDate)")
+        print("CS:\(visibleDates[0].date()) CE:\(visibleDates[6].date())")
+        print("CENTER: \(visibleDates[3].date())")
+        print("SEL IDX: \(selectedDateIndexPath) DATE: \(String(describing: selectedDateComponents))")
+    }
+    
+    private func updateRecordList() {
+        var tempDailyRecordList: [DailyRecord_] = []
+        let dummyDailyRecordList = DummyManager.shared.getDummyDailyDataList()
+        for idx in centeredRange() {
+            let randomIdx = Int.random(in: 0..<dummyDailyRecordList.count)
+            let record = DailyRecord_(date: weekDates[idx],
+                                     mood: dummyDailyRecordList[randomIdx].mood,
+                                     musicInfo: dummyDailyRecordList[randomIdx].musicInfo,
+                                     diary: dummyDailyRecordList[randomIdx].diary,
+                                     phraseToTomorrow: dummyDailyRecordList[randomIdx].phraseToTomorrow)
+            tempDailyRecordList.append(record)
+        }
+        dailyRecordList = tempDailyRecordList
+    }
+    
+    private func updateCurrentRecord() {
+        currentDailyRecord = dailyRecordList[selectedDateIndexPath.row % weekday]
+        if(selectedDateIndexPath.row == 14 || selectedDateIndexPath.row == 20) {
+            currentPhraseFromYesterday = "오후 9시 전에는 집에 들어가자..."
+        } else {
+            currentPhraseFromYesterday = dailyRecordList[(selectedDateIndexPath.row % weekday) - 1].phraseToTomorrow
+        }
     }
 }

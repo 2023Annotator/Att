@@ -47,8 +47,6 @@ final class RecordNonExistCardView: ATTCardView {
     }
     
     private func setUpConstraints() {
-        let constraints = Constraints.shared
-        
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()

@@ -44,7 +44,7 @@ final class FromYesterdayView: RecordBrowseInnerTitleDefaultView {
         backgroundColor = .gray100
     }
     
-    func setUpComponent(text: String) {
+    func setUpComponent(text: String?) {
         contentLabel.text = text
     }
 }

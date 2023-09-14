@@ -5,6 +5,8 @@
 //  Created by 황정현 on 2023/09/11.
 //
 
+import Combine
+import CombineCocoa
 import SnapKit
 import UIKit
 
@@ -76,24 +78,25 @@ final class RecordBrowseViewController: UIViewController {
         return view
     }()
     
-    // MARK: Init 선언부
-    init() {
+    // TEST
+    private var viewModel: DateViewModel?
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(viewModel: DateViewModel?) {
         super.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: View Life Cycle 선언부
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        
-        // Do any additional setup after loading the view.
+        bind()
     }
 
-    // MARK: viewDidLoad 시 1회성 호출을 필요로하는 method 일괄
     private func configure() {
         setUpConstriants()
         setUpStyle()
@@ -101,8 +104,6 @@ final class RecordBrowseViewController: UIViewController {
         bind()
     }
     
-    // MARK: Components 간의 위치 설정
-    // MARK: Constraints 설정 순서는 top - bottom - leading - trailing - centerX - centerY - width - height 순으로
     private func setUpConstriants() {
         
         let constraints = Constraints.shared
@@ -205,15 +206,22 @@ final class RecordBrowseViewController: UIViewController {
     // MARK: TabPulisher etc - Optional
     private func setUpAction() { }
     
-    // MARK: ViewModel Stuff - Optional
     private func bind() {
-        dateLabel.text = Date().date()
-        publicationTimeLabel.text = "발행시간 2023. 9. 11. KST 23:50"
-        todaysMoodView.setUpColor(color: .cherry)
-        nowPlayingView.setUpComponent(title: "누군가 - 부르는 노래", image: UIImage())
-        fromYesterdayView.setUpComponent(text: "열심히 무언가를 하다")
-        ticketDecorationView.setUpLineColor(color: .cherry)
-        diaryView.setUpComponent(color: .cherry, content: "")
-        toTomorrowView.setUpComponent(text: "피곤의 악마와 계약을 하다...")
+        viewModel?.$currentDailyRecord
+            .sink { [weak self] record in
+                guard let moodColor = record?.mood.moodColor else { return }
+                self?.dateLabel.text = record?.date.date()
+                self?.publicationTimeLabel.text = record?.date.publicationDate()
+                self?.todaysMoodView.setUpColor(color: moodColor)
+                self?.nowPlayingView.setUpComponent(musicInfo: record?.musicInfo)
+                self?.ticketDecorationView.setUpLineColor(color: moodColor)
+                self?.diaryView.setUpComponent(color: moodColor, content: record?.diary)
+                self?.toTomorrowView.setUpComponent(text: record?.phraseToTomorrow)
+            }.store(in: &cancellables)
+        
+        viewModel?.$currentPhraseFromYesterday
+            .sink { [weak self] phrase in
+                self?.fromYesterdayView.setUpComponent(text: phrase)
+            }.store(in: &cancellables)
     }
 }

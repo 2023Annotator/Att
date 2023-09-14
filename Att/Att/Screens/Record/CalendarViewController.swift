@@ -61,7 +61,7 @@ final class CalendarViewController: UIViewController {
     }
     
     private func bind() {
-        dateViewModel?.$selectedDate
+        dateViewModel?.$selectedDateComponents
             .receive(on: DispatchQueue.main)
             .sink { [weak self] dateComponent in
                 self?.updateSelectedDate(as: dateComponent)
@@ -74,7 +74,7 @@ extension CalendarViewController: UICalendarViewDelegate, UICalendarSelectionSin
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
         selection.setSelected(dateComponents, animated: true)
         guard let dateComponents = dateComponents else { return }
-        dateViewModel?.changeSelectedDate(as: dateComponents)
+        dateViewModel?.changeSelectedDateComponents(as: dateComponents)
         reloadDateView(date: Calendar.current.date(from: dateComponents))
         dismissCalendarView()
     }

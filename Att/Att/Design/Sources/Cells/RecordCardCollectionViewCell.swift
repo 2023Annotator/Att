@@ -60,9 +60,11 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // TODO: TEMPORARY parameter is Int -> Model
-    func setUpComponent(data: Date) {
-//        print("GOOD")
+    func setUpComponent(record: DailyRecord_?) {
+        if let record = record {
+            guard let cardView = cardView as? RecordExistCardView else { return }
+            cardView.setUpComponent(record: record)
+        }
     }
     
     func blurEffect(isHidden: Bool) {

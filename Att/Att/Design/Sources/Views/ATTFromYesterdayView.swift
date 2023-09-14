@@ -30,7 +30,6 @@ final class ATTFromYesterdayView: UIView {
         super.init(frame: CGRect.zero)
         setUpConstraints()
         setUpStyle()
-        setUpComponent() // TEST
     }
     
     required init?(coder: NSCoder) {
@@ -60,8 +59,8 @@ final class ATTFromYesterdayView: UIView {
         layer.cornerRadius = 10
         backgroundColor = .white
     }
-    // TEST
-    private func setUpComponent() {
-        descriptionLabel.text = "크하하하! 크하하하! 크하하하!"
+    
+    func setUpComponent(text: String?) {
+        descriptionLabel.text = text
     }
 }

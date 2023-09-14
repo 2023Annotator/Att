@@ -16,7 +16,6 @@ final class ATTCardInfoView: UIView {
         label.font = .title3
         label.textAlignment = .left
         label.textColor = .black
-        label.text = Date().weekday() // TEST
         return label
     }()
     private lazy var dateLabel: UILabel = {
@@ -24,7 +23,6 @@ final class ATTCardInfoView: UIView {
         label.font = .title3
         label.textAlignment = .right
         label.textColor = .black
-        label.text = Date().date() // TEST
         return label
     }()
     
@@ -81,5 +79,12 @@ final class ATTCardInfoView: UIView {
             make.trailing.equalTo(self.snp.trailing)
             make.height.equalTo(40)
         }
+    }
+    
+    func setUpComponent(record: DailyRecord_) {
+        dayNameLabel.text = record.date.weekday()
+        dateLabel.text = record.date.date()
+        diaryInfoView.setUpComponent(text: record.diary)
+        musicInfoView.setUpComponent(text: record.musicInfo?.artistAndTitleStr())
     }
 }

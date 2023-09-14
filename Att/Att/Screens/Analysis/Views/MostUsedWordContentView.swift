@@ -11,7 +11,6 @@ final class MostUsedWordContentView: AnalysisDefaultView {
 
     private lazy var contentView: UIView = {
         let view = UIView()
-        view.backgroundColor = .green // TEST
         return view
     }()
     

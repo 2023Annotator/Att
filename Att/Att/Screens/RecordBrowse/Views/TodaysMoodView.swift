@@ -8,6 +8,7 @@
 import UIKit
 
 final class TodaysMoodView: RecordBrowseOuterTitleDefaultView {
+    
     private lazy var moodColorView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 11.5

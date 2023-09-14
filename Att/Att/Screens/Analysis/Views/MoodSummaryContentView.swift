@@ -70,8 +70,6 @@ final class MoodSummaryContentView: AnalysisDefaultView {
         let width = UIScreen.main.bounds.width
         let itemWidth = (width - Constraints.shared.space20 * 2) / 8
         let flooredItemWidth = floor(itemWidth)
-        
-        let viewWidth = flooredItemWidth * 8
         let viewHeight = flooredItemWidth * 2
         
         moodListView.snp.makeConstraints { make in
@@ -132,7 +130,6 @@ final class MoodSummaryContentView: AnalysisDefaultView {
         }
     }
     
-    // TODO: Mood 구획 나누기
     func setUpComponent() {
         primaryColorView.backgroundColor = .yellow
         secondaryColorView.backgroundColor = .green

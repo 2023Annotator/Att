@@ -9,6 +9,14 @@ import UIKit
 
 final class NowPlayingView: RecordBrowseInnerTitleDefaultView {
     
+    private let blurEffectView: UIVisualEffectView = {
+        let view = UIVisualEffectView()
+        view.effect = UIBlurEffect(style: .regular)
+        view.alpha = 0.8
+        view.layer.cornerRadius = 12
+        return view
+    }()
+
     private lazy var musicImageView: UIImageView = {
         let view = UIImageView()
         let image = UIImage(named: "headphone")?
@@ -47,12 +55,19 @@ final class NowPlayingView: RecordBrowseInnerTitleDefaultView {
         let constraints = Constraints.shared
         
         [
+            blurEffectView,
             musicImageView,
             musicTitleLabel,
             thumbnailView
         ].forEach {
             addSubview($0)
         }
+        
+        blurEffectView.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        addSubview(titleLabel)
         
         musicImageView.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(constraints.space16)
@@ -62,8 +77,8 @@ final class NowPlayingView: RecordBrowseInnerTitleDefaultView {
         
         musicTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(musicImageView.snp.trailing).offset(constraints.space4)
+            make.trailing.equalTo(thumbnailView.snp.leading).offset(constraints.space4)
             make.centerY.equalTo(musicImageView)
-            make.width.equalTo(108)
             make.height.equalTo(22)
         }
         
@@ -75,10 +90,9 @@ final class NowPlayingView: RecordBrowseInnerTitleDefaultView {
     }
     
     // TODO: Background Image Set
-    func setUpComponent(title: String, image: UIImage) {
-        musicTitleLabel.text = title
-        self.image = image
-        backgroundColor = .black // TEST
-        thumbnailView.backgroundColor = .white // TEST
+    func setUpComponent(musicInfo: MusicInfo?) {
+        musicTitleLabel.text = musicInfo?.artistAndTitleStr()
+        self.image = musicInfo?.thumbnailImage
+        thumbnailView.image = musicInfo?.thumbnailImage
     }
 }

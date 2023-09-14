@@ -9,7 +9,6 @@ import UIKit
 
 class RecordBrowseInnerTitleDefaultView: UIImageView {
 
-    // MARK: property 선언부
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = .title4
@@ -18,7 +17,6 @@ class RecordBrowseInnerTitleDefaultView: UIImageView {
         return label
     }()
     
-    // MARK: Init 선언부
     init(title: String) {
         super.init(frame: CGRect.zero)
         setUpConstraints()
@@ -49,6 +47,7 @@ class RecordBrowseInnerTitleDefaultView: UIImageView {
     
     func setUpStyle() {
         layer.cornerRadius = 12
+        contentMode = .scaleAspectFill
         clipsToBounds = true
     }
     

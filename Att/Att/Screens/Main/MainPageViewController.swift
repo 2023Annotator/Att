@@ -13,16 +13,16 @@ import UIKit
 class MainPageViewController: UIViewController {
     
     private let mypageButton: UIBarButtonItem = {
-        let testImage = UIImage() // TEST
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(systemName: "person")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        let image = UIImage(systemName: "person")?
+            .withTintColor(.white, renderingMode: .alwaysOriginal)
+        let button = UIBarButtonItem(image: image)
         return button
     }()
     
     private let calendarButton: UIBarButtonItem = {
-        let testImage = UIImage() // TEST
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(named: "calendar")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        let image = UIImage(named: "calendar")?
+            .withTintColor(.white, renderingMode: .alwaysOriginal)
+        let button = UIBarButtonItem(image: image)
         return button
     }()
     
@@ -38,8 +38,8 @@ class MainPageViewController: UIViewController {
     }()
     
     private lazy var recordViewController: RecordViewController = {
-        guard let recordViewModel = recordViewModel,
-              let dateViewModel = dateViewModel else { return RecordViewController(recordViewModel: RecordViewModel(), dateViewModel: DateViewModel()) }
+        guard let recordViewModel = weekdayVisibilityViewModel,
+              let dateViewModel = dateViewModel else { return RecordViewController(recordViewModel: WeekdayVisiblityViewModel(), dateViewModel: DateViewModel()) }
         
         let viewController = RecordViewController(recordViewModel: recordViewModel, dateViewModel: dateViewModel)
         return viewController
@@ -50,14 +50,14 @@ class MainPageViewController: UIViewController {
         return viewController
     }()
     
-    private var recordViewModel: RecordViewModel?
+    private var weekdayVisibilityViewModel: WeekdayVisiblityViewModel?
     private var dateViewModel: DateViewModel?
     private var cancellables = Set<AnyCancellable>()
     
-    init(recordViewModel: RecordViewModel, dateViewModel: DateViewModel) {
+    init(recordViewModel: WeekdayVisiblityViewModel, dateViewModel: DateViewModel) {
         super.init(nibName: nil, bundle: nil)
         
-        self.recordViewModel = recordViewModel
+        self.weekdayVisibilityViewModel = recordViewModel
         self.dateViewModel = dateViewModel
     }
     
@@ -72,7 +72,6 @@ class MainPageViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        // UIPageViewController의 뷰를 적절한 위치로 조정
         pageViewController.view.frame = CGRect(x: 0, y: segmentedControl.frame.height, width: view.frame.width, height: view.frame.height - segmentedControl.frame.height)
     }
     

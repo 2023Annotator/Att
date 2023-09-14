@@ -39,7 +39,7 @@ final class ToTomorrowView: RecordBrowseOuterTitleDefaultView {
         contentLabel.sizeToFit()
     }
     
-    func setUpComponent(text: String) {
+    func setUpComponent(text: String?) {
         contentLabel.text = text
     }
 }
