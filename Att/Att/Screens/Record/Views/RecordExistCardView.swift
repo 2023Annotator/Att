@@ -52,14 +52,9 @@ final class RecordExistCardView: ATTCardView {
         }
     }
     
-    // TODO: 일간 Data 기반 Initialize
-    override func setUpStyle() {
-        super.setUpStyle()
-    }
-    
-    func setUpComponent(record: DailyRecord_) {
-        backgroundColor = record.mood.moodColor
-        musicThumbnailView.image = record.musicInfo?.thumbnailImage
+    func setUpComponent(record: DailyRecordModel) {
+        backgroundColor = record.mood?.moodColor
+//        musicThumbnailView.image = record.musicInfo?.thumbnailImage
         cardInfoview.setUpComponent(record: record)
     }
 }

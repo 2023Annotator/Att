@@ -10,7 +10,7 @@ import CombineCocoa
 import UIKit
 import SnapKit
 
-final class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, DailyRecord_> { }
+final class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, DailyRecordModel?> { }
 final class WeekdayCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, Date> { }
 
 final class RecordViewController: UIViewController {
@@ -250,6 +250,7 @@ extension RecordViewController {
             }
             
             cell.setUpComponent(record: dailyRecord)
+            
             return cell
         }
     }
@@ -267,8 +268,8 @@ extension RecordViewController {
         }
     }
     
-    private func performCardCollectionViewCell(dailyRecords: [DailyRecord_]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, DailyRecord_>()
+    private func performCardCollectionViewCell(dailyRecords: [DailyRecordModel?]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, DailyRecordModel?>()
         snapshot.appendSections([0])
         snapshot.appendItems(dailyRecords)
         cardCollectionDiffableDataSource.apply(snapshot)

@@ -209,11 +209,11 @@ final class RecordBrowseViewController: UIViewController {
     private func bind() {
         viewModel?.$currentDailyRecord
             .sink { [weak self] record in
-                guard let moodColor = record?.mood.moodColor else { return }
+                guard let moodColor = record?.mood?.moodColor else { return }
                 self?.dateLabel.text = record?.date.date()
                 self?.publicationTimeLabel.text = record?.date.publicationDate()
                 self?.todaysMoodView.setUpColor(color: moodColor)
-                self?.nowPlayingView.setUpComponent(musicInfo: record?.musicInfo)
+//                self?.nowPlayingView.setUpComponent(musicInfo: record?.musicInfo)
                 self?.ticketDecorationView.setUpLineColor(color: moodColor)
                 self?.diaryView.setUpComponent(color: moodColor, content: record?.diary)
                 self?.toTomorrowView.setUpComponent(text: record?.phraseToTomorrow)

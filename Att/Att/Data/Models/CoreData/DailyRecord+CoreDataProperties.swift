@@ -42,7 +42,7 @@ extension DailyRecord: Identifiable {
     func update(as dailyRecord: DailyRecordModel) {
         self.date = dailyRecord.date
         self.diary = dailyRecord.diary
-        self.mood = dailyRecord.mood.rawValue
+        self.mood = dailyRecord.mood?.rawValue
         self.phraseToTomorrow = phraseToTomorrow
     }
 }

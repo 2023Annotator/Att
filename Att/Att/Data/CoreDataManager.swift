@@ -48,7 +48,7 @@ extension CoreDataManager {
         let record = NSManagedObject(entity: entity, insertInto: context)
         record.setValue(dailyRecord.date, forKey: "date")
         record.setValue(UUID(), forKey: "id")
-        record.setValue(dailyRecord.mood.rawValue, forKey: "mood")
+        record.setValue(dailyRecord.mood?.rawValue, forKey: "mood")
         record.setValue(dailyRecord.diary, forKey: "diary")
         record.setValue(dailyRecord.phraseToTomorrow, forKey: "phraseToTomorrow")
         
@@ -63,7 +63,6 @@ extension CoreDataManager {
         fetchRequest.predicate = predicate
         
         do {
-            // 필터링된 데이터를 가져옵니다.
             let filteredData = try context.fetch(fetchRequest)
             return filteredData.compactMap { $0.mapToModel() }
         } catch {

@@ -25,13 +25,12 @@ final class DateViewModel {
     let totalDataCount: Int = 35
     
     // TEST
-    @Published var dailyRecordList: [DailyRecord_] = []
+    @Published var dailyRecordList: [DailyRecordModel?] = []
     @Published var currentPhraseFromYesterday: String?
-    @Published var currentDailyRecord: DailyRecord_?
+    @Published var currentDailyRecord: DailyRecordModel?
     
     init() {
-        today = Date()
-        
+        today = Date().currentKoreanDate()
         selectedDateIndexPath = IndexPath(row: weekday * 2 + weekdayIndex(date: today), section: 0)
         
         centeredDate = getCurrentCenteredDate(from: today)
@@ -44,8 +43,8 @@ final class DateViewModel {
     }
 
     private func weekdayIndex(date: Date) -> Int {
-        let weekdayArr: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-//        let weekdayArr: [String] = ["월", "화", "수", "목", "금", "토", "일"]
+//        let weekdayArr: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        let weekdayArr: [String] = ["월", "화", "수", "목", "금", "토", "일"]
         let currentDayStr = date.weekday()
         guard let weekdayIdx = weekdayArr.firstIndex(of: currentDayStr) else { return  6 }
         
@@ -63,14 +62,16 @@ final class DateViewModel {
         
         let calendar = Calendar.current
         if let centeredDate = calendar.date(byAdding: .day, value: adjustmentValue, to: date) {
-            return centeredDate
+            return calendar.startOfDay(for: centeredDate)
         }
         return Date()
     }
     
     private func getCurrentWeekDates() -> [Date] {
         var dates: [Date] = []
-        let calendar = Calendar.current
+        guard let timeZone = TimeZone(identifier: "Asia/Seoul") else { return [] }
+        var calendar = Calendar.current
+        calendar.timeZone = timeZone
         
         let range = totalDataCount/2
         for idx in -range ... range {
@@ -100,8 +101,7 @@ final class DateViewModel {
         centeredDate = date
     }
     
-    // MARK: COMP
-    func updateDates() {
+    private func updateDates() {
         weekDates = getCurrentWeekDates()
         visibleDates = getCurrentVisibleWeekDates()
         
@@ -110,7 +110,6 @@ final class DateViewModel {
         updateCurrentRecord()
     }
     
-    // MARK: COMP
     private func updateCenteredDateWithSelectedDate(date: Date) {
         let weekDates = weekDates.map { $0.date() }
         if let idx = weekDates.firstIndex(of: date.date()) {
@@ -199,16 +198,22 @@ extension DateViewModel {
     }
     
     private func updateRecordList() {
-        var tempDailyRecordList: [DailyRecord_] = []
-        let dummyDailyRecordList = DummyManager.shared.getDummyDailyDataList()
+        var tempDailyRecordList: [DailyRecordModel?] = []
+        
+        guard let startDate = Calendar.current.date(byAdding: .day, value: -3, to: centeredDate) else { return }
+        guard let endDate = Calendar.current.date(byAdding: .day, value: 4, to: centeredDate) else { return }
+
+        guard let dummyDailyRecordList = CoreDataManager.shared.fetchDailyRecords(startDate: startDate, endDate: endDate) else { return }
+        
         for idx in centeredRange() {
-            let randomIdx = Int.random(in: 0..<dummyDailyRecordList.count)
-            let record = DailyRecord_(date: weekDates[idx],
-                                     mood: dummyDailyRecordList[randomIdx].mood,
-                                     musicInfo: dummyDailyRecordList[randomIdx].musicInfo,
-                                     diary: dummyDailyRecordList[randomIdx].diary,
-                                     phraseToTomorrow: dummyDailyRecordList[randomIdx].phraseToTomorrow)
-            tempDailyRecordList.append(record)
+            let date = weekDates[idx].date()
+            let data = dummyDailyRecordList.filter({$0.date.date() == date})
+            if data.count == 0 {
+                let temp = DailyRecordModel(date: weekDates[idx], mood: nil, diary: nil, phraseToTomorrow: nil)
+                tempDailyRecordList.append(temp)
+            } else {
+                tempDailyRecordList.append(data.first)
+            }
         }
         dailyRecordList = tempDailyRecordList
     }
@@ -218,7 +223,7 @@ extension DateViewModel {
         if(selectedDateIndexPath.row == 14 || selectedDateIndexPath.row == 20) {
             currentPhraseFromYesterday = "오후 9시 전에는 집에 들어가자..."
         } else {
-            currentPhraseFromYesterday = dailyRecordList[(selectedDateIndexPath.row % weekday) - 1].phraseToTomorrow
+            currentPhraseFromYesterday = dailyRecordList[(selectedDateIndexPath.row % weekday) - 1]?.phraseToTomorrow
         }
     }
 }
