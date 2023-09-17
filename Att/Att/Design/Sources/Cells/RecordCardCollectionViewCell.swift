@@ -69,11 +69,12 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
             recordStatus = .nonExist
             guard let dateRelation = record?.date.relativeDate() else { return }
             recordNonExistView.setUpComponent(dateRelation: dateRelation)
-            isUserInteractionEnabled(dateRelation: dateRelation)
+            isUserInteractionEnabled = dateRelation == .today ? true : false
         } else {
             guard let record = record else { return }
             recordStatus = .exist
             recordExistView.setUpComponent(record: record)
+            isUserInteractionEnabled = true
         }
         
         hiddenRecordView(recordStatus: recordStatus)
@@ -85,14 +86,6 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
     
     func blurEffect(isHidden: Bool) {
         blurEffectView.isHidden = isHidden
-    }
-    
-    private func isUserInteractionEnabled(dateRelation: DateRelation) {
-        if dateRelation == .today {
-            self.isUserInteractionEnabled = true
-        } else {
-            self.isUserInteractionEnabled = false
-        }
     }
     
     private func hiddenRecordView(recordStatus: RecordStatus) {
