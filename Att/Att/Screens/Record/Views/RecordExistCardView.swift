@@ -15,7 +15,7 @@ final class RecordExistCardView: ATTCardView {
         view.clipsToBounds = true
         view.layer.cornerRadius = 20
         view.layer.maskedCorners = [ .layerMinXMinYCorner, .layerMaxXMinYCorner]
-        view.backgroundColor = .white // TEST
+        view.backgroundColor = .white
         return view
     }()
     
@@ -52,7 +52,7 @@ final class RecordExistCardView: ATTCardView {
         }
     }
     
-    func setUpComponent(record: DailyRecordModel) {
+    func setUpComponent(record: AttDailyRecord) {
         backgroundColor = record.mood?.moodColor
 //        musicThumbnailView.image = record.musicInfo?.thumbnailImage
         cardInfoview.setUpComponent(record: record)

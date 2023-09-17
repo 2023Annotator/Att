@@ -79,12 +79,12 @@ final class RecordBrowseViewController: UIViewController {
     }()
     
     // TEST
-    private var viewModel: DateViewModel?
+    private var dailyRecordViewModel: DailyRecordViewModel?
     private var cancellables = Set<AnyCancellable>()
     
-    init(viewModel: DateViewModel?) {
+    init(dailyRecordViewModel: DailyRecordViewModel?) {
         super.init(nibName: nil, bundle: nil)
-        self.viewModel = viewModel
+        self.dailyRecordViewModel = dailyRecordViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -207,7 +207,7 @@ final class RecordBrowseViewController: UIViewController {
     private func setUpAction() { }
     
     private func bind() {
-        viewModel?.$currentDailyRecord
+        dailyRecordViewModel?.$currentDailyRecord
             .sink { [weak self] record in
                 guard let moodColor = record?.mood?.moodColor else { return }
                 self?.dateLabel.text = record?.date.date()
@@ -219,7 +219,7 @@ final class RecordBrowseViewController: UIViewController {
                 self?.toTomorrowView.setUpComponent(text: record?.phraseToTomorrow)
             }.store(in: &cancellables)
         
-        viewModel?.$currentPhraseFromYesterday
+        dailyRecordViewModel?.$currentPhraseFromYesterday
             .sink { [weak self] phrase in
                 self?.fromYesterdayView.setUpComponent(text: phrase)
             }.store(in: &cancellables)

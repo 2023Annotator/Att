@@ -24,13 +24,13 @@ extension DailyRecord {
 }
 
 extension DailyRecord: Identifiable {
-    func mapToModel() -> DailyRecordModel? {
+    func mapToModel() -> AttDailyRecord? {
         guard let date = self.date,
               let moodRawValue = self.mood,
               let mood = Mood(rawValue: moodRawValue)
         else { return nil }
         
-        let model = DailyRecordModel(
+        let model = AttDailyRecord(
             date: date,
             mood: mood,
             diary: self.diary,
@@ -39,7 +39,7 @@ extension DailyRecord: Identifiable {
         return model
     }
     
-    func update(as dailyRecord: DailyRecordModel) {
+    func update(as dailyRecord: AttDailyRecord) {
         self.date = dailyRecord.date
         self.diary = dailyRecord.diary
         self.mood = dailyRecord.mood?.rawValue

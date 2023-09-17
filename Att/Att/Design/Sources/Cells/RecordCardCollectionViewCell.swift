@@ -27,6 +27,8 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
     
     private var cardView: ATTCardView = ATTCardView()
     
+    private var recordStatus: RecordStatus = .exist
+    
     override init(frame: CGRect) {
         super.init(frame: CGRect.zero)
         configure()
@@ -62,18 +64,38 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func setUpComponent(record: DailyRecordModel?) {
-        
-        var recordStatus: RecordStatus = .exist
+    func setUpComponent(record: AttDailyRecord?) {
         if record?.mood == nil {
             recordStatus = .nonExist
             guard let dateRelation = record?.date.relativeDate() else { return }
             recordNonExistView.setUpComponent(dateRelation: dateRelation)
+            isUserInteractionEnabled(dateRelation: dateRelation)
         } else {
             guard let record = record else { return }
+            recordStatus = .exist
             recordExistView.setUpComponent(record: record)
         }
         
+        hiddenRecordView(recordStatus: recordStatus)
+    }
+    
+    func getRecordStatus() -> RecordStatus {
+        return recordStatus
+    }
+    
+    func blurEffect(isHidden: Bool) {
+        blurEffectView.isHidden = isHidden
+    }
+    
+    private func isUserInteractionEnabled(dateRelation: DateRelation) {
+        if dateRelation == .today {
+            self.isUserInteractionEnabled = true
+        } else {
+            self.isUserInteractionEnabled = false
+        }
+    }
+    
+    private func hiddenRecordView(recordStatus: RecordStatus) {
         switch recordStatus {
         case .exist:
             recordExistView.isHidden = false
@@ -82,9 +104,5 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
             recordExistView.isHidden = true
             recordNonExistView.isHidden = false
         }
-    }
-    
-    func blurEffect(isHidden: Bool) {
-        blurEffectView.isHidden = isHidden
     }
 }

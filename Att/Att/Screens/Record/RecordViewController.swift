@@ -10,7 +10,7 @@ import CombineCocoa
 import UIKit
 import SnapKit
 
-final class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, DailyRecordModel?> { }
+final class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, AttDailyRecord?> { }
 final class WeekdayCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, Date> { }
 
 final class RecordViewController: UIViewController {
@@ -55,15 +55,15 @@ final class RecordViewController: UIViewController {
     private var weekdayCollectionDiffableDataSource: WeekdayCollectionViewDiffableDataSource!
     
     private var weekdayVisibilityViewModel: WeekdayVisiblityViewModel?
-    private var dateViewModel: DateViewModel?
+    private var dailyRecordViewModel: DailyRecordViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     private var isScrolling = true
     
-    init(recordViewModel: WeekdayVisiblityViewModel, dateViewModel: DateViewModel) {
+    init(weekdayVisibilityViewModel: WeekdayVisiblityViewModel, dailyRecordViewModel: DailyRecordViewModel) {
         super.init(nibName: nil, bundle: nil)
-        self.weekdayVisibilityViewModel = recordViewModel
-        self.dateViewModel = dateViewModel
+        self.weekdayVisibilityViewModel = weekdayVisibilityViewModel
+        self.dailyRecordViewModel = dailyRecordViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -172,7 +172,7 @@ final class RecordViewController: UIViewController {
 // MARK: Binding
 extension RecordViewController {
     private func bindCalendarView() {
-        dateViewModel?.$isCalendarViewDismissed
+        dailyRecordViewModel?.$isCalendarViewDismissed
             .sink { [weak self] isDismissed in
                 if isDismissed {
                     self?.isScrolling = false
@@ -182,7 +182,7 @@ extension RecordViewController {
     }
     
     private func bindCollectionViewIndexPath() {
-        dateViewModel?.$selectedDateIndexPath
+        dailyRecordViewModel?.$selectedDateIndexPath
             .receive(on: DispatchQueue.main)
             .sink { [weak self] indexPath in
                 guard let weekdayCollectionView = self?.weekdayCollectionView else { return }
@@ -196,11 +196,11 @@ extension RecordViewController {
                 }
                 
                 let currentIndexPath = IndexPath(row: indexPath.row % 7, section: 0)
-                guard let dateViewModel = self?.dateViewModel else { return }
+                guard let dateViewModel = self?.dailyRecordViewModel else { return }
                 dateViewModel.updateSelectedCardIndexPath(as: currentIndexPath)
             }.store(in: &cancellables)
         
-        dateViewModel?.$selectedCardIndexPath
+        dailyRecordViewModel?.$selectedCardIndexPath
             .receive(on: DispatchQueue.main)
             .sink { [weak self] indexPath in
                 guard let cardCollectionView = self?.cardCollectionView else { return }
@@ -219,19 +219,19 @@ extension RecordViewController {
     }
     
     private func bindRecord() {
-        dateViewModel?.$weekDates
+        dailyRecordViewModel?.$weekDates
             .receive(on: DispatchQueue.main)
             .sink { [weak self] dates in
                 self?.performWeekdayCollectionViewCell(weekDates: dates)
             }.store(in: &cancellables)
         
-        dateViewModel?.$currentPhraseFromYesterday
+        dailyRecordViewModel?.$currentPhraseFromYesterday
             .receive(on: DispatchQueue.main)
             .sink { [weak self] phrase in
                 self?.fromYesterdayView.setUpComponent(text: phrase)
             }.store(in: &cancellables)
         
-        dateViewModel?.$dailyRecordList
+        dailyRecordViewModel?.$dailyRecordList
             .receive(on: DispatchQueue.main)
             .sink { [weak self] dailyRecordList in
                 self?.performCardCollectionViewCell(dailyRecords: dailyRecordList)
@@ -268,8 +268,8 @@ extension RecordViewController {
         }
     }
     
-    private func performCardCollectionViewCell(dailyRecords: [DailyRecordModel?]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, DailyRecordModel?>()
+    private func performCardCollectionViewCell(dailyRecords: [AttDailyRecord?]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, AttDailyRecord?>()
         snapshot.appendSections([0])
         snapshot.appendItems(dailyRecords)
         cardCollectionDiffableDataSource.apply(snapshot)
@@ -306,11 +306,17 @@ extension RecordViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch collectionView {
         case cardCollectionView:
-            presentRecordBrowseViewController()
+            guard let cardCollectionViewCell = cardCollectionView.cellForItem(at: indexPath) as? RecordCardCollectionViewCell else { return }
+            
+            if cardCollectionViewCell.getRecordStatus() == .exist {
+                presentRecordBrowseViewController()
+            } else {
+                print("CREATE RECORD")
+            }
         case weekdayCollectionView:
             isScrolling = false
             
-            guard let dateViewModel = dateViewModel else { return }
+            guard let dateViewModel = dailyRecordViewModel else { return }
             let cardIndexPath = IndexPath(row: indexPath.row % dateViewModel.weekday, section: 0)
             
             for itemIndexPath in weekdayCollectionView.indexPathsForVisibleItems where itemIndexPath != indexPath {
@@ -345,13 +351,13 @@ extension RecordViewController {
     func updateCenterSelectedCardIndexPath() {
         guard let centerSelectedCardIndexPath = centerCellIndexPath(in: cardCollectionView) else { return }
         
-        dateViewModel?.updateSelectedCardIndexPath(as: centerSelectedCardIndexPath)
-        dateViewModel?.updateCurrentSelectedDateIndexPath(cardCollectionViewIndexPath: centerSelectedCardIndexPath)
+        dailyRecordViewModel?.updateSelectedCardIndexPath(as: centerSelectedCardIndexPath)
+        dailyRecordViewModel?.updateCurrentSelectedDateIndexPath(cardCollectionViewIndexPath: centerSelectedCardIndexPath)
     }
     
     func updateSelectedCardIndexPathWithWeekdayCollectionView() {
         guard let centerIndexPath = centerCellIndexPath(in: weekdayCollectionView) else { return }
-        dateViewModel?.updateCenteredDateWithIndexPath(as: centerIndexPath)
+        dailyRecordViewModel?.updateCenteredDateWithIndexPath(as: centerIndexPath)
     }
 }
 
@@ -359,7 +365,7 @@ extension RecordViewController {
 extension RecordViewController {
     private func scrollToInitialPosition() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            guard let dateViewModel = self?.dateViewModel else { return }
+            guard let dateViewModel = self?.dailyRecordViewModel else { return }
             let dateSelectedIndex = dateViewModel.selectedDateIndexPath
             let cardCollectionViewIndex = dateSelectedIndex.row % dateViewModel.weekday
             
@@ -393,7 +399,7 @@ extension RecordViewController {
     }
     
     private func presentRecordBrowseViewController() {
-        let recordBrowseViewController = RecordBrowseViewController(viewModel: dateViewModel)
+        let recordBrowseViewController = RecordBrowseViewController(dailyRecordViewModel: dailyRecordViewModel)
         recordBrowseViewController.modalPresentationStyle = .automatic
         self.navigationController?.present(recordBrowseViewController, animated: true)
     }

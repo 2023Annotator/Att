@@ -38,10 +38,10 @@ class MainPageViewController: UIViewController {
     }()
     
     private lazy var recordViewController: RecordViewController = {
-        guard let recordViewModel = weekdayVisibilityViewModel,
-              let dateViewModel = dateViewModel else { return RecordViewController(recordViewModel: WeekdayVisiblityViewModel(), dateViewModel: DateViewModel()) }
+        guard let recordViewModel = self.weekdayVisibilityViewModel,
+              let dailyRecordViewModel = self.dailyRecordViewModel else { return RecordViewController(weekdayVisibilityViewModel: WeekdayVisiblityViewModel(), dailyRecordViewModel: DailyRecordViewModel()) }
         
-        let viewController = RecordViewController(recordViewModel: recordViewModel, dateViewModel: dateViewModel)
+        let viewController = RecordViewController(weekdayVisibilityViewModel: recordViewModel, dailyRecordViewModel: dailyRecordViewModel)
         return viewController
     }()
     
@@ -51,14 +51,14 @@ class MainPageViewController: UIViewController {
     }()
     
     private var weekdayVisibilityViewModel: WeekdayVisiblityViewModel?
-    private var dateViewModel: DateViewModel?
+    private var dailyRecordViewModel: DailyRecordViewModel?
     private var cancellables = Set<AnyCancellable>()
     
-    init(recordViewModel: WeekdayVisiblityViewModel, dateViewModel: DateViewModel) {
+    init(weekdayVisibilityViewModel: WeekdayVisiblityViewModel, dailyRecordViewModel: DailyRecordViewModel) {
         super.init(nibName: nil, bundle: nil)
         
-        self.weekdayVisibilityViewModel = recordViewModel
-        self.dateViewModel = dateViewModel
+        self.weekdayVisibilityViewModel = weekdayVisibilityViewModel
+        self.dailyRecordViewModel = dailyRecordViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -180,8 +180,8 @@ extension MainPageViewController {
     }
     
     private func showCalendar() {
-        guard let dateViewModel = dateViewModel else { return }
-        let calendarViewController = CalendarViewController(dateViewModel: dateViewModel)
+        guard let dailyRecordViewModel = dailyRecordViewModel else { return }
+        let calendarViewController = CalendarViewController(dailyRecordViewModel: dailyRecordViewModel)
         if let sheetPresentationController = calendarViewController.sheetPresentationController {
             sheetPresentationController.detents = [.medium()]
         }

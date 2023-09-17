@@ -81,7 +81,7 @@ final class ATTCardInfoView: UIView {
         }
     }
     
-    func setUpComponent(record: DailyRecordModel) {
+    func setUpComponent(record: AttDailyRecord) {
         dayNameLabel.text = record.date.weekday()
         dateLabel.text = record.date.date()
         diaryInfoView.setUpComponent(text: record.diary)

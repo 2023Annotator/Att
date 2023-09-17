@@ -30,12 +30,12 @@ final class CalendarViewController: UIViewController {
         return selection
     }()
     
-    private var dateViewModel: DateViewModel?
+    private var dailyRecordViewModel: DailyRecordViewModel?
     private var cancellables = Set<AnyCancellable>()
     
-    init(dateViewModel: DateViewModel) {
+    init(dailyRecordViewModel: DailyRecordViewModel) {
         super.init(nibName: nil, bundle: nil)
-        self.dateViewModel = dateViewModel
+        self.dailyRecordViewModel = dailyRecordViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -61,7 +61,7 @@ final class CalendarViewController: UIViewController {
     }
     
     private func bind() {
-        dateViewModel?.$selectedDateComponents
+        dailyRecordViewModel?.$selectedDateComponents
             .receive(on: DispatchQueue.main)
             .sink { [weak self] dateComponent in
                 self?.updateSelectedDate(as: dateComponent)
@@ -74,7 +74,7 @@ extension CalendarViewController: UICalendarViewDelegate, UICalendarSelectionSin
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
         selection.setSelected(dateComponents, animated: true)
         guard let dateComponents = dateComponents else { return }
-        dateViewModel?.changeSelectedDateComponents(as: dateComponents)
+        dailyRecordViewModel?.changeSelectedDateComponents(as: dateComponents)
         reloadDateView(date: Calendar.current.date(from: dateComponents))
         dismissCalendarView()
     }
@@ -88,7 +88,7 @@ extension CalendarViewController {
     }
     
     private func dismissCalendarView() {
-        dateViewModel?.dismissCalendarView()
+        dailyRecordViewModel?.dismissCalendarView()
         dismiss(animated: true, completion: nil)
     }
     

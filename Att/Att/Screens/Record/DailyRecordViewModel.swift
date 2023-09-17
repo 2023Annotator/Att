@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class DateViewModel {
+final class DailyRecordViewModel {
     
     var today: Date
     
@@ -24,22 +24,18 @@ final class DateViewModel {
     let weekday = 7
     let totalDataCount: Int = 35
     
-    // TEST
-    @Published var dailyRecordList: [DailyRecordModel?] = []
+    @Published var dailyRecordList: [AttDailyRecord?] = []
+    @Published var phraseFromYesterdayList: [String?] = []
     @Published var currentPhraseFromYesterday: String?
-    @Published var currentDailyRecord: DailyRecordModel?
+    @Published var currentDailyRecord: AttDailyRecord?
     
     init() {
         today = Date().currentKoreanDate()
         selectedDateIndexPath = IndexPath(row: weekday * 2 + weekdayIndex(date: today), section: 0)
         
         centeredDate = getCurrentCenteredDate(from: today)
-        weekDates = getCurrentWeekDates()
-        visibleDates = getCurrentVisibleWeekDates()
         
-        // TEST
-        updateRecordList()
-        updateCurrentRecord()
+        updateDates()
     }
 
     private func weekdayIndex(date: Date) -> Int {
@@ -105,9 +101,8 @@ final class DateViewModel {
         weekDates = getCurrentWeekDates()
         visibleDates = getCurrentVisibleWeekDates()
         
-        // TEST
-        updateRecordList()
-        updateCurrentRecord()
+        updateRecords()
+        updateSelectedDateRecord()
     }
     
     private func updateCenteredDateWithSelectedDate(date: Date) {
@@ -124,7 +119,7 @@ final class DateViewModel {
 }
 
 // MARK: internal Methods
-extension DateViewModel {
+extension DailyRecordViewModel {
     func updateCurrentSelectedDateIndexPath(as indexPath: IndexPath) {
         selectedDateIndexPath = indexPath
     }
@@ -138,7 +133,7 @@ extension DateViewModel {
         }
         
         updateSelectedDateComponents()
-        updateCurrentRecord()
+        updateSelectedDateRecord()
     }
     
     func updateSelectedCardIndexPath(as indexPath: IndexPath) {
@@ -162,7 +157,7 @@ extension DateViewModel {
         isCalendarViewDismissed = true
     }
 }
-extension DateViewModel {
+extension DailyRecordViewModel {
     private func dateFromString(_ dateString: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY/MM/dd"
@@ -188,6 +183,57 @@ extension DateViewModel {
         return centeredIdx - deltaValue...centeredIdx + deltaValue
     }
     
+    private func updateRecords() {
+        
+        guard let startDate = Calendar.current.date(byAdding: .day, value: -4, to: centeredDate) else { return }
+        guard let endDate = Calendar.current.date(byAdding: .day, value: 4, to: centeredDate) else { return }
+
+        guard let dailyRecordList = CoreDataManager.shared.fetchDailyRecords(startDate: startDate, endDate: endDate) else { return }
+        
+        updateDailyRecordList(dailyRecordList: dailyRecordList)
+        updatePhraseFromYesterdayList(dailyRecordList: dailyRecordList)
+    }
+    
+    private func updateDailyRecordList(dailyRecordList: [AttDailyRecord]) {
+            var tempDailyRecordList: [AttDailyRecord?] = []
+            
+            for idx in centeredRange() {
+                let date = weekDates[idx].date()
+                let data = dailyRecordList.filter({$0.date.date() == date})
+                if data.count == 0 {
+                    let temp = AttDailyRecord(date: weekDates[idx], mood: nil, diary: nil, phraseToTomorrow: nil)
+                    tempDailyRecordList.append(temp)
+                } else {
+                    tempDailyRecordList.append(data.first)
+                }
+            }
+            self.dailyRecordList = tempDailyRecordList
+    }
+    
+    private func updatePhraseFromYesterdayList(dailyRecordList: [AttDailyRecord]) {
+        var tempPhraseFromYesterdayList: [String?] = []
+        
+        for idx in centeredRange() {
+            let yesterdayIndex = idx - 1
+            let date = weekDates[yesterdayIndex].date()
+            let data = dailyRecordList.filter({$0.date.date() == date})
+            if data.count == 0 {
+                tempPhraseFromYesterdayList.append(nil)
+            } else {
+                tempPhraseFromYesterdayList.append(data.first?.phraseToTomorrow)
+            }
+        }
+        phraseFromYesterdayList = tempPhraseFromYesterdayList
+    }
+    
+    private func updateSelectedDateRecord() {
+        currentDailyRecord = dailyRecordList[selectedDateIndexPath.row % weekday]
+        currentPhraseFromYesterday = phraseFromYesterdayList[selectedDateIndexPath.row % weekday]
+    }
+}
+
+// MARK: TEST
+extension DailyRecordViewModel {
     // TEST & DUMMY
     func printAllComponent() {
         print("====================================")
@@ -197,33 +243,4 @@ extension DateViewModel {
         print("SEL IDX: \(selectedDateIndexPath) DATE: \(String(describing: selectedDateComponents))")
     }
     
-    private func updateRecordList() {
-        var tempDailyRecordList: [DailyRecordModel?] = []
-        
-        guard let startDate = Calendar.current.date(byAdding: .day, value: -3, to: centeredDate) else { return }
-        guard let endDate = Calendar.current.date(byAdding: .day, value: 4, to: centeredDate) else { return }
-
-        guard let dummyDailyRecordList = CoreDataManager.shared.fetchDailyRecords(startDate: startDate, endDate: endDate) else { return }
-        
-        for idx in centeredRange() {
-            let date = weekDates[idx].date()
-            let data = dummyDailyRecordList.filter({$0.date.date() == date})
-            if data.count == 0 {
-                let temp = DailyRecordModel(date: weekDates[idx], mood: nil, diary: nil, phraseToTomorrow: nil)
-                tempDailyRecordList.append(temp)
-            } else {
-                tempDailyRecordList.append(data.first)
-            }
-        }
-        dailyRecordList = tempDailyRecordList
-    }
-    
-    private func updateCurrentRecord() {
-        currentDailyRecord = dailyRecordList[selectedDateIndexPath.row % weekday]
-        if(selectedDateIndexPath.row == 14 || selectedDateIndexPath.row == 20) {
-            currentPhraseFromYesterday = "오후 9시 전에는 집에 들어가자..."
-        } else {
-            currentPhraseFromYesterday = dailyRecordList[(selectedDateIndexPath.row % weekday) - 1]?.phraseToTomorrow
-        }
-    }
 }
