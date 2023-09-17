@@ -13,10 +13,11 @@ import UIKit
 class AddRhythmViewController: UIViewController {
 
     // 좌측 뒤로가기버튼
-    private let chevronButton: UIBarButtonItem = {
+    private let backBarButtonItem: UIBarButtonItem = {
         let testImage = UIImage() // TEST
         testImage.withTintColor(.yellow)
         let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        
         return button
     }()
     
@@ -121,7 +122,7 @@ class AddRhythmViewController: UIViewController {
     }
     
     private func setUpNavigationBar() {
-        navigationItem.leftBarButtonItem = chevronButton
+        navigationItem.leftBarButtonItem = backBarButtonItem
         navigationItem.rightBarButtonItem = xmarkButton
     }
     

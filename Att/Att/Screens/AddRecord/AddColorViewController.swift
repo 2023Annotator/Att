@@ -12,10 +12,12 @@ import UIKit
 class AddColorViewController: UIViewController {
 
     // 좌측 뒤로가기버튼
-    private let chevronButton: UIBarButtonItem = {
+    private let backBarButtonItem: UIBarButtonItem = {
+        
         let testImage = UIImage() // TEST
         testImage.withTintColor(.yellow)
         let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        
         return button
     }()
     
@@ -95,8 +97,17 @@ class AddColorViewController: UIViewController {
     }()
     
 
-    //컬러피커 추가하기
-    
+    private lazy var circularSlider: CircularSlider = {
+        let frame = CGRect(x: 0, y: 0, width: 300, height: 300)
+        var circularSlider = CircularSlider(frame: frame)
+        
+        circularSlider.unfilledArcLineCap = .round
+        circularSlider.filledArcLineCap = .round
+        circularSlider.currentValue = 10
+        circularSlider.lineWidth = 54
+                                            
+        return circularSlider
+    }()
     
     //다음 버튼
     private lazy var nextButton: NextButtonView = {
@@ -127,11 +138,11 @@ class AddColorViewController: UIViewController {
         
         // Do any additional setup after loading the view.
     }
-    
     // private var cancellables = Set<AnyCancellable>()
     
     private func setUpNavigationBar() {
-        navigationItem.leftBarButtonItem = chevronButton
+        
+        navigationItem.leftBarButtonItem = backBarButtonItem
         navigationItem.rightBarButtonItem = xmarkButton
     }
     
@@ -158,7 +169,8 @@ class AddColorViewController: UIViewController {
                 recordLabel,
                 recordExplainLabel,
                 recordExplain2Label,
-                imageView
+                imageView,
+                circularSlider
             ].forEach {
                 contentView.addSubview($0)
         }
@@ -189,6 +201,12 @@ class AddColorViewController: UIViewController {
             make.top.equalTo(recordExplain2Label.snp.bottom).offset(constraints.space12)
         }
         imageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+    
+        circularSlider.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(constraints.space42)
+            make.height.equalTo(300)
+            make.leading.trailing.equalToSuperview()
+        }
         
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
