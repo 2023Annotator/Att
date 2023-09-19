@@ -44,11 +44,15 @@ extension CoreDataManager {
     // MARK: C
     func createDailyRecord(dailyRecord: AttDailyRecord) {
         guard let entity = NSEntityDescription.entity(forEntityName: "DailyRecord", in: context) else { return }
+        guard let musicThumbnailData = dailyRecord.musicInfo?.thumbnailImage?.jpegData(compressionQuality: 0.0) else { return }
         
         let record = NSManagedObject(entity: entity, insertInto: context)
         record.setValue(dailyRecord.date, forKey: "date")
         record.setValue(UUID(), forKey: "id")
         record.setValue(dailyRecord.mood?.rawValue, forKey: "mood")
+        record.setValue(dailyRecord.musicInfo?.title, forKey: "musicTitle")
+        record.setValue(dailyRecord.musicInfo?.artist, forKey: "musicArtist")
+        record.setValue(musicThumbnailData, forKey: "musicThumbnail")
         record.setValue(dailyRecord.diary, forKey: "diary")
         record.setValue(dailyRecord.phraseToTomorrow, forKey: "phraseToTomorrow")
         
@@ -115,7 +119,6 @@ extension CoreDataManager {
 // MARK: TEST SET
 extension CoreDataManager {
     func deleteAllDailyRecord() {
-        print("일단은 전체 데이터 제거")
         let fetchRequest: NSFetchRequest<DailyRecord> = DailyRecord.fetchRequest()
         
         do {
@@ -135,7 +138,6 @@ extension CoreDataManager {
         let fetchRequest: NSFetchRequest<DailyRecord> = DailyRecord.fetchRequest()
         
         do {
-            // 필터링된 데이터를 가져옵니다.
             let data = try context.fetch(fetchRequest)
             return data.compactMap { $0.mapToModel() }
         } catch {
@@ -143,11 +145,4 @@ extension CoreDataManager {
             return nil
         }
     }
-    
-//    func createDummyData() {
-//        let dataList = DummyCoreDataManager.shared.getDummyDailyDataList()
-//        for data in dataList {
-//            CoreDataManager.shared.createDailyRecord(dailyRecord: data)
-//        }
-//    }
 }

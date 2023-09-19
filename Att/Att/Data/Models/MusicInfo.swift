@@ -27,6 +27,8 @@ struct MusicInfo: Hashable {
     }
     
     func artistAndTitleStr() -> String {
-        return "\(artist) - \(title)"
+        guard let artistStr = artist,
+        let titleStr = title else { return "" }
+        return "\(artistStr) - \(titleStr)"
     }
 }

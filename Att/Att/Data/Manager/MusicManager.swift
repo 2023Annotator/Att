@@ -10,13 +10,6 @@ import UIKit.UIImage
 import MusadoraKit
 
 final class MusicManager {
-    func searchMusic(named: String) {
-        Task {
-            let searchResponse = try await MCatalog.search(for: named, types: [.songs], limit: 10)
-            print(searchResponse.songs)
-        }
-    }
-    
     func getMusicList(named: String) async -> [MusicInfo]? {
         do {
             let searchResponse = try await MCatalog.search(for: named, types: [.songs], limit: 10)
@@ -27,7 +20,7 @@ final class MusicManager {
             var thumbnailImageList: [UIImage?] = []
             
             for artwork in artworks {
-                guard let artworkURL = artwork?.url(width: 300, height: 300) else {
+                guard let artworkURL = artwork?.url(width: 800, height: 800) else {
                     return nil
                 }
                 let (data, _) = try await URLSession.shared.data(from: artworkURL)

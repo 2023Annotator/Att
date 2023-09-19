@@ -5,6 +5,9 @@
         <attribute name="diary" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="mood" optional="YES" attributeType="String"/>
+        <attribute name="musicArtist" optional="YES" attributeType="String"/>
+        <attribute name="musicThumbnail" optional="YES" attributeType="Binary"/>
+        <attribute name="musicTitle" optional="YES" attributeType="String"/>
         <attribute name="phraseToTomorrow" optional="YES" attributeType="String"/>
     </entity>
 </model>
