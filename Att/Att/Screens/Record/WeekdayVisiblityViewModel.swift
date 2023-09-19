@@ -14,16 +14,11 @@ protocol ViewModelType {
     associatedtype Output
 }
 
-final class RecordViewModel: ViewModelType {
-    @Published var selectedIdx: IndexPath = IndexPath(row: 0, section: 0)
+final class WeekdayVisiblityViewModel: ViewModelType {
     @Published var weekdayVisibleStatus: Bool = true
-    @Published var today: Date
     
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
-        today = Date()
-    }
     struct Input {
         let upSwipePublisher: AnyPublisher<UISwipeGestureRecognizer, Never>
         let downSwipePublisher: AnyPublisher<UISwipeGestureRecognizer, Never>
@@ -45,13 +40,5 @@ final class RecordViewModel: ViewModelType {
                 self?.weekdayVisibleStatus = true
             }
         }.store(in: &cancellables)
-    }
-    
-    func changeSelectedItemIdx(as idx: IndexPath) {
-        selectedIdx = idx
-    }
-    
-    func updateSelectedItemIdx() {
-        selectedIdx = selectedIdx
     }
 }

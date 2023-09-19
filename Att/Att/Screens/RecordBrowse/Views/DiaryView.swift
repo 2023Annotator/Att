@@ -13,7 +13,7 @@ final class DiaryView: RecordBrowseOuterTitleDefaultView {
         let view = UITextView()
         view.font = .caption2
         view.textAlignment = .left
-        view.textColor = .white
+        view.textColor = .black
         view.layer.cornerRadius = 12
         view.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         return view
@@ -50,7 +50,7 @@ final class DiaryView: RecordBrowseOuterTitleDefaultView {
         contentView.sizeToFit()
     }
     
-    func setUpComponent(color: UIColor, content: String) {
+    func setUpComponent(color: UIColor, content: String?) {
         contentView.backgroundColor = color
         contentView.text = content
     }

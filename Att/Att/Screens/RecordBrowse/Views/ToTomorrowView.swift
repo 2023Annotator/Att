@@ -33,13 +33,13 @@ final class ToTomorrowView: RecordBrowseOuterTitleDefaultView {
         addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(constraints.space12)
-            make.leading.trailing.equalToSuperview().inset(constraints.space20) // TEST
+            make.leading.trailing.equalToSuperview().inset(constraints.space20)
             make.bottom.equalToSuperview()
         }
         contentLabel.sizeToFit()
     }
     
-    func setUpComponent(text: String) {
+    func setUpComponent(text: String?) {
         contentLabel.text = text
     }
 }

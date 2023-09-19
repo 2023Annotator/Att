@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3A147B332A84EA130078050A /* RecordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A147B322A84EA130078050A /* RecordViewModel.swift */; };
+		3A147B332A84EA130078050A /* WeekdayVisiblityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A147B322A84EA130078050A /* WeekdayVisiblityViewModel.swift */; };
 		3A22029A2A5AB7DA009DB223 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2202992A5AB7DA009DB223 /* AppDelegate.swift */; };
 		3A22029C2A5AB7DA009DB223 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22029B2A5AB7DA009DB223 /* SceneDelegate.swift */; };
 		3A22029E2A5AB7DA009DB223 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22029D2A5AB7DA009DB223 /* ViewController.swift */; };
@@ -39,11 +39,17 @@
 		3A9322402AA70F5A00C106DF /* AnnualAnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93223F2AA70F5A00C106DF /* AnnualAnalysisView.swift */; };
 		3A9322432AA73C4300C106DF /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9322422AA73C4300C106DF /* MainPageViewController.swift */; };
 		3A9322482AA7532900C106DF /* YearSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9322472AA7532900C106DF /* YearSelectorView.swift */; };
-		3A93224C2AA8794100C106DF /* DateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93224B2AA8794100C106DF /* DateViewModel.swift */; };
+		3A93224C2AA8794100C106DF /* DailyRecordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A93224B2AA8794100C106DF /* DailyRecordViewModel.swift */; };
+		3A985A672AB47D5F003FBD3A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A985A662AB47D5F003FBD3A /* CoreDataManager.swift */; };
+		3A985A742AB48B82003FBD3A /* DailyRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A985A722AB48B82003FBD3A /* DailyRecord+CoreDataClass.swift */; };
+		3A985A752AB48B82003FBD3A /* DailyRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A985A732AB48B82003FBD3A /* DailyRecord+CoreDataProperties.swift */; };
+		3A985A7C2AB5A6DB003FBD3A /* DateRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A985A7B2AB5A6DB003FBD3A /* DateRelation.swift */; };
+		3A985A7E2AB5A808003FBD3A /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A985A7D2AB5A808003FBD3A /* UIImage+.swift */; };
 		3AC996742A5AE22700030AAD /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996732A5AE22700030AAD /* CombineCocoa */; };
 		3AC996772A5AE23500030AAD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996762A5AE23500030AAD /* SnapKit */; };
 		3AC9967A2A5AE29600030AAD /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC996792A5AE29600030AAD /* CombineMoya */; };
 		3AC9967C2A5AE29600030AAD /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC9967B2A5AE29600030AAD /* Moya */; };
+		3AE2D73C2AA9E88700052A0B /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2D73B2AA9E88700052A0B /* CalendarViewController.swift */; };
 		3AE2D7442AAEA94300052A0B /* RecordBrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2D7432AAEA94300052A0B /* RecordBrowseViewController.swift */; };
 		3AE2D7462AAEAB1900052A0B /* RecordBrowseOuterTitleDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2D7452AAEAB1900052A0B /* RecordBrowseOuterTitleDefaultView.swift */; };
 		3AE2D7482AAEABDF00052A0B /* TodaysMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2D7472AAEABDF00052A0B /* TodaysMoodView.swift */; };
@@ -54,7 +60,9 @@
 		3AE2D7522AAEB5CA00052A0B /* DiaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2D7512AAEB5CA00052A0B /* DiaryView.swift */; };
 		3AE2D7542AAEB7B800052A0B /* ToTomorrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2D7532AAEB7B800052A0B /* ToTomorrowView.swift */; };
 		3AE2D7562AAEE2EA00052A0B /* DottedLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2D7552AAEE2EA00052A0B /* DottedLineView.swift */; };
-		3AE2D73C2AA9E88700052A0B /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2D73B2AA9E88700052A0B /* CalendarViewController.swift */; };
+		3AE2D7582AAF55CD00052A0B /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2D7572AAF55CD00052A0B /* Mood.swift */; };
+		3AE2D75A2AAF588300052A0B /* MusicInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2D7592AAF588300052A0B /* MusicInfo.swift */; };
+		3AE2D75C2AAF590500052A0B /* DailyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE2D75B2AAF590500052A0B /* DailyRecord.swift */; };
 		3AECF7552A65225D0086C5F2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 3AECF7542A65225D0086C5F2 /* .swiftlint.yml */; };
 		3AF9C0562A7CE3F500A5A036 /* RecordExistCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0552A7CE3F500A5A036 /* RecordExistCardView.swift */; };
 		3AF9C0582A7CE5F500A5A036 /* TitleDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0572A7CE5F500A5A036 /* TitleDescriptionView.swift */; };
@@ -72,7 +80,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3A147B322A84EA130078050A /* RecordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewModel.swift; sourceTree = "<group>"; };
+		3A147B322A84EA130078050A /* WeekdayVisiblityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayVisiblityViewModel.swift; sourceTree = "<group>"; };
 		3A2202962A5AB7DA009DB223 /* Att.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Att.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A2202992A5AB7DA009DB223 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A22029B2A5AB7DA009DB223 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,7 +114,12 @@
 		3A93223F2AA70F5A00C106DF /* AnnualAnalysisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualAnalysisView.swift; sourceTree = "<group>"; };
 		3A9322422AA73C4300C106DF /* MainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		3A9322472AA7532900C106DF /* YearSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearSelectorView.swift; sourceTree = "<group>"; };
-		3A93224B2AA8794100C106DF /* DateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewModel.swift; sourceTree = "<group>"; };
+		3A93224B2AA8794100C106DF /* DailyRecordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyRecordViewModel.swift; sourceTree = "<group>"; };
+		3A985A662AB47D5F003FBD3A /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		3A985A722AB48B82003FBD3A /* DailyRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3A985A732AB48B82003FBD3A /* DailyRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3A985A7B2AB5A6DB003FBD3A /* DateRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRelation.swift; sourceTree = "<group>"; };
+		3A985A7D2AB5A808003FBD3A /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		3AE2D73B2AA9E88700052A0B /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		3AE2D7432AAEA94300052A0B /* RecordBrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordBrowseViewController.swift; sourceTree = "<group>"; };
 		3AE2D7452AAEAB1900052A0B /* RecordBrowseOuterTitleDefaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordBrowseOuterTitleDefaultView.swift; sourceTree = "<group>"; };
@@ -118,6 +131,9 @@
 		3AE2D7512AAEB5CA00052A0B /* DiaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryView.swift; sourceTree = "<group>"; };
 		3AE2D7532AAEB7B800052A0B /* ToTomorrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToTomorrowView.swift; sourceTree = "<group>"; };
 		3AE2D7552AAEE2EA00052A0B /* DottedLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DottedLineView.swift; sourceTree = "<group>"; };
+		3AE2D7572AAF55CD00052A0B /* Mood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
+		3AE2D7592AAF588300052A0B /* MusicInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicInfo.swift; sourceTree = "<group>"; };
+		3AE2D75B2AAF590500052A0B /* DailyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyRecord.swift; sourceTree = "<group>"; };
 		3AECF7542A65225D0086C5F2 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		3AF9C0552A7CE3F500A5A036 /* RecordExistCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordExistCardView.swift; sourceTree = "<group>"; };
 		3AF9C0572A7CE5F500A5A036 /* TitleDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleDescriptionView.swift; sourceTree = "<group>"; };
@@ -184,6 +200,15 @@
 			path = Att;
 			sourceTree = "<group>";
 		};
+		3A4487282AB2EB360035DAAE /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				3A985A722AB48B82003FBD3A /* DailyRecord+CoreDataClass.swift */,
+				3A985A732AB48B82003FBD3A /* DailyRecord+CoreDataProperties.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		3A701F752A5ABE8C00D6913A /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -208,6 +233,7 @@
 				3A5D0BE32A62B9AF00064DCB /* UIFont+.swift */,
 				3A5D0BE52A62B9B800064DCB /* UIColor+.swift */,
 				3AF9C0622A7CF74500A5A036 /* Date+.swift */,
+				3A985A7D2AB5A808003FBD3A /* UIImage+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -305,6 +331,7 @@
 		3A701F822A5ABEEC00D6913A /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				3A985A662AB47D5F003FBD3A /* CoreDataManager.swift */,
 				3A701F842A5ABEF600D6913A /* Entities */,
 				3A701F832A5ABEF000D6913A /* Models */,
 			);
@@ -316,6 +343,11 @@
 			children = (
 				3AF9C0662A7CFDBC00A5A036 /* CardInfoType.swift */,
 				3AF9C06B2A7D0B0000A5A036 /* RecordStatus.swift */,
+				3AE2D7572AAF55CD00052A0B /* Mood.swift */,
+				3AE2D7592AAF588300052A0B /* MusicInfo.swift */,
+				3AE2D75B2AAF590500052A0B /* DailyRecord.swift */,
+				3A985A7B2AB5A6DB003FBD3A /* DateRelation.swift */,
+				3A4487282AB2EB360035DAAE /* CoreData */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -408,12 +440,11 @@
 		3AF9C05D2A7CF06F00A5A036 /* Record */ = {
 			isa = PBXGroup;
 			children = (
-				3A147B322A84EA130078050A /* RecordViewModel.swift */,
-				3A93224B2AA8794100C106DF /* DateViewModel.swift */,
+				3A147B322A84EA130078050A /* WeekdayVisiblityViewModel.swift */,
+				3A93224B2AA8794100C106DF /* DailyRecordViewModel.swift */,
 				3AF9C0602A7CF09200A5A036 /* RecordViewController.swift */,
 				3AE2D73B2AA9E88700052A0B /* CalendarViewController.swift */,
 				3AF9C06D2A7D0B5E00A5A036 /* Views */,
-				3AE2D73D2AAB43C000052A0B /* TTTViewController.swift */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -539,16 +570,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A9322432AA73C4300C106DF /* MainPageViewController.swift in Sources */,
-				3AE2D73E2AAB43C000052A0B /* TTTViewController.swift in Sources */,
 				3AF9C0632A7CF74500A5A036 /* Date+.swift in Sources */,
 				3AF9C0562A7CE3F500A5A036 /* RecordExistCardView.swift in Sources */,
 				3A9322402AA70F5A00C106DF /* AnnualAnalysisView.swift in Sources */,
 				3A9322382AA70ACA00C106DF /* MonthCollectionViewCell.swift in Sources */,
 				3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */,
 				3A93222E2AA60BA900C106DF /* MonthlyMoodCollectionViewFlowLayout.swift in Sources */,
-				3A93224C2AA8794100C106DF /* DateViewModel.swift in Sources */,
+				3A93224C2AA8794100C106DF /* DailyRecordViewModel.swift in Sources */,
 				3A5D0BE62A62B9B800064DCB /* UIColor+.swift in Sources */,
 				3A93221E2AA5DAD300C106DF /* TextContentView.swift in Sources */,
+				3A985A742AB48B82003FBD3A /* DailyRecord+CoreDataClass.swift in Sources */,
+				3AE2D7582AAF55CD00052A0B /* Mood.swift in Sources */,
 				3AE2D74C2AAEB20800052A0B /* RecordBrowseInnerTitleDefaultView.swift in Sources */,
 				3AE2D74E2AAEB3A400052A0B /* TicketDecorationView.swift in Sources */,
 				3AE2D7502AAEB45500052A0B /* FromYesterdayView.swift in Sources */,
@@ -557,6 +589,7 @@
 				3AE2D7542AAEB7B800052A0B /* ToTomorrowView.swift in Sources */,
 				3AE2D7562AAEE2EA00052A0B /* DottedLineView.swift in Sources */,
 				3AF9C0612A7CF09200A5A036 /* RecordViewController.swift in Sources */,
+				3A985A7E2AB5A808003FBD3A /* UIImage+.swift in Sources */,
 				3AF9C0652A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift in Sources */,
 				3A9321E32A8CA0BB00C106DF /* ATTSegmentedControl.swift in Sources */,
 				3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */,
@@ -575,7 +608,11 @@
 				3AF9C0752A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift in Sources */,
 				3A2202A42A5AB7DA009DB223 /* Att.xcdatamodeld in Sources */,
 				3A9322282AA5F16900C106DF /* MoodSummaryContentView.swift in Sources */,
+				3A985A7C2AB5A6DB003FBD3A /* DateRelation.swift in Sources */,
 				3AF9C0582A7CE5F500A5A036 /* TitleDescriptionView.swift in Sources */,
+				3AE2D75C2AAF590500052A0B /* DailyRecord.swift in Sources */,
+				3A985A672AB47D5F003FBD3A /* CoreDataManager.swift in Sources */,
+				3AE2D75A2AAF588300052A0B /* MusicInfo.swift in Sources */,
 				3AE2D7482AAEABDF00052A0B /* TodaysMoodView.swift in Sources */,
 				3A9322482AA7532900C106DF /* YearSelectorView.swift in Sources */,
 				3AE2D7462AAEAB1900052A0B /* RecordBrowseOuterTitleDefaultView.swift in Sources */,
@@ -586,10 +623,11 @@
 				3A9322302AA60DCB00C106DF /* MonthlyMoodCollectionViewCell.swift in Sources */,
 				3AE2D73C2AA9E88700052A0B /* CalendarViewController.swift in Sources */,
 				3A9322362AA707EA00C106DF /* MonthCollectionViewFlowLayout.swift in Sources */,
+				3A985A752AB48B82003FBD3A /* DailyRecord+CoreDataProperties.swift in Sources */,
 				3A22029A2A5AB7DA009DB223 /* AppDelegate.swift in Sources */,
 				3A9322202AA5DCDB00C106DF /* MusicContentView.swift in Sources */,
 				3A22029C2A5AB7DA009DB223 /* SceneDelegate.swift in Sources */,
-				3A147B332A84EA130078050A /* RecordViewModel.swift in Sources */,
+				3A147B332A84EA130078050A /* WeekdayVisiblityViewModel.swift in Sources */,
 				3A93222A2AA5F5F600C106DF /* MostUsedWordContentView.swift in Sources */,
 				3A9321E02A8C9C5000C106DF /* WeekdayCollectionViewFlowLayout.swift in Sources */,
 			);

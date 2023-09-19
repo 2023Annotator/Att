@@ -38,7 +38,6 @@ final class TitleDescriptionView: UIView {
         super.init(frame: CGRect.zero)
         setUpConstraints(cardInfoType: cardInfoType)
         setUpTitle(cardInfoType: cardInfoType)
-        setUpDescription(cardInfotype: cardInfoType) // TEST
     }
     
     required init?(coder: NSCoder) {
@@ -94,14 +93,7 @@ final class TitleDescriptionView: UIView {
         titleLabel.text = cardInfoType.name
     }
     
-    // TEST
-    private func setUpDescription(cardInfotype: CardInfoType) {
-        switch cardInfotype {
-        case .diary:
-            descriptionLabel.text = "Something Something Some"
-        case .music:
-            return descriptionLabel.text = "---------"
-        default: break
-        }
+    func setUpComponent(text: String?) {
+        descriptionLabel.text = text
     }
 }
