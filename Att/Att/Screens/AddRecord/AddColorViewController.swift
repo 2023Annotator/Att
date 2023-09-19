@@ -135,7 +135,6 @@ class AddColorViewController: UIViewController {
     // private var cancellables = Set<AnyCancellable>()
     
     private func setUpNavigationBar() {
-        
         navigationItem.rightBarButtonItem = xmarkButton
     }
     
