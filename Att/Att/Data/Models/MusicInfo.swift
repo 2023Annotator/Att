@@ -8,14 +8,22 @@
 import Foundation
 import UIKit.UIImage
 
-struct MusicInfo: Codable {
-    let title: String
-    let artist: String
-    let thumbnailAddress: String
+struct MusicInfo: Hashable {
+    let title: String?
+    let artist: String?
+    var thumbnailImage: UIImage?
     
-    var thumbnailImage: UIImage {
-        guard let image = UIImage(named: thumbnailAddress) else { return UIImage() }
-        return image
+    static func == (lhs: MusicInfo, rhs: MusicInfo) -> Bool {
+        return lhs.title == rhs.title && lhs.artist == rhs.title
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(artist)
+    }
+    
+    mutating func setThumnailImage(as image: UIImage?) {
+        self.thumbnailImage = image
     }
     
     func artistAndTitleStr() -> String {

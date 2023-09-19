@@ -15,6 +15,7 @@
 		3A2202A62A5AB7DB009DB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A2202A52A5AB7DB009DB223 /* Assets.xcassets */; };
 		3A2202A92A5AB7DB009DB223 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A2202A72A5AB7DB009DB223 /* LaunchScreen.storyboard */; };
 		3A34410B2AB9AD3E009B554A /* MusadoraKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A34410A2AB9AD3E009B554A /* MusadoraKit */; };
+		3A34410E2AB9ADC7009B554A /* MusicManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A34410D2AB9ADC7009B554A /* MusicManager.swift */; };
 		3A5D0BE02A61542800064DCB /* Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BDF2A61542800064DCB /* Constraints.swift */; };
 		3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BE12A61553100064DCB /* TestViewModel.swift */; };
 		3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BE32A62B9AF00064DCB /* UIFont+.swift */; };
@@ -90,6 +91,7 @@
 		3A2202A52A5AB7DB009DB223 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A2202A82A5AB7DB009DB223 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3A2202AA2A5AB7DB009DB223 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3A34410D2AB9ADC7009B554A /* MusicManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicManager.swift; sourceTree = "<group>"; };
 		3A5D0BDF2A61542800064DCB /* Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraints.swift; sourceTree = "<group>"; };
 		3A5D0BE12A61553100064DCB /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
 		3A5D0BE32A62B9AF00064DCB /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
@@ -200,6 +202,15 @@
 				3A2202A22A5AB7DA009DB223 /* Att.xcdatamodeld */,
 			);
 			path = Att;
+			sourceTree = "<group>";
+		};
+		3A34410C2AB9AD9A009B554A /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				3A985A662AB47D5F003FBD3A /* CoreDataManager.swift */,
+				3A34410D2AB9ADC7009B554A /* MusicManager.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		3A4487282AB2EB360035DAAE /* CoreData */ = {
@@ -333,7 +344,7 @@
 		3A701F822A5ABEEC00D6913A /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				3A985A662AB47D5F003FBD3A /* CoreDataManager.swift */,
+				3A34410C2AB9AD9A009B554A /* Manager */,
 				3A701F842A5ABEF600D6913A /* Entities */,
 				3A701F832A5ABEF000D6913A /* Models */,
 			);
@@ -586,6 +597,7 @@
 				3A985A742AB48B82003FBD3A /* DailyRecord+CoreDataClass.swift in Sources */,
 				3AE2D7582AAF55CD00052A0B /* Mood.swift in Sources */,
 				3AE2D74C2AAEB20800052A0B /* RecordBrowseInnerTitleDefaultView.swift in Sources */,
+				3A34410E2AB9ADC7009B554A /* MusicManager.swift in Sources */,
 				3AE2D74E2AAEB3A400052A0B /* TicketDecorationView.swift in Sources */,
 				3AE2D7502AAEB45500052A0B /* FromYesterdayView.swift in Sources */,
 				3AE2D74A2AAEADE800052A0B /* NowPlayingView.swift in Sources */,
