@@ -14,6 +14,7 @@
 		3A2202A42A5AB7DA009DB223 /* Att.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A2202A22A5AB7DA009DB223 /* Att.xcdatamodeld */; };
 		3A2202A62A5AB7DB009DB223 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A2202A52A5AB7DB009DB223 /* Assets.xcassets */; };
 		3A2202A92A5AB7DB009DB223 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A2202A72A5AB7DB009DB223 /* LaunchScreen.storyboard */; };
+		3A34410B2AB9AD3E009B554A /* MusadoraKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A34410A2AB9AD3E009B554A /* MusadoraKit */; };
 		3A5D0BE02A61542800064DCB /* Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BDF2A61542800064DCB /* Constraints.swift */; };
 		3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BE12A61553100064DCB /* TestViewModel.swift */; };
 		3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BE32A62B9AF00064DCB /* UIFont+.swift */; };
@@ -155,6 +156,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A34410B2AB9AD3E009B554A /* MusadoraKit in Frameworks */,
 				3AC996742A5AE22700030AAD /* CombineCocoa in Frameworks */,
 				3AC996772A5AE23500030AAD /* SnapKit in Frameworks */,
 				3AC9967C2A5AE29600030AAD /* Moya in Frameworks */,
@@ -485,6 +487,7 @@
 				3AC996762A5AE23500030AAD /* SnapKit */,
 				3AC996792A5AE29600030AAD /* CombineMoya */,
 				3AC9967B2A5AE29600030AAD /* Moya */,
+				3A34410A2AB9AD3E009B554A /* MusadoraKit */,
 			);
 			productName = Att;
 			productReference = 3A2202962A5AB7DA009DB223 /* Att.app */;
@@ -518,6 +521,7 @@
 				3AC996722A5AE22700030AAD /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				3AC996752A5AE23500030AAD /* XCRemoteSwiftPackageReference "SnapKit" */,
 				3AC996782A5AE29600030AAD /* XCRemoteSwiftPackageReference "Moya" */,
+				3A3441092AB9AD3E009B554A /* XCRemoteSwiftPackageReference "MusadoraKit" */,
 			);
 			productRefGroup = 3A2202972A5AB7DA009DB223 /* Products */;
 			projectDirPath = "";
@@ -851,6 +855,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3A3441092AB9AD3E009B554A /* XCRemoteSwiftPackageReference "MusadoraKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rryam/MusadoraKit.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		3AC996722A5AE22700030AAD /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa";
@@ -878,6 +890,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3A34410A2AB9AD3E009B554A /* MusadoraKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A3441092AB9AD3E009B554A /* XCRemoteSwiftPackageReference "MusadoraKit" */;
+			productName = MusadoraKit;
+		};
 		3AC996732A5AE22700030AAD /* CombineCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3AC996722A5AE22700030AAD /* XCRemoteSwiftPackageReference "CombineCocoa" */;
