@@ -16,6 +16,12 @@
 		3A2202A92A5AB7DB009DB223 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A2202A72A5AB7DB009DB223 /* LaunchScreen.storyboard */; };
 		3A34410B2AB9AD3E009B554A /* MusadoraKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A34410A2AB9AD3E009B554A /* MusadoraKit */; };
 		3A34410E2AB9ADC7009B554A /* MusicManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A34410D2AB9ADC7009B554A /* MusicManager.swift */; };
+		3A3441112AB9B365009B554A /* MusicSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3441102AB9B365009B554A /* MusicSearchViewController.swift */; };
+		3A3441132AB9B3AF009B554A /* MusicSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3441122AB9B3AF009B554A /* MusicSearchResultViewController.swift */; };
+		3A3441152AB9B3CC009B554A /* MusicInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3441142AB9B3CC009B554A /* MusicInfoTableViewCell.swift */; };
+		3A3441182AB9B3FE009B554A /* MusicAuthorizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3441172AB9B3FE009B554A /* MusicAuthorizationManager.swift */; };
+		3A34411A2AB9B5FE009B554A /* RecordCreationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3441192AB9B5FE009B554A /* RecordCreationViewModel.swift */; };
+		3A34411C2AB9B666009B554A /* MusicSearchTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A34411B2AB9B666009B554A /* MusicSearchTestViewController.swift */; };
 		3A5D0BE02A61542800064DCB /* Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BDF2A61542800064DCB /* Constraints.swift */; };
 		3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BE12A61553100064DCB /* TestViewModel.swift */; };
 		3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BE32A62B9AF00064DCB /* UIFont+.swift */; };
@@ -92,6 +98,12 @@
 		3A2202A82A5AB7DB009DB223 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3A2202AA2A5AB7DB009DB223 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A34410D2AB9ADC7009B554A /* MusicManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicManager.swift; sourceTree = "<group>"; };
+		3A3441102AB9B365009B554A /* MusicSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSearchViewController.swift; sourceTree = "<group>"; };
+		3A3441122AB9B3AF009B554A /* MusicSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSearchResultViewController.swift; sourceTree = "<group>"; };
+		3A3441142AB9B3CC009B554A /* MusicInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicInfoTableViewCell.swift; sourceTree = "<group>"; };
+		3A3441172AB9B3FE009B554A /* MusicAuthorizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAuthorizationManager.swift; sourceTree = "<group>"; };
+		3A3441192AB9B5FE009B554A /* RecordCreationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCreationViewModel.swift; sourceTree = "<group>"; };
+		3A34411B2AB9B666009B554A /* MusicSearchTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSearchTestViewController.swift; sourceTree = "<group>"; };
 		3A5D0BDF2A61542800064DCB /* Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraints.swift; sourceTree = "<group>"; };
 		3A5D0BE12A61553100064DCB /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
 		3A5D0BE32A62B9AF00064DCB /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
@@ -173,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				3AECF7542A65225D0086C5F2 /* .swiftlint.yml */,
+				3A3441162AB9B3F4009B554A /* Auth */,
 				3A2202982A5AB7DA009DB223 /* Att */,
 				3A2202972A5AB7DA009DB223 /* Products */,
 			);
@@ -211,6 +224,24 @@
 				3A34410D2AB9ADC7009B554A /* MusicManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		3A34410F2AB9B289009B554A /* MusicSearch */ = {
+			isa = PBXGroup;
+			children = (
+				3A3441102AB9B365009B554A /* MusicSearchViewController.swift */,
+				3A3441122AB9B3AF009B554A /* MusicSearchResultViewController.swift */,
+				3A34411B2AB9B666009B554A /* MusicSearchTestViewController.swift */,
+			);
+			path = MusicSearch;
+			sourceTree = "<group>";
+		};
+		3A3441162AB9B3F4009B554A /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				3A3441172AB9B3FE009B554A /* MusicAuthorizationManager.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		3A4487282AB2EB360035DAAE /* CoreData */ = {
@@ -263,6 +294,8 @@
 		3A701F792A5ABEAB00D6913A /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				3A3441192AB9B5FE009B554A /* RecordCreationViewModel.swift */,
+				3A34410F2AB9B289009B554A /* MusicSearch */,
 				3A9322462AA74A3000C106DF /* Main */,
 				3AE2D73F2AAEA90100052A0B /* RecordBrowse */,
 				3AF9C05D2A7CF06F00A5A036 /* Record */,
@@ -313,6 +346,7 @@
 				3AF9C0642A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift */,
 				3A93222F2AA60DCB00C106DF /* MonthlyMoodCollectionViewCell.swift */,
 				3A9322372AA70ACA00C106DF /* MonthCollectionViewCell.swift */,
+				3A3441142AB9B3CC009B554A /* MusicInfoTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -593,6 +627,7 @@
 				3A93222E2AA60BA900C106DF /* MonthlyMoodCollectionViewFlowLayout.swift in Sources */,
 				3A93224C2AA8794100C106DF /* DailyRecordViewModel.swift in Sources */,
 				3A5D0BE62A62B9B800064DCB /* UIColor+.swift in Sources */,
+				3A34411A2AB9B5FE009B554A /* RecordCreationViewModel.swift in Sources */,
 				3A93221E2AA5DAD300C106DF /* TextContentView.swift in Sources */,
 				3A985A742AB48B82003FBD3A /* DailyRecord+CoreDataClass.swift in Sources */,
 				3AE2D7582AAF55CD00052A0B /* Mood.swift in Sources */,
@@ -607,8 +642,10 @@
 				3AF9C0612A7CF09200A5A036 /* RecordViewController.swift in Sources */,
 				3A985A7E2AB5A808003FBD3A /* UIImage+.swift in Sources */,
 				3AF9C0652A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift in Sources */,
+				3A34411C2AB9B666009B554A /* MusicSearchTestViewController.swift in Sources */,
 				3A9321E32A8CA0BB00C106DF /* ATTSegmentedControl.swift in Sources */,
 				3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */,
+				3A3441112AB9B365009B554A /* MusicSearchViewController.swift in Sources */,
 				3AF9C0692A7CFE4300A5A036 /* ATTFromYesterdayView.swift in Sources */,
 				3AF9C0732A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift in Sources */,
 				3A22029E2A5AB7DA009DB223 /* ViewController.swift in Sources */,
@@ -636,6 +673,7 @@
 				3AF9C0712A7D0FD900A5A036 /* ATTCardView.swift in Sources */,
 				3A93221C2AA5D82900C106DF /* AnalysisDefaultView.swift in Sources */,
 				3A5D0BE02A61542800064DCB /* Constraints.swift in Sources */,
+				3A3441132AB9B3AF009B554A /* MusicSearchResultViewController.swift in Sources */,
 				3A9322302AA60DCB00C106DF /* MonthlyMoodCollectionViewCell.swift in Sources */,
 				3AE2D73C2AA9E88700052A0B /* CalendarViewController.swift in Sources */,
 				3A9322362AA707EA00C106DF /* MonthCollectionViewFlowLayout.swift in Sources */,
@@ -643,7 +681,9 @@
 				3A22029A2A5AB7DA009DB223 /* AppDelegate.swift in Sources */,
 				3A9322202AA5DCDB00C106DF /* MusicContentView.swift in Sources */,
 				3A22029C2A5AB7DA009DB223 /* SceneDelegate.swift in Sources */,
+				3A3441182AB9B3FE009B554A /* MusicAuthorizationManager.swift in Sources */,
 				3A147B332A84EA130078050A /* WeekdayVisiblityViewModel.swift in Sources */,
+				3A3441152AB9B3CC009B554A /* MusicInfoTableViewCell.swift in Sources */,
 				3A93222A2AA5F5F600C106DF /* MostUsedWordContentView.swift in Sources */,
 				3A9321E02A8C9C5000C106DF /* WeekdayCollectionViewFlowLayout.swift in Sources */,
 			);
