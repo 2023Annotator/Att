@@ -12,14 +12,6 @@ import UIKit
 class AddColorViewController: UIViewController {
 
     // 좌측 뒤로가기버튼
-    private let backBarButtonItem: UIBarButtonItem = {
-        
-        let testImage = UIImage() // TEST
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")?.withTintColor(.white, renderingMode: .alwaysOriginal))
-        
-        return button
-    }()
     
     // 우측 close 버튼
     private let xmarkButton: UIBarButtonItem = {
@@ -33,7 +25,7 @@ class AddColorViewController: UIViewController {
     lazy var progressView: UIProgressView = {
         let view = UIProgressView()
         view.trackTintColor = .white
-        view.progressTintColor = .blue
+        view.progressTintColor = .green
         view.progress = 0.2
         
         return view
@@ -89,6 +81,7 @@ class AddColorViewController: UIViewController {
             
         // Create UIImage.
         let image = UIImage(systemName: "arrowtriangle.down.fill")
+        image?.withTintColor(.white)
         
             // Set the image to UIImageView.
         imageView.image = image
@@ -109,9 +102,10 @@ class AddColorViewController: UIViewController {
         return circularSlider
     }()
     
+    
     //다음 버튼
     private lazy var nextButton: NextButtonView = {
-        let button = NextButtonView()
+        let button = NextButtonView(title: "다음")
         return button
     }()
     
@@ -142,7 +136,6 @@ class AddColorViewController: UIViewController {
     
     private func setUpNavigationBar() {
         
-        navigationItem.leftBarButtonItem = backBarButtonItem
         navigationItem.rightBarButtonItem = xmarkButton
     }
     
@@ -225,11 +218,14 @@ class AddColorViewController: UIViewController {
     private func setUpAction() {
         nextButton.tapPublisher
             .sink {
-                let navVC = UINavigationController(rootViewController: AddRhythmViewController())
-                navVC.modalPresentationStyle = .overFullScreen
-                self.present(navVC, animated: false)
-
-            }.store(in: &cancellables)
+                self.navigationController?.pushViewController(AddRhythmViewController(), animated: true)
+        }.store(in: &cancellables)
+        
+        xmarkButton.tapPublisher
+            .sink {
+                self.navigationController?.dismiss(animated: true)
+        }.store(in: &cancellables)
+        
     }
     
     // MARK: ViewModel Stuff - Optional

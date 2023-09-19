@@ -12,14 +12,6 @@ import UIKit
 
 class AddWordsViewController: UIViewController {
     
-    // 좌측 뒤로가기버튼
-    private let chevronButton: UIBarButtonItem = {
-        let testImage = UIImage() // TEST
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")?.withTintColor(.white, renderingMode: .alwaysOriginal))
-        return button
-    }()
-    
     // 우측 close 버튼
     private let xmarkButton: UIBarButtonItem = {
         let testImage = UIImage() // TEST
@@ -27,17 +19,14 @@ class AddWordsViewController: UIViewController {
         let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal))
         return button
     }()
-
-    // progress bar 들어가야함
     
     private lazy var progressView: UIProgressView = {
         let view = UIProgressView()
 
-        
         /// progress 배경 색상
         view.trackTintColor = .white
         /// progress 진행 색상
-        view.progressTintColor = .blue
+        view.progressTintColor = .green
         view.progress = 0.8
         
         return view
@@ -88,7 +77,7 @@ class AddWordsViewController: UIViewController {
     //다음 버튼
     
     private lazy var nextButton: NextButtonView = {
-        let button = NextButtonView()
+        let button = NextButtonView(title: "다음")
         
         return button
     }()
@@ -117,7 +106,6 @@ class AddWordsViewController: UIViewController {
     }
     
     private func setUpNavigationBar() {
-        navigationItem.leftBarButtonItem = chevronButton
         navigationItem.rightBarButtonItem = xmarkButton
     }
     
@@ -194,8 +182,13 @@ class AddWordsViewController: UIViewController {
     private func setUpAction() {
         nextButton.tapPublisher
             .sink {
-                self.navigationController?.pushViewController(AddRecordsViewController(), animated: false)
+                self.navigationController?.pushViewController(AddRecordFinishViewController(), animated: true)
             }.store(in: &cancellables)
+        
+        xmarkButton.tapPublisher
+            .sink {
+                self.navigationController?.dismiss(animated: true)
+        }.store(in: &cancellables)
     }
     
     // MARK: ViewModel Stuff - Optional

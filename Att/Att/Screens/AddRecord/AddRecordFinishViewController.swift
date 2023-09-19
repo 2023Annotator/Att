@@ -1,8 +1,8 @@
 //
-//  AddRecordsViewController.swift
+//  AddRecordFinishViewController.swift
 //  Att
 //
-//  Created by 정제인 on 2023/09/06.
+//  Created by 정제인 on 2023/09/18.
 //
 
 import Combine
@@ -10,7 +10,13 @@ import CombineCocoa
 import SnapKit
 import UIKit
 
-class AddRecordsViewController: UIViewController {
+class AddRecordFinishViewController: UIViewController {
+    
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
     // 우측 close 버튼
     private let xmarkButton: UIBarButtonItem = {
         let testImage = UIImage() // TEST
@@ -19,20 +25,15 @@ class AddRecordsViewController: UIViewController {
         return button
     }()
 
-    // progress bar 들어가야함
-    lazy var progressView: UIProgressView = {
+    private lazy var progressView: UIProgressView = {
         let view = UIProgressView()
+
         /// progress 배경 색상
         view.trackTintColor = .white
         /// progress 진행 색상
         view.progressTintColor = .green
-        view.progress = 0.6
+        view.progress = 1.0
         
-        return view
-    }()
-    
-    private lazy var contentView: UIView = {
-        let view = UIView()
         return view
     }()
     
@@ -41,51 +42,45 @@ class AddRecordsViewController: UIViewController {
         label.font = .title1
         label.textAlignment = .center
         label.textColor = .white
-        label.text = "Records"
+        label.text = "Ticket"
         
         return label
+    }()
+    
+    lazy var imageView: UIImageView = {
+
+        // Set x, y of UIImageView.
+        let posX: CGFloat = (self.view.bounds.width - 140)/2
+        let posY: CGFloat = (self.view.bounds.height - 140)/2
+            
+        // Create UIImageView.
+        let imageView = UIImageView(frame: CGRect(x: posX, y: posY, width: 140, height: 140))
+        
+        // Create UIImage.
+        let image = UIImage(systemName: "ticket.fill")
+        
+            // Set the image to UIImageView.
+        imageView.image = image
+        
+        return imageView
     }()
     
     private lazy var recordExplainLabel: UILabel = {
         let label = UILabel()
-        label.font = .subtitle3
-        label.textAlignment = .center
-        label.textColor = .white
-        label.text = "오늘의 일기"
-        
-        return label
-    }()
-    
-    private lazy var recordExplain2Label: UILabel = {
-        let label = UILabel()
         label.font = .caption1
         label.textAlignment = .center
         label.textColor = .white
-        label.text = "당신의 이야기를 들려주세요"
+        label.text = "당신의 소중한 기억을 발권중입니다.\n잠시만 기다려주세요"
+        label.numberOfLines = 2
         
         return label
     }()
     
-    private lazy var addRecordTextFieldView: AddRecordTextFieldView = {
-        let view = AddRecordTextFieldView()
-        return view
-    }()
-
-    
-    //다음 버튼
-    private lazy var nextButton: NextButtonView = {
-        let button = NextButtonView(title: "다음")
-        
+    private lazy var finishButton: NextButtonView = {
+        let button = NextButtonView(title: "완료")
         return button
     }()
     
-
-    private var viewModel: TestViewModel?
-    private var cancellables = Set<AnyCancellable>()
-    
-//    private let textViewHeight: CGFloat = 48
-    
-    // MARK: Init 선언부
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -98,7 +93,6 @@ class AddRecordsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        
         // Do any additional setup after loading the view.
     }
     
@@ -128,9 +122,8 @@ class AddRecordsViewController: UIViewController {
         [
                 progressView,
                 recordLabel,
+                imageView,
                 recordExplainLabel,
-                recordExplain2Label,
-                addRecordTextFieldView,
             ].forEach {
                 contentView.addSubview($0)
         }
@@ -148,58 +141,40 @@ class AddRecordsViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(48)
         }
+        imageView.snp.makeConstraints { make in
+            make.top.equalTo(recordLabel.snp.bottom).offset(constraints.space142)
+//            make.leading.trailing.equalToSuperview()
+//            make.height.equalTo(140)
+        }
+        imageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
         recordExplainLabel.snp.makeConstraints { make in
-            make.top.equalTo(recordLabel.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-        }
-        recordExplain2Label.snp.makeConstraints { make in
-            make.top.equalTo(recordExplainLabel.snp.bottom).offset(constraints.space28)
+            make.top.equalTo(imageView.snp.bottom).offset(constraints.space12)
             make.leading.trailing.equalToSuperview()
         }
         
-        addRecordTextFieldView.snp.makeConstraints { make in
-            make.top.equalTo(recordExplain2Label.snp.bottom).offset(constraints.space100)
-            make.leading.trailing.equalToSuperview()
-        }
-        
-        view.addSubview(nextButton)
-        nextButton.snp.makeConstraints { make in
+        view.addSubview(finishButton)
+        finishButton.snp.makeConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(constraints.space054)
             make.leading.trailing.equalToSuperview()
         }
-        
     }
     
     private func setUpStyle() {
         view.backgroundColor = .black
     }
     
+    private var cancellables = Set<AnyCancellable>()
+    
     // MARK: TabPulisher etc - Optional
     private func setUpAction() {
-        nextButton.tapPublisher
-            .sink {
-                self.navigationController?.pushViewController(AddWordsViewController(), animated: true)
-            }.store(in: &cancellables)
-        
         xmarkButton.tapPublisher
             .sink {
                 self.navigationController?.dismiss(animated: true)
         }.store(in: &cancellables)
     }
     
-    // 키보드 상태에 따라 constraint 업데이트 하면 됨
-    
     // MARK: ViewModel Stuff - Optional
     private func bind() { }
-    
-    
-    private func setBtnTap() {
-        //present 방식
 
-        let svc = AddWordsViewController() //modalTransitionStyle은 원하는 거 선택
-        svc.modalPresentationStyle = .fullScreen
-        self.present(svc, animated: true, completion: nil)
-    }
-    
 }

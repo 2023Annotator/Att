@@ -11,16 +11,6 @@ import SnapKit
 import UIKit
 
 class AddRhythmViewController: UIViewController {
-
-    // 좌측 뒤로가기버튼
-    private let backBarButtonItem: UIBarButtonItem = {
-        let testImage = UIImage() // TEST
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")?.withTintColor(.white, renderingMode: .alwaysOriginal))
-        
-        return button
-    }()
-    
     // 우측 close 버튼
     private let xmarkButton: UIBarButtonItem = {
         let testImage = UIImage() // TEST
@@ -28,14 +18,14 @@ class AddRhythmViewController: UIViewController {
         let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal))
         return button
     }()
-
+    
     // progress bar 들어가야함
     lazy var progressView: UIProgressView = {
         let view = UIProgressView()
         /// progress 배경 색상
         view.trackTintColor = .white
         /// progress 진행 색상
-        view.progressTintColor = .blue
+        view.progressTintColor = .green
         view.progress = 0.4
         
         return view
@@ -77,13 +67,20 @@ class AddRhythmViewController: UIViewController {
         return label
     }()
     
+    
     // + 버튼 만들고 AppleMusic Api랑 연결해서 앨범 표지 가져오기
     private lazy var addMusicButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .gray100
         button.layer.cornerRadius = 20
+        
+        let buttonimg = UIBarButtonItem(image: UIImage(systemName: "plus")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        
+        
         return button
     }()
+    
     
     
     
@@ -92,17 +89,17 @@ class AddRhythmViewController: UIViewController {
         guard let viewModel = viewModel else { return }
         self.viewModel = viewModel
     }
-
+    
     
     //다음 버튼
     private lazy var nextButton: NextButtonView = {
-        let button = NextButtonView()
+        let button = NextButtonView(title: "다음")
         return button
     }()
     
-
     
-//    private let textViewHeight: CGFloat = 48
+    
+    //    private let textViewHeight: CGFloat = 48
     
     // MARK: Init 선언부
     init() {
@@ -112,17 +109,16 @@ class AddRhythmViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: View Life Cycle 선언부
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        
-        // Do any additional setup after loading the view.
     }
     
+    
     private func setUpNavigationBar() {
-        navigationItem.leftBarButtonItem = backBarButtonItem
+        //navigationItem.leftBarButtonItem = backBarButtonItem
         navigationItem.rightBarButtonItem = xmarkButton
     }
     
@@ -150,12 +146,12 @@ class AddRhythmViewController: UIViewController {
         }
         
         [
-                progressView,
-                recordLabel,
-                recordExplainLabel,
-                recordExplain2Label,
-            ].forEach {
-                contentView.addSubview($0)
+            progressView,
+            recordLabel,
+            recordExplainLabel,
+            recordExplain2Label,
+        ].forEach {
+            contentView.addSubview($0)
         }
         
         let itemWidth = UIScreen.main.bounds.width * 0.85
@@ -195,7 +191,6 @@ class AddRhythmViewController: UIViewController {
         }
         
         
-        
     }
     
     private func setUpStyle() {
@@ -205,13 +200,25 @@ class AddRhythmViewController: UIViewController {
     // MARK: TabPulisher etc - Optional
     private func setUpAction() {
         nextButton.tapPublisher
-            .sink {
-                self.navigationController?.pushViewController(AddRecordsViewController(), animated: false)
+            .sink { [weak self] in
+                //백버튼 만들기
+                self?.navigationController?.pushViewController(AddRecordsViewController(), animated: true)
+                //다음버튼 누르면 다음 뷰컨으로 넘어가기
+                
             }.store(in: &cancellables)
+        
+        xmarkButton.tapPublisher
+            .sink {
+                self.navigationController?.dismiss(animated: true)
+        }.store(in: &cancellables)
     }
+    
+    
     
     // MARK: ViewModel Stuff - Optional
     private func bind() {
-
+        
     }
+    
+    
 }

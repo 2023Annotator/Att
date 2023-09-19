@@ -58,6 +58,7 @@
 		3F6984B52AB5AAC900E0892D /* CircularSliderHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6984B42AB5AAC900E0892D /* CircularSliderHandle.swift */; };
 		3F6984B92AB7631800E0892D /* CircularTrig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6984B82AB7631800E0892D /* CircularTrig.swift */; };
 		3F6984BB2AB7634B00E0892D /* GradientCircularSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6984BA2AB7634B00E0892D /* GradientCircularSlider.swift */; };
+		3F6984BF2AB79A7100E0892D /* AddRecordFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6984BE2AB79A7100E0892D /* AddRecordFinishViewController.swift */; };
 		3F75EF902AAB38DB00E9FEEB /* AddRecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF8F2AAB38DB00E9FEEB /* AddRecordsViewController.swift */; };
 		3F75EF922AAB391600E9FEEB /* AddWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF912AAB391600E9FEEB /* AddWordsViewController.swift */; };
 		3F75EF952AAB39CE00E9FEEB /* AddColorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF942AAB39CE00E9FEEB /* AddColorViewController.swift */; };
@@ -120,6 +121,7 @@
 		3F6984B42AB5AAC900E0892D /* CircularSliderHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularSliderHandle.swift; sourceTree = "<group>"; };
 		3F6984B82AB7631800E0892D /* CircularTrig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTrig.swift; sourceTree = "<group>"; };
 		3F6984BA2AB7634B00E0892D /* GradientCircularSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientCircularSlider.swift; sourceTree = "<group>"; };
+		3F6984BE2AB79A7100E0892D /* AddRecordFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecordFinishViewController.swift; sourceTree = "<group>"; };
 		3F75EF8F2AAB38DB00E9FEEB /* AddRecordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecordsViewController.swift; sourceTree = "<group>"; };
 		3F75EF912AAB391600E9FEEB /* AddWordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordsViewController.swift; sourceTree = "<group>"; };
 		3F75EF942AAB39CE00E9FEEB /* AddColorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddColorViewController.swift; sourceTree = "<group>"; };
@@ -406,6 +408,7 @@
 				3F75EF962AAB39EC00E9FEEB /* AddRhythmViewController.swift */,
 				3F75EF8F2AAB38DB00E9FEEB /* AddRecordsViewController.swift */,
 				3F75EF912AAB391600E9FEEB /* AddWordsViewController.swift */,
+				3F6984BE2AB79A7100E0892D /* AddRecordFinishViewController.swift */,
 				3F75EF8E2AAB38A200E9FEEB /* View */,
 			);
 			path = AddRecord;
@@ -537,6 +540,7 @@
 				3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */,
 				3A93222E2AA60BA900C106DF /* MonthlyMoodCollectionViewFlowLayout.swift in Sources */,
 				3A5D0BE62A62B9B800064DCB /* UIColor+.swift in Sources */,
+				3F6984BF2AB79A7100E0892D /* AddRecordFinishViewController.swift in Sources */,
 				3F75EF9B2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift in Sources */,
 				3A93221E2AA5DAD300C106DF /* TextContentView.swift in Sources */,
 				3AF9C06F2A7D0BB900A5A036 /* RecordNonExistCardView.swift in Sources */,

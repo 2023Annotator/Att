@@ -11,7 +11,6 @@ class NextButtonView: UIButton {
 
     private lazy var nextButton: UIButton = {
         var button = UIButton(type: .custom)
-        button.setTitle("다음", for: .normal)
         button.titleLabel?.font = .subtitle3
         button.backgroundColor = .green
         button.setTitleColor(UIColor.black, for: .normal) 
@@ -21,8 +20,10 @@ class NextButtonView: UIButton {
         return button
     }()
 
-    init() {
+    init(title : String) {
         super.init(frame: CGRect.zero)
+        setUpTitle(as: title)
+        
         setUpConstraints()
     }
     
@@ -45,4 +46,9 @@ class NextButtonView: UIButton {
         }
         
     }
+    
+    private func setUpTitle(as text: String) {
+            nextButton.setTitle(text, for: .normal)
+        }
 }
+ 
