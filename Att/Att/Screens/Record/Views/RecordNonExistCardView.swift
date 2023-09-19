@@ -22,6 +22,10 @@ final class RecordNonExistCardView: ATTCardView {
     // TODO: 이미지 삽입
     private let ticketImageView: UIImageView = {
         let view = UIImageView()
+        let image = UIImage(named: "ticket")
+        let insets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let imageWithInset = image?.imageWithInset(insets: insets)
+        view.image = imageWithInset
         view.layer.cornerRadius = 40
         view.layer.borderColor = UIColor.white.cgColor
         view.layer.borderWidth = 2
@@ -33,7 +37,7 @@ final class RecordNonExistCardView: ATTCardView {
         label.font = .caption1
         label.textAlignment = .center
         label.textColor = .white
-        label.text = "오늘 기록을 추가해주세요!"
+        label.numberOfLines = 2
         return label
     }()
     
@@ -47,13 +51,11 @@ final class RecordNonExistCardView: ATTCardView {
     }
     
     private func setUpConstraints() {
-        let constraints = Constraints.shared
-        
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
             make.width.equalToSuperview()
-            make.height.equalTo(110)
+            make.height.equalTo(132)
         }
         
         [
@@ -69,12 +71,16 @@ final class RecordNonExistCardView: ATTCardView {
         
         ticketCaptionLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(18)
+            make.height.equalTo(40)
         }
     }
     
     override func setUpStyle() {
         super.setUpStyle()
         backgroundColor = .gray100
+    }
+    
+    func setUpComponent(dateRelation: DateRelation) {
+        ticketCaptionLabel.text = dateRelation.relationText
     }
 }

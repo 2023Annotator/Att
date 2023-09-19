@@ -1,5 +1,5 @@
 //
-//  MainViewModel.swift
+//  RecordViewModel.swift
 //  Att
 //
 //  Created by 황정현 on 2023/08/10.
@@ -14,9 +14,8 @@ protocol ViewModelType {
     associatedtype Output
 }
 
-final class RecordViewModel: ViewModelType {
-    @Published var centeredIdx: IndexPath = IndexPath(row: 0, section: 0)
-    @Published var weekdayVisibleStatus: Bool = false
+final class WeekdayVisiblityViewModel: ViewModelType {
+    @Published var weekdayVisibleStatus: Bool = true
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -41,9 +40,5 @@ final class RecordViewModel: ViewModelType {
                 self?.weekdayVisibleStatus = true
             }
         }.store(in: &cancellables)
-    }
-    
-    func changeCenteredItemIdx(as idx: IndexPath) {
-        centeredIdx = idx
     }
 }

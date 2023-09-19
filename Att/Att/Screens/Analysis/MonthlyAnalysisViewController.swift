@@ -162,27 +162,27 @@ final class MonthlyAnalysisViewController: UIViewController {
 
 extension MonthlyAnalysisViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-            return 1
-        }
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 35
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let sampleColors: [UIColor] = [.cherry, .blue, .yellow, .yellowGreen, .blue, .purple, .gray100]
+        guard let cell = self.monthlyMoodAnalysisView.moodCollectionView.dequeueReusableCell(
+            withReuseIdentifier: MonthlyMoodCollectionViewCell.identifier,
+            for: indexPath) as? MonthlyMoodCollectionViewCell else { return UICollectionViewCell() }
         
-        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return 35
-        }
+        cell.setUpBackgroundColor(bgColor: sampleColors[indexPath.row%7])
         
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let sampleColors: [UIColor] = [.cherry, .blue, .yellow, .yellowGreen, .blue, .purple, .gray100]
-            guard let cell = self.monthlyMoodAnalysisView.moodCollectionView.dequeueReusableCell(
-                withReuseIdentifier: MonthlyMoodCollectionViewCell.identifier,
-                for: indexPath) as? MonthlyMoodCollectionViewCell else { return UICollectionViewCell() }
-            
-            cell.setUpBackgroundColor(bgColor: sampleColors[indexPath.row%7])
-            
-            return cell
-        }
+        return cell
+    }
 }
 
 extension MonthlyAnalysisViewController {
-    func setUpYearMonthLabelText(as date: String) {
+    private func setUpYearMonthLabelText(as date: String) {
         yearMonthLabel.text = date
     }
 }

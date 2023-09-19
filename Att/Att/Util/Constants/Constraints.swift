@@ -23,6 +23,7 @@ struct Constraints {
     let space24: CGFloat = 24
     let space26: CGFloat = 26
     let space28: CGFloat = 28
+    let space30: CGFloat = 28
     let space36: CGFloat = 36
     let space42: CGFloat = 42
     let space80: CGFloat = 80

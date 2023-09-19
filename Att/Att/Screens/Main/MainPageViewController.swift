@@ -13,16 +13,16 @@ import UIKit
 class MainPageViewController: UIViewController {
     
     private let mypageButton: UIBarButtonItem = {
-        let testImage = UIImage() // TEST
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(systemName: "person")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        let image = UIImage(systemName: "person")?
+            .withTintColor(.white, renderingMode: .alwaysOriginal)
+        let button = UIBarButtonItem(image: image)
         return button
     }()
     
     private let calendarButton: UIBarButtonItem = {
-        let testImage = UIImage() // TEST
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(named: "calendar")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        let image = UIImage(named: "calendar")?
+            .withTintColor(.white, renderingMode: .alwaysOriginal)
+        let button = UIBarButtonItem(image: image)
         return button
     }()
     
@@ -37,10 +37,33 @@ class MainPageViewController: UIViewController {
         return viewController
     }()
     
-    private let recordViewController = RecordViewController(viewModel: RecordViewModel())
-    private let analysisViewController = AnalysisListViewController()
+    private lazy var recordViewController: RecordViewController = {
+        guard let recordViewModel = self.weekdayVisibilityViewModel,
+              let dailyRecordViewModel = self.dailyRecordViewModel else { return RecordViewController(weekdayVisibilityViewModel: WeekdayVisiblityViewModel(), dailyRecordViewModel: DailyRecordViewModel()) }
+        
+        let viewController = RecordViewController(weekdayVisibilityViewModel: recordViewModel, dailyRecordViewModel: dailyRecordViewModel)
+        return viewController
+    }()
     
+    private lazy var analysisViewController: AnalysisListViewController = {
+        let viewController = AnalysisListViewController()
+        return viewController
+    }()
+    
+    private var weekdayVisibilityViewModel: WeekdayVisiblityViewModel?
+    private var dailyRecordViewModel: DailyRecordViewModel?
     private var cancellables = Set<AnyCancellable>()
+    
+    init(weekdayVisibilityViewModel: WeekdayVisiblityViewModel, dailyRecordViewModel: DailyRecordViewModel) {
+        super.init(nibName: nil, bundle: nil)
+        
+        self.weekdayVisibilityViewModel = weekdayVisibilityViewModel
+        self.dailyRecordViewModel = dailyRecordViewModel
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +72,6 @@ class MainPageViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        // UIPageViewController의 뷰를 적절한 위치로 조정
         pageViewController.view.frame = CGRect(x: 0, y: segmentedControl.frame.height, width: view.frame.width, height: view.frame.height - segmentedControl.frame.height)
     }
     
@@ -92,7 +114,6 @@ class MainPageViewController: UIViewController {
         navigationItem.rightBarButtonItem = calendarButton
     }
     
-    // MARK: TabPulisher etc - Optional
     private func setUpAction() {
         segmentedControl.selectedSegmentIndexPublisher
             .sink { [weak self] selectedIndex in
@@ -107,6 +128,11 @@ class MainPageViewController: UIViewController {
                 default:
                     break
                 }
+            }.store(in: &cancellables)
+        
+        calendarButton.tapPublisher
+            .sink { [weak self] _ in
+                self?.showCalendar()
             }.store(in: &cancellables)
     }
     
@@ -151,5 +177,14 @@ extension MainPageViewController {
         UIView.animate(withDuration: 0.2, animations: { [weak self] in
             self?.calendarButton.isHidden = status
         })
+    }
+    
+    private func showCalendar() {
+        guard let dailyRecordViewModel = dailyRecordViewModel else { return }
+        let calendarViewController = CalendarViewController(dailyRecordViewModel: dailyRecordViewModel)
+        if let sheetPresentationController = calendarViewController.sheetPresentationController {
+            sheetPresentationController.detents = [.medium()]
+        }
+        self.present(calendarViewController, animated: true, completion: nil)
     }
 }

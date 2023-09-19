@@ -50,8 +50,9 @@ class ATTWeekdayCollectionViewCell: UICollectionViewCell {
     }
     
     // TODO: TEMPORARY parameter is Int -> Model
-    func setUpComponent(data: Int) {
-        dayLabel.text = "\(data)"
+    func setUpComponent(date: Date) {
+        let date = date.day()
+        dayLabel.text = "\(date)"
     }
     
     func updateSelectedCellDesign(status: CellStatus) {

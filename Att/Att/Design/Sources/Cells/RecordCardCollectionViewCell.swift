@@ -22,35 +22,39 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    private var cardView: ATTCardView?
+    private var recordExistView = RecordExistCardView()
+    private var recordNonExistView = RecordNonExistCardView()
     
-    // TODO: RecordStatus에 따라 Configure 메소드 호출부 변경
+    private var cardView: ATTCardView = ATTCardView()
+    
+    private var recordStatus: RecordStatus = .exist
+    
     override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure(recordStatus: .exist)
+        super.init(frame: CGRect.zero)
+        configure()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: viewDidLoad 시 1회성 호출을 필요로하는 method 일괄
-    private func configure(recordStatus: RecordStatus) {
-        setUpConstriants(recordStatus: recordStatus)
+    private func configure() {
+        setUpConstriants()
     }
     
-    private func setUpConstriants(recordStatus: RecordStatus) {
-        
-        switch recordStatus {
-        case .exist:
-            cardView = RecordExistCardView()
-        case .nonExist:
-            cardView = RecordNonExistCardView()
-        }
-        
-        guard let cardView = cardView else { return }
+    private func setUpConstriants() {
         addSubview(cardView)
         cardView.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        cardView.addSubview(recordExistView)
+        recordExistView.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        cardView.addSubview(recordNonExistView)
+        recordNonExistView.snp.makeConstraints { make in
             make.top.bottom.leading.trailing.equalToSuperview()
         }
         
@@ -60,12 +64,38 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    // TODO: TEMPORARY parameter is Int -> Model
-    func setUpComponent(data: Int) {
-//        print("GOOD")
+    func setUpComponent(record: AttDailyRecord?) {
+        if record?.mood == nil {
+            recordStatus = .nonExist
+            guard let dateRelation = record?.date.relativeDate() else { return }
+            recordNonExistView.setUpComponent(dateRelation: dateRelation)
+            isUserInteractionEnabled = dateRelation == .today ? true : false
+        } else {
+            guard let record = record else { return }
+            recordStatus = .exist
+            recordExistView.setUpComponent(record: record)
+            isUserInteractionEnabled = true
+        }
+        
+        hiddenRecordView(recordStatus: recordStatus)
+    }
+    
+    func getRecordStatus() -> RecordStatus {
+        return recordStatus
     }
     
     func blurEffect(isHidden: Bool) {
         blurEffectView.isHidden = isHidden
+    }
+    
+    private func hiddenRecordView(recordStatus: RecordStatus) {
+        switch recordStatus {
+        case .exist:
+            recordExistView.isHidden = false
+            recordNonExistView.isHidden = true
+        case .nonExist:
+            recordExistView.isHidden = true
+            recordNonExistView.isHidden = false
+        }
     }
 }
