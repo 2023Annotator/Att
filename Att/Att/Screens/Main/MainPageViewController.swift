@@ -75,7 +75,6 @@ class MainPageViewController: UIViewController {
         pageViewController.view.frame = CGRect(x: 0, y: segmentedControl.frame.height, width: view.frame.width, height: view.frame.height - segmentedControl.frame.height)
     }
     
-    // MARK: viewDidLoad 시 1회성 호출을 필요로하는 method 일괄
     private func configure() {
         setUpPageViewController()
         setUpConstriants()

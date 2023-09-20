@@ -26,6 +26,7 @@ final class MusicSearchResultViewController: UIViewController {
     private var musicInfoTableViewDiffableDataSource: MusicInfoTableViewDiffableDataSource!
     
     private var viewModel: RecordCreationViewModel?
+    
     init(viewModel: RecordCreationViewModel?) {
         super.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
@@ -81,11 +82,7 @@ final class MusicSearchResultViewController: UIViewController {
 
 extension MusicSearchResultViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        } else {
-            return musicInfoTableViewDiffableDataSource.accessibilityElementCount()
-        }
+        return musicInfoTableViewDiffableDataSource.accessibilityElementCount()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
