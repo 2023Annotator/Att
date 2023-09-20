@@ -9,7 +9,6 @@ import UIKit
 
 final class AnalysisViewController: UIViewController {
 
-    // MARK: property 선언부
     private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.showsVerticalScrollIndicator = false
@@ -51,7 +50,6 @@ final class AnalysisViewController: UIViewController {
         return view
     }()
     
-    // MARK: Init 선언부
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -60,15 +58,11 @@ final class AnalysisViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: View Life Cycle 선언부
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        
-        // Do any additional setup after loading the view.
     }
     
-    // MARK: viewDidLoad 시 1회성 호출을 필요로하는 method 일괄
     private func configure() {
         setUpConstriants()
         setUpMonthlyMoodCollectionView()
@@ -149,10 +143,8 @@ final class AnalysisViewController: UIViewController {
         monthlyMoodAnalysisView.moodCollectionView.register(MonthlyMoodCollectionViewCell.self, forCellWithReuseIdentifier: MonthlyMoodCollectionViewCell.identifier)
     }
     
-    // MARK: TabPulisher etc - Optional
     private func setUpAction() { }
     
-    // MARK: ViewModel Stuff - Optional
     private func bind() { }
 }
 
@@ -161,7 +153,6 @@ extension AnalysisViewController: UICollectionViewDelegate, UICollectionViewData
             return 1
         }
         
-        // data가 없으니 일단 하드코딩
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
             return 35
         }

@@ -20,7 +20,7 @@ final class NextButtonView: UIButton {
         return button
     }()
     
-    init(title : String) {
+    init(title: String) {
         super.init(frame: CGRect.zero)
         setUpTitle(as: title)
         setUpConstraints()
@@ -45,4 +45,3 @@ final class NextButtonView: UIButton {
         nextButton.setTitle(text, for: .normal)
     }
 }
-

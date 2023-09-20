@@ -93,7 +93,7 @@ final class AddRecordFinishViewController: UIViewController {
     private func setUpConstriants() {
         let constraints = Constraints.shared
         view.addSubview(contentView)
-        contentView.snp.makeConstraints{ make in
+        contentView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
             make.width.equalTo(view.snp.width)
@@ -104,7 +104,7 @@ final class AddRecordFinishViewController: UIViewController {
             progressView,
             recordLabel,
             imageView,
-            recordExplainLabel,
+            recordExplainLabel
         ].forEach {
             contentView.addSubview($0)
         }
@@ -137,7 +137,7 @@ final class AddRecordFinishViewController: UIViewController {
         
         view.addSubview(finishButton)
         finishButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(constraints.space054)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-constraints.space54)
             make.leading.trailing.equalToSuperview()
         }
     }

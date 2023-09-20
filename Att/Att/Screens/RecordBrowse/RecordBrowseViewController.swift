@@ -105,7 +105,6 @@ final class RecordBrowseViewController: UIViewController {
     }
     
     private func setUpConstriants() {
-        
         let constraints = Constraints.shared
         
         view.addSubview(scrollView)
@@ -209,11 +208,14 @@ final class RecordBrowseViewController: UIViewController {
     private func bind() {
         dailyRecordViewModel?.$currentDailyRecord
             .sink { [weak self] record in
+                
+                let musicInfo = MusicInfo(title: record?.musicInfo?.title, artist: record?.musicInfo?.artist, thumbnailImage: record?.musicInfo?.thumbnailImage)
+                
                 guard let moodColor = record?.mood?.moodColor else { return }
                 self?.dateLabel.text = record?.date.date()
                 self?.publicationTimeLabel.text = record?.date.publicationDate()
                 self?.todaysMoodView.setUpColor(color: moodColor)
-//                self?.nowPlayingView.setUpComponent(musicInfo: record?.musicInfo)
+                self?.nowPlayingView.setUpComponent(musicInfo: musicInfo)
                 self?.ticketDecorationView.setUpLineColor(color: moodColor)
                 self?.diaryView.setUpComponent(color: moodColor, content: record?.diary)
                 self?.toTomorrowView.setUpComponent(text: record?.phraseToTomorrow)

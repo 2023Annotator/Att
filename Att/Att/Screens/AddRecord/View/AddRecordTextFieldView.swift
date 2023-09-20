@@ -16,7 +16,7 @@ final class AddRecordTextFieldView: UIView {
         textField.textColor = .white
         textField.tintColor = .white
         textField.keyboardType = .default
-        textField.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16);
+        textField.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         textField.becomeFirstResponder()
         return textField
     }()

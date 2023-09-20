@@ -11,7 +11,6 @@ import UIKit
 
 class NoneViewController: UIViewController {
 
-    // 이제부터 여기가 루트~
     private lazy var contentView: UIView = {
         let view = UIView()
         return view
@@ -21,16 +20,12 @@ class NoneViewController: UIViewController {
         let button = UIButton()
         button.backgroundColor = .yellowGreen
         button.layer.cornerRadius = 20
-        button.setTitle("눌러", for : .normal)
+        button.setTitle("눌러", for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         
         return button
     }()
     
-    
-//    private let textViewHeight: CGFloat = 48
-    
-    // MARK: Init 선언부
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -43,11 +38,7 @@ class NoneViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        
-        // Do any additional setup after loading the view.
     }
-    // private var cancellables = Set<AnyCancellable>()
-    
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -65,7 +56,6 @@ class NoneViewController: UIViewController {
         
         view.addSubview(sunButton)
         sunButton.snp.makeConstraints { make in
-//            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
             make.center.equalTo(view.safeAreaLayoutGuide.snp.center)
             make.height.greaterThanOrEqualTo(50)
@@ -75,16 +65,13 @@ class NoneViewController: UIViewController {
     private func setUpAction() {
         sunButton.tapPublisher
             .sink { [weak self] in
-                let vc = UINavigationController(rootViewController: AddColorViewController())
-                vc.modalPresentationStyle = .automatic
-                self?.present(vc, animated: true)
+                let viewController = UINavigationController(rootViewController: AddColorViewController())
+                viewController.modalPresentationStyle = .automatic
+                self?.present(viewController, animated: true)
                 
         }.store(in: &cancellables)
-        
-        
     }
     
-    // MARK: ViewModel Stuff - Optional
     private func bind() { }
     
 }

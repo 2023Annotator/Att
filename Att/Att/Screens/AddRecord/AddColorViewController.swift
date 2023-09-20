@@ -125,7 +125,7 @@ final class AddColorViewController: UIViewController {
         let constraints = Constraints.shared
         
         view.addSubview(contentView)
-        contentView.snp.makeConstraints{ make in
+        contentView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
             make.height.greaterThanOrEqualTo(view.snp.height)
@@ -180,7 +180,7 @@ final class AddColorViewController: UIViewController {
         
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(constraints.space054)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-constraints.space54)
             make.leading.trailing.equalToSuperview()
         }
         
@@ -205,4 +205,3 @@ final class AddColorViewController: UIViewController {
     private func bind() { }
     
 }
-

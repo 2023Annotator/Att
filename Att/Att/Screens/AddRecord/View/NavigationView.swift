@@ -7,19 +7,16 @@
 
 import UIKit
 
-class NavigationView: UIView {
-
-    
+final class NavigationView: UIView {
     private let chevronButton: UIBarButtonItem = {
-        let testImage = UIImage() // TEST
+        let testImage = UIImage()
         testImage.withTintColor(.yellow)
         let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")?.withTintColor(.white, renderingMode: .alwaysOriginal))
         return button
     }()
     
-    // 우측 close 버튼
     private let xmarkButton: UIBarButtonItem = {
-        let testImage = UIImage() // TEST
+        let testImage = UIImage()
         testImage.withTintColor(.yellow)
         let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal))
         return button
@@ -29,9 +26,7 @@ class NavigationView: UIView {
         navigationItem.leftBarButtonItem = chevronButton
         navigationItem.rightBarButtonItem = xmarkButton
     }
-
     
-    // MARK: Init 선언부
     init() {
         super.init(frame: CGRect.zero)
         setUpConstraints()

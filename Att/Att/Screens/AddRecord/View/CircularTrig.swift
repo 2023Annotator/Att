@@ -10,13 +10,13 @@ import UIKit
 open class CircularTrig {
     
     open class func angleRelativeToNorthFromPoint(_ fromPoint: CGPoint, toPoint: CGPoint) -> CGFloat {
-        var v = CGPoint(x: toPoint.x - fromPoint.x, y: toPoint.y - fromPoint.y)
-        let vmag = CGFloat(sqrt(square(Double(v.x)) + square(Double(v.y))))
-        v.x /= vmag
-        v.y /= vmag
-        let cartesianRadians = Double(atan2(v.y, v.x))
+        var pointV = CGPoint(x: toPoint.x - fromPoint.x, y: toPoint.y - fromPoint.y)
+        let vmag = CGFloat(sqrt(square(Double(pointV.x)) + square(Double(pointV.y))))
+        pointV.x /= vmag
+        pointV.y /= vmag
+        let cartesianRadians = Double(atan2(pointV.y, pointV.x))
         var compassRadians = cartesianToCompass(cartesianRadians)
-        if (compassRadians < 0) {
+        if compassRadians < 0 {
             compassRadians += (2 * Double.pi)
         }
         assert(compassRadians >= 0 && compassRadians <= 2 * Double.pi, "angleRelativeToNorth should be always positive")
@@ -96,7 +96,7 @@ open class CircularTrig {
         return radius + 0.5 * lineWidth
     }
     
-    open class func innerRadiusOfUnfilledArcWithRadius(_ radius :CGFloat, lineWidth: CGFloat) -> CGFloat {
+    open class func innerRadiusOfUnfilledArcWithRadius(_ radius:CGFloat, lineWidth: CGFloat) -> CGFloat {
         return radius - 0.5 * lineWidth
     }
 }

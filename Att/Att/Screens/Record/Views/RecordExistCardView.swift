@@ -54,7 +54,7 @@ final class RecordExistCardView: ATTCardView {
     
     func setUpComponent(record: AttDailyRecord) {
         backgroundColor = record.mood?.moodColor
-//        musicThumbnailView.image = record.musicInfo?.thumbnailImage
+        musicThumbnailView.image = record.musicInfo?.thumbnailImage
         cardInfoview.setUpComponent(record: record)
     }
 }

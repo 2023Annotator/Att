@@ -112,7 +112,7 @@ final class AddRhythmViewController: UIViewController {
         let constraints = Constraints.shared
         
         view.addSubview(contentView)
-        contentView.snp.makeConstraints{ make in
+        contentView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
             make.width.equalTo(view.snp.width)
@@ -123,7 +123,7 @@ final class AddRhythmViewController: UIViewController {
             progressView,
             recordLabel,
             recordExplainLabel,
-            recordExplain2Label,
+            recordExplain2Label
         ].forEach {
             contentView.addSubview($0)
         }
@@ -161,7 +161,7 @@ final class AddRhythmViewController: UIViewController {
         
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(constraints.space054)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-constraints.space54)
             make.leading.trailing.equalToSuperview()
         }
     }

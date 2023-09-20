@@ -114,7 +114,7 @@ class CircularSlider: UIControl {
     var filledArcLineCap: CGLineCap = .butt
     
     var computedRadius: CGFloat {
-        if (radius == -1.0) {
+        if radius == -1.0 {
             let minimumDimension = min(bounds.size.height, bounds.size.width)
             let halfLineWidth = ceilf(Float(lineWidth) / 2.0)
             let halfHandleWidth = ceilf(Float(handleWidth) / 2.0)
@@ -153,7 +153,7 @@ class CircularSlider: UIControl {
     
     fileprivate var computedHandleColor: UIColor? {
         var newHandleColor = handleColor
-        switch (handleType) {
+        switch handleType {
         case .semiTransparentWhiteSmallCircle, .semiTransparentWhiteCircle:
             newHandleColor = UIColor(white: 1.0, alpha: 0.7)
         case .semiTransparentBlackCircle:
@@ -179,7 +179,7 @@ class CircularSlider: UIControl {
         backgroundColor = .clear
     }
     
-    override var intrinsicContentSize : CGSize {
+    override var intrinsicContentSize: CGSize {
         let diameter = radius * 2
         let halfLineWidth = ceilf(Float(lineWidth) / 2.0)
         let halfHandleWidth = ceilf(Float(handleWidth) / 2.0)
@@ -210,10 +210,10 @@ class CircularSlider: UIControl {
     }
     
     fileprivate func pointInsideCircle(_ point: CGPoint, withEvent event: UIEvent) -> Bool {
-        let p1 = centerPoint
-        let p2 = point
-        let xDist = p2.x - p1.x
-        let yDist = p2.y - p1.y
+        let point1 = centerPoint
+        let point2 = point
+        let xDist = point2.x - point1.x
+        let yDist = point2.y - point1.y
         let distance = sqrt((xDist * xDist) + (yDist * yDist))
         return distance < computedRadius + CGFloat(lineWidth) * 0.5
     }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit.UIImage
 
 struct AttDailyRecord: Hashable {
     
@@ -19,6 +20,7 @@ struct AttDailyRecord: Hashable {
     
     let date: Date
     let mood: Mood?
+    let musicInfo: MusicInfo?
     let diary: String?
     let phraseToTomorrow: String?
 }
