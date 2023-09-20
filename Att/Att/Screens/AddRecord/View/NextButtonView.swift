@@ -7,23 +7,22 @@
 
 import UIKit
 
-class NextButtonView: UIButton {
-
+final class NextButtonView: UIButton {
+    
     private lazy var nextButton: UIButton = {
         var button = UIButton(type: .custom)
         button.titleLabel?.font = .subtitle3
         button.backgroundColor = .green
-        button.setTitleColor(UIColor.black, for: .normal) 
+        button.setTitleColor(UIColor.black, for: .normal)
         button.layer.cornerRadius = 24
         button.clipsToBounds = true
-        button.isEnabled = false       // 버튼의 동작 설정 (처음에는 동작 off)
+        button.isEnabled = false
         return button
     }()
-
+    
     init(title : String) {
         super.init(frame: CGRect.zero)
         setUpTitle(as: title)
-        
         setUpConstraints()
     }
     
@@ -31,11 +30,7 @@ class NextButtonView: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     private func setUpConstraints() {
-        
-        //super.setUpConstraints()
-        
         let constraints = Constraints.shared
         
         addSubview(nextButton)
@@ -44,11 +39,10 @@ class NextButtonView: UIButton {
             make.leading.trailing.equalToSuperview().inset(constraints.space20)
             make.height.equalTo(48)
         }
-        
     }
     
     private func setUpTitle(as text: String) {
-            nextButton.setTitle(text, for: .normal)
-        }
+        nextButton.setTitle(text, for: .normal)
+    }
 }
- 
+

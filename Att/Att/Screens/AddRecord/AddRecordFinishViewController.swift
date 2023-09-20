@@ -10,30 +10,25 @@ import CombineCocoa
 import SnapKit
 import UIKit
 
-class AddRecordFinishViewController: UIViewController {
+final class AddRecordFinishViewController: UIViewController {
     
     private lazy var contentView: UIView = {
         let view = UIView()
         return view
     }()
     
-    // 우측 close 버튼
     private let xmarkButton: UIBarButtonItem = {
-        let testImage = UIImage() // TEST
+        let testImage = UIImage()
         testImage.withTintColor(.yellow)
         let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal))
         return button
     }()
-
+    
     private lazy var progressView: UIProgressView = {
         let view = UIProgressView()
-
-        /// progress 배경 색상
         view.trackTintColor = .white
-        /// progress 진행 색상
         view.progressTintColor = .green
         view.progress = 1.0
-        
         return view
     }()
     
@@ -43,25 +38,15 @@ class AddRecordFinishViewController: UIViewController {
         label.textAlignment = .center
         label.textColor = .white
         label.text = "Ticket"
-        
         return label
     }()
     
     lazy var imageView: UIImageView = {
-
-        // Set x, y of UIImageView.
         let posX: CGFloat = (self.view.bounds.width - 140)/2
         let posY: CGFloat = (self.view.bounds.height - 140)/2
-            
-        // Create UIImageView.
         let imageView = UIImageView(frame: CGRect(x: posX, y: posY, width: 140, height: 140))
-        
-        // Create UIImage.
         let image = UIImage(systemName: "ticket.fill")
-        
-            // Set the image to UIImageView.
         imageView.image = image
-        
         return imageView
     }()
     
@@ -72,7 +57,6 @@ class AddRecordFinishViewController: UIViewController {
         label.textColor = .white
         label.text = "당신의 소중한 기억을 발권중입니다.\n잠시만 기다려주세요"
         label.numberOfLines = 2
-        
         return label
     }()
     
@@ -88,19 +72,16 @@ class AddRecordFinishViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    // MARK: View Life Cycle 선언부
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        // Do any additional setup after loading the view.
     }
     
     private func setUpNavigationBar() {
         navigationItem.rightBarButtonItem = xmarkButton
     }
     
-    // MARK: viewDidLoad 시 1회성 호출을 필요로하는 method 일괄
     private func configure() {
         setUpConstriants()
         setUpStyle()
@@ -111,7 +92,6 @@ class AddRecordFinishViewController: UIViewController {
     
     private func setUpConstriants() {
         let constraints = Constraints.shared
-        
         view.addSubview(contentView)
         contentView.snp.makeConstraints{ make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -119,21 +99,24 @@ class AddRecordFinishViewController: UIViewController {
             make.width.equalTo(view.snp.width)
             make.height.greaterThanOrEqualTo(view.snp.height)
         }
+        
         [
-                progressView,
-                recordLabel,
-                imageView,
-                recordExplainLabel,
-            ].forEach {
-                contentView.addSubview($0)
+            progressView,
+            recordLabel,
+            imageView,
+            recordExplainLabel,
+        ].forEach {
+            contentView.addSubview($0)
         }
         
         let itemWidth = UIScreen.main.bounds.width * 0.85
+        
         progressView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(constraints.space18)
             make.width.equalTo(itemWidth)
             make.height.equalTo(4)
         }
+        
         progressView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
         recordLabel.snp.makeConstraints { make in
@@ -141,10 +124,9 @@ class AddRecordFinishViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(48)
         }
+        
         imageView.snp.makeConstraints { make in
             make.top.equalTo(recordLabel.snp.bottom).offset(constraints.space142)
-//            make.leading.trailing.equalToSuperview()
-//            make.height.equalTo(140)
         }
         imageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
@@ -166,15 +148,12 @@ class AddRecordFinishViewController: UIViewController {
     
     private var cancellables = Set<AnyCancellable>()
     
-    // MARK: TabPulisher etc - Optional
     private func setUpAction() {
         xmarkButton.tapPublisher
             .sink {
                 self.navigationController?.dismiss(animated: true)
-        }.store(in: &cancellables)
+            }.store(in: &cancellables)
     }
     
-    // MARK: ViewModel Stuff - Optional
     private func bind() { }
-
 }

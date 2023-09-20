@@ -10,118 +10,101 @@ import QuartzCore
 import Foundation
 
 enum CircularSliderHandleType {
-  case semiTransparentWhiteSmallCircle,
-  semiTransparentWhiteCircle,
-  semiTransparentBlackCircle,
-  bigCircle
+    case semiTransparentWhiteSmallCircle,
+         semiTransparentWhiteCircle,
+         semiTransparentBlackCircle,
+         bigCircle
 }
 
 class CircularSlider: UIControl {
-
-  
-
+    
     var minimumValue: Float = 0.0 {
-      didSet {
-        setNeedsDisplay()
-      }
-    }
-    
-    // Value at North/midnight (end)
-    var maximumValue: Float = 100.0 {
-      didSet {
-        setNeedsDisplay()
-      }
-    }
-    
-    // value for end of arc. This allows for incomplete circles to be created
-    var maximumAngle: CGFloat = 360.0 {
-      didSet {
-        if maximumAngle > 360.0 {
-          print("Warning: Maximum angle should be 360 or less.")
-          maximumAngle = 360.0
+        didSet {
+            setNeedsDisplay()
         }
-        setNeedsDisplay()
-      }
     }
     
-    // Current value between North/midnight (start) and North/midnight (end) - clockwise direction
-    var currentValue: Float {
-      set {
-        assert(newValue <= maximumValue && newValue >= minimumValue, "current value \(newValue) must be between minimumValue \(minimumValue) and maximumValue \(maximumValue)")
-        // Update the angleFromNorth to match this newly set value
-        angleFromNorth = Int((newValue * Float(maximumAngle)) / (maximumValue - minimumValue))
-        moveHandle(CGFloat(angleFromNorth))
-          sendActions(for: UIControl.Event.valueChanged)
-      } get {
-          return (Float(angleFromNorth) * (maximumValue - minimumValue)) / Float(maximumAngle)
-      }
+    var maximumValue: Float = 100.0 {
+        didSet {
+            setNeedsDisplay()
+        }
     }
-
-    // MARK: Handle
+    
+    var maximumAngle: CGFloat = 360.0 {
+        didSet {
+            if maximumAngle > 360.0 {
+                print("Warning: Maximum angle should be 360 or less.")
+                maximumAngle = 360.0
+            }
+            setNeedsDisplay()
+        }
+    }
+    
+    var currentValue: Float {
+        set {
+            assert(newValue <= maximumValue && newValue >= minimumValue, "current value \(newValue) must be between minimumValue \(minimumValue) and maximumValue \(maximumValue)")
+            angleFromNorth = Int((newValue * Float(maximumAngle)) / (maximumValue - minimumValue))
+            moveHandle(CGFloat(angleFromNorth))
+            sendActions(for: UIControl.Event.valueChanged)
+        } get {
+            return (Float(angleFromNorth) * (maximumValue - minimumValue)) / Float(maximumAngle)
+        }
+    }
+    
     let circularSliderHandle = CircularSliderHandle()
     
-    
     var handleColor: UIColor? {
-      didSet {
-        setNeedsDisplay()
-      }
+        didSet {
+            setNeedsDisplay()
+        }
     }
     
-    // Type of the handle to display to represent draggable current value
     var handleType: CircularSliderHandleType = .semiTransparentWhiteSmallCircle {
-      didSet {
-        setNeedsUpdateConstraints()
-        setNeedsDisplay()
-      }
+        didSet {
+            setNeedsUpdateConstraints()
+            setNeedsDisplay()
+        }
     }
     
-    // MARK: Labels
-    // BOOL indicating whether values snap to nearest label
     var snapToLabels: Bool = false
     
-
     var innerMarkingLabels: [String]? {
-      didSet {
-        setNeedsUpdateConstraints()
-        setNeedsDisplay()
-      }
+        didSet {
+            setNeedsUpdateConstraints()
+            setNeedsDisplay()
+        }
     }
-    
     
     var lineWidth: Int = 5 {
-      didSet {
-        setNeedsUpdateConstraints() // This could affect intrinsic content size
-        invalidateIntrinsicContentSize() // Need to update intrinsice content size
-        setNeedsDisplay() // Need to redraw with new line width
-      }
+        didSet {
+            setNeedsUpdateConstraints()
+            invalidateIntrinsicContentSize()
+            setNeedsDisplay()
+        }
     }
     
-    // Color of filled portion of line (from North/midnight start to currentValue)
     var filledColor: UIColor = .clear {
-      didSet {
-        setNeedsDisplay()
-      }
+        didSet {
+            setNeedsDisplay()
+        }
     }
     
-   // Color of unfilled portion of line (from currentValue to North/midnight end)
     var unfilledColor: UIColor = .cherry {
-      didSet {
-          setNeedsDisplay()
-      }
-    }
-
-    // Font of the inner marking labels within the circle
-    var labelFont: UIFont = .systemFont(ofSize: 10.0) {
-      didSet {
-        setNeedsDisplay()
-      }
+        didSet {
+            setNeedsDisplay()
+        }
     }
     
-    // Color of the inner marking labels within the circle
+    var labelFont: UIFont = .systemFont(ofSize: 10.0) {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
     var labelColor: UIColor = .white {
-      didSet {
-        setNeedsDisplay()
-      }
+        didSet {
+            setNeedsDisplay()
+        }
     }
     
     var labelDisplacement: CGFloat = 0
@@ -131,264 +114,228 @@ class CircularSlider: UIControl {
     var filledArcLineCap: CGLineCap = .butt
     
     var computedRadius: CGFloat {
-      if (radius == -1.0) {
-        let minimumDimension = min(bounds.size.height, bounds.size.width)
-        let halfLineWidth = ceilf(Float(lineWidth) / 2.0)
-        let halfHandleWidth = ceilf(Float(handleWidth) / 2.0)
-        return minimumDimension * 0.5 - CGFloat(max(halfHandleWidth, halfLineWidth))
-      }
-      return radius
+        if (radius == -1.0) {
+            let minimumDimension = min(bounds.size.height, bounds.size.width)
+            let halfLineWidth = ceilf(Float(lineWidth) / 2.0)
+            let halfHandleWidth = ceilf(Float(handleWidth) / 2.0)
+            return minimumDimension * 0.5 - CGFloat(max(halfHandleWidth, halfLineWidth))
+        }
+        return radius
     }
     
     var centerPoint: CGPoint {
-      return CGPoint(x: bounds.size.width * 0.5, y: bounds.size.height * 0.5)
+        return CGPoint(x: bounds.size.width * 0.5, y: bounds.size.height * 0.5)
     }
     
     var angleFromNorth: Int = 0 {
-      didSet {
-        assert(angleFromNorth >= 0, "angleFromNorth \(angleFromNorth) must be greater than 0")
-      }
+        didSet {
+            assert(angleFromNorth >= 0, "angleFromNorth \(angleFromNorth) must be greater than 0")
+        }
     }
     
     var handleWidth: CGFloat {
-      switch handleType {
-      case .semiTransparentWhiteSmallCircle:
-        return CGFloat(lineWidth / 2)
-      case .semiTransparentWhiteCircle, .semiTransparentBlackCircle:
-        return CGFloat(lineWidth)
-      case .bigCircle:
-        return CGFloat(lineWidth + 5) // 5 points bigger than standard handles
-      }
+        switch handleType {
+        case .semiTransparentWhiteSmallCircle:
+            return CGFloat(lineWidth / 2)
+        case .semiTransparentWhiteCircle, .semiTransparentBlackCircle:
+            return CGFloat(lineWidth)
+        case .bigCircle:
+            return CGFloat(lineWidth + 5)
+        }
     }
-
-    // MARK: Private Variables
+    
     fileprivate var radius: CGFloat = -1.0 {
-      didSet {
-        setNeedsUpdateConstraints()
-        setNeedsDisplay()
-      }
+        didSet {
+            setNeedsUpdateConstraints()
+            setNeedsDisplay()
+        }
     }
     
     fileprivate var computedHandleColor: UIColor? {
-      var newHandleColor = handleColor
-      
-      switch (handleType) {
-      case .semiTransparentWhiteSmallCircle, .semiTransparentWhiteCircle:
-        newHandleColor = UIColor(white: 1.0, alpha: 0.7)
-      case .semiTransparentBlackCircle:
-        newHandleColor = UIColor(white: 0.0, alpha: 0.7)
-      case .bigCircle:
-        newHandleColor = filledColor
-      }
-      
-      return newHandleColor
+        var newHandleColor = handleColor
+        switch (handleType) {
+        case .semiTransparentWhiteSmallCircle, .semiTransparentWhiteCircle:
+            newHandleColor = UIColor(white: 1.0, alpha: 0.7)
+        case .semiTransparentBlackCircle:
+            newHandleColor = UIColor(white: 0.0, alpha: 0.7)
+        case .bigCircle:
+            newHandleColor = filledColor
+        }
+        return newHandleColor
     }
     
     fileprivate var innerLabelRadialDistanceFromCircumference: CGFloat {
-      // Labels should be moved far enough to clear the line itself plus a fixed offset (relative to radius).
-      var distanceToMoveInwards = 0.1 * -(radius) - 0.5 * CGFloat(lineWidth)
-      distanceToMoveInwards -= 0.5 * labelFont.pointSize // Also account for variable font size.
-      return distanceToMoveInwards
+        var distanceToMoveInwards = 0.1 * -(radius) - 0.5 * CGFloat(lineWidth)
+        distanceToMoveInwards -= 0.5 * labelFont.pointSize
+        return distanceToMoveInwards
+    }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .clear
     }
     
-    // MARK: - Initialization
-    override init(frame: CGRect) {
-      super.init(frame: frame)
-      backgroundColor = .clear
-    }
-
     required init?(coder aDecoder: NSCoder) {
-      super.init(coder: aDecoder)
-      backgroundColor = .clear
+        super.init(coder: aDecoder)
+        backgroundColor = .clear
     }
-
-    // MARK: - Function Overrides
+    
     override var intrinsicContentSize : CGSize {
-      // Total width is: diameter + (2 * MAX(halfLineWidth, halfHandleWidth))
-      let diameter = radius * 2
-      let halfLineWidth = ceilf(Float(lineWidth) / 2.0)
-      let halfHandleWidth = ceilf(Float(handleWidth) / 2.0)
-      
-      let widthWithHandle = diameter + CGFloat(2 *  max(halfHandleWidth, halfLineWidth))
-      
-      return CGSize(width: widthWithHandle, height: widthWithHandle)
+        let diameter = radius * 2
+        let halfLineWidth = ceilf(Float(lineWidth) / 2.0)
+        let halfHandleWidth = ceilf(Float(handleWidth) / 2.0)
+        let widthWithHandle = diameter + CGFloat(2 *  max(halfHandleWidth, halfLineWidth))
+        return CGSize(width: widthWithHandle, height: widthWithHandle)
     }
     
     override func draw(_ rect: CGRect) {
-      super.draw(rect)
-      let ctx = UIGraphicsGetCurrentContext()
-      
-      // Draw the circular lines that slider handle moves along
-      drawLine(ctx!)
-      
-      // Draw the draggable 'handle'
-      let handleCenter = pointOnCircleAtAngleFromNorth(angleFromNorth)
-      circularSliderHandle.frame = drawHandle(ctx!, atPoint: handleCenter)
-      
-      // Draw inner labels
-      drawInnerLabels(ctx!, rect: rect)
+        super.draw(rect)
+        let ctx = UIGraphicsGetCurrentContext()
+        
+        drawLine(ctx!)
+        
+        let handleCenter = pointOnCircleAtAngleFromNorth(angleFromNorth)
+        circularSliderHandle.frame = drawHandle(ctx!, atPoint: handleCenter)
+        
+        drawInnerLabels(ctx!, rect: rect)
     }
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-      guard event != nil else { return false }
-      
-      if pointInsideHandle(point, withEvent: event!) {
-        return true
-      } else {
-        return pointInsideCircle(point, withEvent: event!)
-      }
+        guard event != nil else { return false }
+        
+        if pointInsideHandle(point, withEvent: event!) {
+            return true
+        } else {
+            return pointInsideCircle(point, withEvent: event!)
+        }
     }
     
     fileprivate func pointInsideCircle(_ point: CGPoint, withEvent event: UIEvent) -> Bool {
-      let p1 = centerPoint
-      let p2 = point
-      let xDist = p2.x - p1.x
-      let yDist = p2.y - p1.y
-      let distance = sqrt((xDist * xDist) + (yDist * yDist))
-      return distance < computedRadius + CGFloat(lineWidth) * 0.5
-    }
-
-    fileprivate func pointInsideHandle(_ point: CGPoint, withEvent event: UIEvent) -> Bool {
-      let handleCenter = pointOnCircleAtAngleFromNorth(angleFromNorth)
-      // Adhere to apple's design guidelines - avoid making touch targets smaller than 44 points
-      let handleRadius = max(handleWidth, 44.0) * 0.5
-
-      // Treat handle as a box around it's center
-      let pointInsideHorzontalHandleBounds = (point.x >= handleCenter.x - handleRadius && point.x <= handleCenter.x + handleRadius)
-      let pointInsideVerticalHandleBounds  = (point.y >= handleCenter.y - handleRadius && point.y <= handleCenter.y + handleRadius)
-      return pointInsideHorzontalHandleBounds && pointInsideVerticalHandleBounds
+        let p1 = centerPoint
+        let p2 = point
+        let xDist = p2.x - p1.x
+        let yDist = p2.y - p1.y
+        let distance = sqrt((xDist * xDist) + (yDist * yDist))
+        return distance < computedRadius + CGFloat(lineWidth) * 0.5
     }
     
-    // MARK: - Drawing methods
+    fileprivate func pointInsideHandle(_ point: CGPoint, withEvent event: UIEvent) -> Bool {
+        let handleCenter = pointOnCircleAtAngleFromNorth(angleFromNorth)
+        let handleRadius = max(handleWidth, 44.0) * 0.5
+        
+        let pointInsideHorzontalHandleBounds = (point.x >= handleCenter.x - handleRadius && point.x <= handleCenter.x + handleRadius)
+        let pointInsideVerticalHandleBounds  = (point.y >= handleCenter.y - handleRadius && point.y <= handleCenter.y + handleRadius)
+        return pointInsideHorzontalHandleBounds && pointInsideVerticalHandleBounds
+    }
+    
     func drawLine(_ ctx: CGContext) {
-      unfilledColor.set()
-      // Draw an unfilled circle (this shows what can be filled)
-      CircularTrig.drawUnfilledCircleInContext(ctx, center: centerPoint, radius: computedRadius, lineWidth: CGFloat(lineWidth), maximumAngle: maximumAngle, lineCap: unfilledArcLineCap)
-
-      filledColor.set()
-      // Draw an unfilled arc up to the currently filled point
-      CircularTrig.drawUnfilledArcInContext(ctx, center: centerPoint, radius: computedRadius, lineWidth: CGFloat(lineWidth), fromAngleFromNorth: 0, toAngleFromNorth: CGFloat(angleFromNorth), lineCap: filledArcLineCap)
+        unfilledColor.set()
+        CircularTrig.drawUnfilledCircleInContext(ctx, center: centerPoint, radius: computedRadius, lineWidth: CGFloat(lineWidth), maximumAngle: maximumAngle, lineCap: unfilledArcLineCap)
+        
+        filledColor.set()
+        CircularTrig.drawUnfilledArcInContext(ctx, center: centerPoint, radius: computedRadius, lineWidth: CGFloat(lineWidth), fromAngleFromNorth: 0, toAngleFromNorth: CGFloat(angleFromNorth), lineCap: filledArcLineCap)
     }
     
     func drawHandle(_ ctx: CGContext, atPoint handleCenter: CGPoint) -> CGRect {
-      ctx.saveGState()
-      var frame: CGRect!
-      
-      // Ensure that handle is drawn in the correct color
-      handleColor = computedHandleColor
-      handleColor!.set()
-      
-      frame = CircularTrig.drawFilledCircleInContext(ctx, center: handleCenter, radius: 0.5 * handleWidth)
-      
-      ctx.saveGState()
-      return frame
+        ctx.saveGState()
+        var frame: CGRect!
+        
+        handleColor = computedHandleColor
+        handleColor!.set()
+        
+        frame = CircularTrig.drawFilledCircleInContext(ctx, center: handleCenter, radius: 0.5 * handleWidth)
+        
+        ctx.saveGState()
+        return frame
     }
     
     func drawInnerLabels(_ ctx: CGContext, rect: CGRect) {
-      if let labels = innerMarkingLabels, labels.count > 0 {
-          let attributes = [NSAttributedString.Key.font: labelFont, NSAttributedString.Key.foregroundColor: labelColor]
-
-        // Enumerate through labels clockwise
-        for (index, label) in labels.enumerated() {
-          let labelFrame = contextCoordinatesForLabel(atIndex: index)
-
-          ctx.saveGState()
-
-          // invert transformation used on arc
-          ctx.concatenate(CGAffineTransform(translationX: labelFrame.origin.x + (labelFrame.width / 2), y: labelFrame.origin.y + (labelFrame.height / 2)))
-          ctx.concatenate(getRotationalTransform().inverted())
-          ctx.concatenate(CGAffineTransform(translationX: -(labelFrame.origin.x + (labelFrame.width / 2)), y: -(labelFrame.origin.y + (labelFrame.height / 2))))
-
-          // draw label
-          label.draw(in: labelFrame, withAttributes: attributes)
-
-          ctx.restoreGState()
+        if let labels = innerMarkingLabels, labels.count > 0 {
+            let attributes = [NSAttributedString.Key.font: labelFont, NSAttributedString.Key.foregroundColor: labelColor]
+            
+            for (index, label) in labels.enumerated() {
+                let labelFrame = contextCoordinatesForLabel(atIndex: index)
+                
+                ctx.saveGState()
+                ctx.concatenate(CGAffineTransform(translationX: labelFrame.origin.x + (labelFrame.width / 2), y: labelFrame.origin.y + (labelFrame.height / 2)))
+                ctx.concatenate(getRotationalTransform().inverted())
+                ctx.concatenate(CGAffineTransform(translationX: -(labelFrame.origin.x + (labelFrame.width / 2)), y: -(labelFrame.origin.y + (labelFrame.height / 2))))
+                label.draw(in: labelFrame, withAttributes: attributes)
+                ctx.restoreGState()
+            }
         }
-      }
     }
     
     func contextCoordinatesForLabel(atIndex index: Int) -> CGRect {
-      let label = innerMarkingLabels![index]
-      var percentageAlongCircle: CGFloat!
-      
-      // Determine how many degrees around the full circle this label should go
-      if maximumAngle == 360.0 {
-        percentageAlongCircle = ((100.0 / CGFloat(innerMarkingLabels!.count)) * CGFloat(index + 1)) / 100.0
-      } else {
-        percentageAlongCircle = ((100.0 / CGFloat(innerMarkingLabels!.count - 1)) * CGFloat(index)) / 100.0
-      }
-
-      let degreesFromNorthForLabel = percentageAlongCircle * maximumAngle
-      let pointOnCircle = pointOnCircleAtAngleFromNorth(Int(degreesFromNorthForLabel))
-      
-      let labelSize = sizeOfString(label, withFont: labelFont)
-      let offsetFromCircle = offsetFromCircleForLabelAtIndex(index, withSize: labelSize)
-      
-      return CGRect(x: pointOnCircle.x + offsetFromCircle.x, y: pointOnCircle.y + offsetFromCircle.y, width: labelSize.width, height: labelSize.height)
+        let label = innerMarkingLabels![index]
+        var percentageAlongCircle: CGFloat!
+        
+        if maximumAngle == 360.0 {
+            percentageAlongCircle = ((100.0 / CGFloat(innerMarkingLabels!.count)) * CGFloat(index + 1)) / 100.0
+        } else {
+            percentageAlongCircle = ((100.0 / CGFloat(innerMarkingLabels!.count - 1)) * CGFloat(index)) / 100.0
+        }
+        
+        let degreesFromNorthForLabel = percentageAlongCircle * maximumAngle
+        let pointOnCircle = pointOnCircleAtAngleFromNorth(Int(degreesFromNorthForLabel))
+        let labelSize = sizeOfString(label, withFont: labelFont)
+        let offsetFromCircle = offsetFromCircleForLabelAtIndex(index, withSize: labelSize)
+        
+        return CGRect(x: pointOnCircle.x + offsetFromCircle.x, y: pointOnCircle.y + offsetFromCircle.y, width: labelSize.width, height: labelSize.height)
     }
     
     func offsetFromCircleForLabelAtIndex(_ index: Int, withSize labelSize: CGSize) -> CGPoint {
-      // Determine how many degrees around the full circle this label should go
-      let percentageAlongCircle = ((100.0 / CGFloat(innerMarkingLabels!.count - 1)) * CGFloat(index)) / 100.0
-      let degreesFromNorthForLabel = percentageAlongCircle * maximumAngle
-      
-      let radialDistance = innerLabelRadialDistanceFromCircumference + labelDisplacement
-      let inwardOffset = CircularTrig.pointOnRadius(radialDistance, atAngleFromNorth: CGFloat(degreesFromNorthForLabel))
-      
-      return CGPoint(x: -labelSize.width * 0.5 + inwardOffset.x, y: -labelSize.height * 0.5 + inwardOffset.y)
+        let percentageAlongCircle = ((100.0 / CGFloat(innerMarkingLabels!.count - 1)) * CGFloat(index)) / 100.0
+        let degreesFromNorthForLabel = percentageAlongCircle * maximumAngle
+        let radialDistance = innerLabelRadialDistanceFromCircumference + labelDisplacement
+        let inwardOffset = CircularTrig.pointOnRadius(radialDistance, atAngleFromNorth: CGFloat(degreesFromNorthForLabel))
+        
+        return CGPoint(x: -labelSize.width * 0.5 + inwardOffset.x, y: -labelSize.height * 0.5 + inwardOffset.y)
     }
     
     // MARK: - UIControl Functions
     override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-      let lastPoint = touch.location(in: self)
-      let lastAngle = floor(CircularTrig.angleRelativeToNorthFromPoint(centerPoint, toPoint: lastPoint))
-
-      moveHandle(lastAngle)
-      sendActions(for: UIControl.Event.valueChanged)
-      
-      return true
+        let lastPoint = touch.location(in: self)
+        let lastAngle = floor(CircularTrig.angleRelativeToNorthFromPoint(centerPoint, toPoint: lastPoint))
+        
+        moveHandle(lastAngle)
+        sendActions(for: UIControl.Event.valueChanged)
+        
+        return true
     }
     
     fileprivate func moveHandle(_ newAngleFromNorth: CGFloat) {
-      
-      // prevent slider from moving past maximumAngle
-      if newAngleFromNorth > maximumAngle {
-        if angleFromNorth < Int(maximumAngle / 2) {
-          angleFromNorth = 0
-          setNeedsDisplay()
-        } else if angleFromNorth > Int(maximumAngle / 2) {
-          angleFromNorth = Int(maximumAngle)
-          setNeedsDisplay()
+        if newAngleFromNorth > maximumAngle {
+            if angleFromNorth < Int(maximumAngle / 2) {
+                angleFromNorth = 0
+                setNeedsDisplay()
+            } else if angleFromNorth > Int(maximumAngle / 2) {
+                angleFromNorth = Int(maximumAngle)
+                setNeedsDisplay()
+            }
+        } else {
+            angleFromNorth = Int(newAngleFromNorth)
         }
-      } else {
-        angleFromNorth = Int(newAngleFromNorth)
-      }
-      setNeedsDisplay()
+        setNeedsDisplay()
     }
     
-    // MARK: - Helper Functions
     func pointOnCircleAtAngleFromNorth(_ angleFromNorth: Int) -> CGPoint {
-      let offset = CircularTrig.pointOnRadius(computedRadius, atAngleFromNorth: CGFloat(angleFromNorth))
-      return CGPoint(x: centerPoint.x + offset.x, y: centerPoint.y + offset.y)
+        let offset = CircularTrig.pointOnRadius(computedRadius, atAngleFromNorth: CGFloat(angleFromNorth))
+        return CGPoint(x: centerPoint.x + offset.x, y: centerPoint.y + offset.y)
     }
     
     func sizeOfString(_ string: String, withFont font: UIFont) -> CGSize {
-      let attributes = [NSAttributedString.Key.font: font]
-      return NSAttributedString(string: string, attributes: attributes).size()
+        let attributes = [NSAttributedString.Key.font: font]
+        return NSAttributedString(string: string, attributes: attributes).size()
     }
     
     func getRotationalTransform() -> CGAffineTransform {
-      if maximumAngle == 360 {
-        // do not perform a rotation if using a full circle slider
-        let transform = CGAffineTransform.identity.rotated(by: CGFloat(0))
-        return transform
-      } else {
-        // rotate slider view so "north" is at the start
-        let radians = Double(-(maximumAngle / 2)) / 180.0 * Double.pi
-        let transform = CGAffineTransform.identity.rotated(by: CGFloat(radians))
-        return transform
-      }
+        if maximumAngle == 360 {
+            let transform = CGAffineTransform.identity.rotated(by: CGFloat(0))
+            return transform
+        } else {
+            let radians = Double(-(maximumAngle / 2)) / 180.0 * Double.pi
+            let transform = CGAffineTransform.identity.rotated(by: CGFloat(radians))
+            return transform
+        }
     }
-    
-    
 }
