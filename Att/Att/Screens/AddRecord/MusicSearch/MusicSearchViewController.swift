@@ -20,18 +20,18 @@ final class MusicSearchViewController: UIViewController {
     private var searchText = ""
     private let debounceInterval: TimeInterval = 0.5
     
-    private var viewModel: RecordCreationViewModel?
+    private var recordCreationViewModel: RecordCreationViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     private lazy var searchController: UISearchController = {
-        let controller = UISearchController(searchResultsController: MusicSearchResultViewController(viewModel: viewModel))
+        let controller = UISearchController(searchResultsController: MusicSearchResultViewController(recordCreationViewModel: recordCreationViewModel))
         return controller
     }()
     
-    init(viewModel: RecordCreationViewModel?, musicManager: MusicManager) {
+    init(recordCreationViewModel: RecordCreationViewModel?, musicManager: MusicManager) {
         super.init(nibName: nil, bundle: nil)
         self.musicManager = musicManager
-        self.viewModel = viewModel
+        self.recordCreationViewModel = recordCreationViewModel
     }
     
     required init?(coder: NSCoder) {

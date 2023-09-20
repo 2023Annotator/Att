@@ -10,6 +10,11 @@ import CombineCocoa
 import SnapKit
 import UIKit
 
+enum RecordBrowseMode {
+    case read
+    case create
+}
+
 final class RecordBrowseViewController: UIViewController {
 
     private lazy var scrollView: UIScrollView = {
@@ -78,13 +83,27 @@ final class RecordBrowseViewController: UIViewController {
         return view
     }()
     
-    // TEST
+    private lazy var confirmButton: NextButton = {
+        let button = NextButton(title: "확인")
+        return button
+    }()
+    
     private var dailyRecordViewModel: DailyRecordViewModel?
+    private var recordCreationViewModel: RecordCreationViewModel?
     private var cancellables = Set<AnyCancellable>()
+    
+    private var recordBrowseMode: RecordBrowseMode?
     
     init(dailyRecordViewModel: DailyRecordViewModel?) {
         super.init(nibName: nil, bundle: nil)
         self.dailyRecordViewModel = dailyRecordViewModel
+        recordBrowseMode = .read
+    }
+    
+    init(recordCreationViewModel: RecordCreationViewModel?) {
+        super.init(nibName: nil, bundle: nil)
+        self.recordCreationViewModel = recordCreationViewModel
+        recordBrowseMode = .create
     }
     
     required init?(coder: NSCoder) {
@@ -194,7 +213,23 @@ final class RecordBrowseViewController: UIViewController {
             make.top.equalTo(diaryView.snp.bottom).offset(constraints.space22)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(60)
-            make.bottom.equalTo(contentView.snp.bottom)
+        }
+        
+        switch recordBrowseMode {
+        case .read:
+            toTomorrowView.snp.makeConstraints { make in
+                make.bottom.equalTo(contentView.snp.bottom)
+            }
+        case .create:
+            contentView.addSubview(confirmButton)
+            confirmButton.snp.makeConstraints { make in
+                make.top.equalTo(toTomorrowView.snp.bottom).offset(constraints.space22)
+                make.leading.trailing.equalToSuperview().inset(constraints.space20)
+                make.height.equalTo(48)
+                make.bottom.equalTo(contentView.snp.bottom).inset(constraints.space42)
+            }
+        case .none:
+            break
         }
     }
     
@@ -202,28 +237,52 @@ final class RecordBrowseViewController: UIViewController {
         view.backgroundColor = .white
     }
     
-    // MARK: TabPulisher etc - Optional
-    private func setUpAction() { }
+    private func setUpAction() {
+        confirmButton.tapPublisher
+            .sink { [weak self] in
+                self?.dismiss(animated: true)
+            }.store(in: &cancellables)
+    }
     
     private func bind() {
+        switch recordBrowseMode {
+        case .read:
+            bindWithDailyRecordViewModel()
+        case.create:
+            bindWithRecordCreationViewModel()
+        case .none:
+            break
+        }
+    }
+    
+    private func bindWithDailyRecordViewModel() {
         dailyRecordViewModel?.$currentDailyRecord
             .sink { [weak self] record in
-                
-                let musicInfo = MusicInfo(title: record?.musicInfo?.title, artist: record?.musicInfo?.artist, thumbnailImage: record?.musicInfo?.thumbnailImage)
-                
-                guard let moodColor = record?.mood?.moodColor else { return }
-                self?.dateLabel.text = record?.date.date()
-                self?.publicationTimeLabel.text = record?.date.publicationDate()
-                self?.todaysMoodView.setUpColor(color: moodColor)
-                self?.nowPlayingView.setUpComponent(musicInfo: musicInfo)
-                self?.ticketDecorationView.setUpLineColor(color: moodColor)
-                self?.diaryView.setUpComponent(color: moodColor, content: record?.diary)
-                self?.toTomorrowView.setUpComponent(text: record?.phraseToTomorrow)
+                guard let record = record else { return }
+                self?.setUpComponent(record: record)
             }.store(in: &cancellables)
         
         dailyRecordViewModel?.$currentPhraseFromYesterday
             .sink { [weak self] phrase in
                 self?.fromYesterdayView.setUpComponent(text: phrase)
             }.store(in: &cancellables)
+    }
+    
+    private func bindWithRecordCreationViewModel() {
+        recordCreationViewModel?.$dailyRecord
+            .sink { [weak self] record in
+                self?.setUpComponent(record: record)
+            }.store(in: &cancellables)
+    }
+
+    private func setUpComponent(record: AttDailyRecord) {
+        guard let moodColor = record.mood?.moodColor else { return }
+        dateLabel.text = record.date.date()
+        publicationTimeLabel.text = record.date.publicationDate()
+        todaysMoodView.setUpColor(color: moodColor)
+        nowPlayingView.setUpComponent(musicInfo: record.musicInfo)
+        ticketDecorationView.setUpLineColor(color: moodColor)
+        diaryView.setUpComponent(color: moodColor, content: record.diary)
+        toTomorrowView.setUpComponent(text: record.phraseToTomorrow)
     }
 }

@@ -311,7 +311,10 @@ extension RecordViewController: UICollectionViewDelegate {
             if cardCollectionViewCell.getRecordStatus() == .exist {
                 presentRecordBrowseViewController()
             } else {
-                print("CREATE RECORD")
+                let addRecordViewController = UINavigationController(rootViewController: AddColorViewController(recordCreationViewModel: RecordCreationViewModel()))
+                addRecordViewController.navigationBar.tintColor = .green
+                addRecordViewController.modalPresentationStyle = .fullScreen
+                present(addRecordViewController, animated: true)
             }
         case weekdayCollectionView:
             isScrolling = false

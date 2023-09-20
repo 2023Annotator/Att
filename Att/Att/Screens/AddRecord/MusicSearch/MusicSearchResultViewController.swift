@@ -25,11 +25,11 @@ final class MusicSearchResultViewController: UIViewController {
     
     private var musicInfoTableViewDiffableDataSource: MusicInfoTableViewDiffableDataSource!
     
-    private var viewModel: RecordCreationViewModel?
+    private var recordCreationViewModel: RecordCreationViewModel?
     
-    init(viewModel: RecordCreationViewModel?) {
+    init(recordCreationViewModel: RecordCreationViewModel?) {
         super.init(nibName: nil, bundle: nil)
-        self.viewModel = viewModel
+        self.recordCreationViewModel = recordCreationViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -91,7 +91,7 @@ extension MusicSearchResultViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? MusicInfoTableViewCell else { return }
-        viewModel?.setMusicInfo(musicInfo: cell.getMusicInfo())
+        recordCreationViewModel?.setMusicInfo(musicInfo: cell.getMusicInfo())
         delegate?.dismissSearchViewController()
     }
 }

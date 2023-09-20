@@ -12,9 +12,8 @@ import UIKit
 final class AddColorViewController: UIViewController {
     
     private let xmarkButton: UIBarButtonItem = {
-        let testImage = UIImage()
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?
+            .withTintColor(.green, renderingMode: .alwaysOriginal))
         return button
     }()
     
@@ -88,16 +87,17 @@ final class AddColorViewController: UIViewController {
         return circularSlider
     }()
     
-    private lazy var nextButton: NextButtonView = {
-        let button = NextButtonView(title: "다음")
+    private lazy var nextButton: NextButton = {
+        let button = NextButton(title: "다음")
         return button
     }()
     
-    private var viewModel: TestViewModel?
+    private var recordCreationViewModel: RecordCreationViewModel?
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
+    init(recordCreationViewModel: RecordCreationViewModel) {
         super.init(nibName: nil, bundle: nil)
+        self.recordCreationViewModel = recordCreationViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -118,7 +118,6 @@ final class AddColorViewController: UIViewController {
         setUpStyle()
         setUpNavigationBar()
         setUpAction()
-        bind()
     }
     
     private func setUpConstriants() {
@@ -165,12 +164,13 @@ final class AddColorViewController: UIViewController {
         recordExplain2Label.snp.makeConstraints { make in
             make.top.equalTo(recordExplainLabel.snp.bottom).offset(constraints.space28)
             make.leading.trailing.equalToSuperview()
+            make.height.equalTo(42)
         }
         
         imageView.snp.makeConstraints { make in
             make.top.equalTo(recordExplain2Label.snp.bottom).offset(constraints.space12)
+            make.centerX.equalToSuperview()
         }
-        imageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
         circularSlider.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(constraints.space42)
@@ -180,8 +180,9 @@ final class AddColorViewController: UIViewController {
         
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-constraints.space54)
-            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(constraints.space42)
+            make.leading.trailing.equalToSuperview().inset(constraints.space20)
+            make.height.equalTo(48)
         }
         
     }
@@ -192,8 +193,8 @@ final class AddColorViewController: UIViewController {
     
     private func setUpAction() {
         nextButton.tapPublisher
-            .sink {
-                self.navigationController?.pushViewController(AddRhythmViewController(), animated: true)
+            .sink { [weak self] in
+                self?.navigationController?.pushViewController(AddRhythmViewController(recordCreationViewModel: self?.recordCreationViewModel), animated: true)
             }.store(in: &cancellables)
         
         xmarkButton.tapPublisher
@@ -201,7 +202,5 @@ final class AddColorViewController: UIViewController {
                 self.navigationController?.dismiss(animated: true)
             }.store(in: &cancellables)
     }
-    
-    private func bind() { }
     
 }

@@ -18,9 +18,9 @@ struct AttDailyRecord: Hashable {
             hasher.combine(date)
     }
     
-    let date: Date
-    let mood: Mood?
-    let musicInfo: MusicInfo?
-    let diary: String?
-    let phraseToTomorrow: String?
+    var date: Date
+    var mood: Mood?
+    var musicInfo: MusicInfo?
+    var diary: String?
+    var phraseToTomorrow: String?
 }

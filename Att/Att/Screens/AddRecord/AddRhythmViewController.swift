@@ -13,9 +13,8 @@ import UIKit
 final class AddRhythmViewController: UIViewController {
     
     private let xmarkButton: UIBarButtonItem = {
-        let testImage = UIImage()
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?
+            .withTintColor(.green, renderingMode: .alwaysOriginal))
         return button
     }()
     
@@ -62,28 +61,30 @@ final class AddRhythmViewController: UIViewController {
     
     private lazy var addMusicButton: UIButton = {
         let button = UIButton()
+        let config = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 42.0))
+        let image = UIImage(systemName: "plus")?
+            .withTintColor(.green, renderingMode: .alwaysOriginal)
+            .withConfiguration(config)
+        button.setImage(image, for: .normal)
         button.backgroundColor = .gray100
         button.layer.cornerRadius = 20
-        let buttonimg = UIBarButtonItem(image: UIImage(systemName: "plus")?.withTintColor(.white, renderingMode: .alwaysOriginal))
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.layer.masksToBounds = true
         return button
     }()
     
-    init(viewModel: TestViewModel?) {
-        super.init(nibName: nil, bundle: nil)
-        guard let viewModel = viewModel else { return }
-        self.viewModel = viewModel
-    }
-    
-    private lazy var nextButton: NextButtonView = {
-        let button = NextButtonView(title: "다음")
+    private lazy var nextButton: NextButton = {
+        let button = NextButton(title: "다음")
         return button
     }()
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
-    }
+    private var recordCreationViewModel: RecordCreationViewModel?
+    private var cancellables = Set<AnyCancellable>()
     
+    init(recordCreationViewModel: RecordCreationViewModel?) {
+        super.init(nibName: nil, bundle: nil)
+        self.recordCreationViewModel = recordCreationViewModel
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -104,9 +105,6 @@ final class AddRhythmViewController: UIViewController {
         setUpAction()
         bind()
     }
-    
-    private var viewModel: TestViewModel?
-    private var cancellables = Set<AnyCancellable>()
     
     private func setUpConstriants() {
         let constraints = Constraints.shared
@@ -150,6 +148,7 @@ final class AddRhythmViewController: UIViewController {
         recordExplain2Label.snp.makeConstraints { make in
             make.top.equalTo(recordExplainLabel.snp.bottom).offset(constraints.space28)
             make.leading.trailing.equalToSuperview()
+            make.height.equalTo(42)
         }
         
         view.addSubview(addMusicButton)
@@ -161,8 +160,9 @@ final class AddRhythmViewController: UIViewController {
         
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-constraints.space54)
-            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(constraints.space42)
+            make.leading.trailing.equalToSuperview().inset(constraints.space20)
+            make.height.equalTo(48)
         }
     }
     
@@ -173,14 +173,33 @@ final class AddRhythmViewController: UIViewController {
     private func setUpAction() {
         nextButton.tapPublisher
             .sink { [weak self] in
-                self?.navigationController?.pushViewController(AddRecordsViewController(), animated: true)
+                self?.navigationController?.pushViewController(AddRecordsViewController(recordCreationViewModel: self?.recordCreationViewModel), animated: true)
             }.store(in: &cancellables)
         
         xmarkButton.tapPublisher
             .sink {
                 self.navigationController?.dismiss(animated: true)
             }.store(in: &cancellables)
+        
+        addMusicButton.tapPublisher
+            .sink { [weak self] in
+                self?.showMusicSearchViewController()
+            }.store(in: &cancellables)
     }
     
-    private func bind() {}
+    private func bind() {
+        recordCreationViewModel?.$dailyRecord
+            .sink { [weak self] record in
+                guard let musicInfo = record.musicInfo else { return }
+                self?.addMusicButton.setImage(musicInfo.thumbnailImage, for: .normal)
+            }.store(in: &cancellables)
+    }
+}
+
+extension AddRhythmViewController {
+    func showMusicSearchViewController() {
+        let musicSearchViewController = UINavigationController(rootViewController: MusicSearchViewController(recordCreationViewModel: recordCreationViewModel, musicManager: MusicManager()))
+        musicSearchViewController.modalPresentationStyle = .automatic
+        present(musicSearchViewController, animated: true)
+    }
 }
