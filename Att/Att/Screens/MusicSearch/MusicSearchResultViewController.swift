@@ -92,8 +92,6 @@ extension MusicSearchResultViewController: UITableViewDelegate {
         return 100
     }
     
-    
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? MusicInfoTableViewCell else { return }
         viewModel?.setMusicInfo(musicInfo: cell.getMusicInfo())

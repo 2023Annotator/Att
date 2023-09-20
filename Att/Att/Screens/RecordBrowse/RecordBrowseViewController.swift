@@ -105,7 +105,6 @@ final class RecordBrowseViewController: UIViewController {
     }
     
     private func setUpConstriants() {
-        
         let constraints = Constraints.shared
         
         view.addSubview(scrollView)
