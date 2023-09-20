@@ -77,6 +77,18 @@
 		3AF9C0712A7D0FD900A5A036 /* ATTCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0702A7D0FD900A5A036 /* ATTCardView.swift */; };
 		3AF9C0732A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0722A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift */; };
 		3AF9C0752A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF9C0742A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift */; };
+		3F6984B52AB5AAC900E0892D /* CircularSliderHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6984B42AB5AAC900E0892D /* CircularSliderHandle.swift */; };
+		3F6984B92AB7631800E0892D /* CircularTrig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6984B82AB7631800E0892D /* CircularTrig.swift */; };
+		3F6984BB2AB7634B00E0892D /* GradientCircularSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6984BA2AB7634B00E0892D /* GradientCircularSlider.swift */; };
+		3F6984BF2AB79A7100E0892D /* AddRecordFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6984BE2AB79A7100E0892D /* AddRecordFinishViewController.swift */; };
+		3F75EF902AAB38DB00E9FEEB /* AddRecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF8F2AAB38DB00E9FEEB /* AddRecordsViewController.swift */; };
+		3F75EF922AAB391600E9FEEB /* AddWordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF912AAB391600E9FEEB /* AddWordsViewController.swift */; };
+		3F75EF952AAB39CE00E9FEEB /* AddColorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF942AAB39CE00E9FEEB /* AddColorViewController.swift */; };
+		3F75EF972AAB39EC00E9FEEB /* AddRhythmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF962AAB39EC00E9FEEB /* AddRhythmViewController.swift */; };
+		3F75EF992AAB3A1200E9FEEB /* NextButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF982AAB3A1200E9FEEB /* NextButtonView.swift */; };
+		3F75EF9B2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF9A2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift */; };
+		3F75EF9F2AACCB1D00E9FEEB /* RecordDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F75EF9E2AACCB1D00E9FEEB /* RecordDetailViewController.swift */; };
+		3F95401E2AAF11E500FE75E7 /* CircularSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F95401D2AAF11E500FE75E7 /* CircularSlider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -148,6 +160,18 @@
 		3AF9C0702A7D0FD900A5A036 /* ATTCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATTCardView.swift; sourceTree = "<group>"; };
 		3AF9C0722A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordCardCollectionViewCell.swift; sourceTree = "<group>"; };
 		3AF9C0742A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		3F6984B42AB5AAC900E0892D /* CircularSliderHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularSliderHandle.swift; sourceTree = "<group>"; };
+		3F6984B82AB7631800E0892D /* CircularTrig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTrig.swift; sourceTree = "<group>"; };
+		3F6984BA2AB7634B00E0892D /* GradientCircularSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientCircularSlider.swift; sourceTree = "<group>"; };
+		3F6984BE2AB79A7100E0892D /* AddRecordFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecordFinishViewController.swift; sourceTree = "<group>"; };
+		3F75EF8F2AAB38DB00E9FEEB /* AddRecordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecordsViewController.swift; sourceTree = "<group>"; };
+		3F75EF912AAB391600E9FEEB /* AddWordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWordsViewController.swift; sourceTree = "<group>"; };
+		3F75EF942AAB39CE00E9FEEB /* AddColorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddColorViewController.swift; sourceTree = "<group>"; };
+		3F75EF962AAB39EC00E9FEEB /* AddRhythmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRhythmViewController.swift; sourceTree = "<group>"; };
+		3F75EF982AAB3A1200E9FEEB /* NextButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextButtonView.swift; sourceTree = "<group>"; };
+		3F75EF9A2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecordTextFieldView.swift; sourceTree = "<group>"; };
+		3F75EF9E2AACCB1D00E9FEEB /* RecordDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailViewController.swift; sourceTree = "<group>"; };
+		3F95401D2AAF11E500FE75E7 /* CircularSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularSlider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,8 +181,6 @@
 			files = (
 				3AC996742A5AE22700030AAD /* CombineCocoa in Frameworks */,
 				3AC996772A5AE23500030AAD /* SnapKit in Frameworks */,
-				3AC9967C2A5AE29600030AAD /* Moya in Frameworks */,
-				3AC9967A2A5AE29600030AAD /* CombineMoya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +272,7 @@
 		3A701F792A5ABEAB00D6913A /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				3F75EF8D2AAB389000E9FEEB /* AddRecord */,
 				3A9322462AA74A3000C106DF /* Main */,
 				3AE2D73F2AAEA90100052A0B /* RecordBrowse */,
 				3AF9C05D2A7CF06F00A5A036 /* Record */,
@@ -444,6 +467,8 @@
 				3A93224B2AA8794100C106DF /* DailyRecordViewModel.swift */,
 				3AF9C0602A7CF09200A5A036 /* RecordViewController.swift */,
 				3AE2D73B2AA9E88700052A0B /* CalendarViewController.swift */,
+				3F75EF9E2AACCB1D00E9FEEB /* RecordDetailViewController.swift */,
+				3AE2D73B2AA9E88700052A0B /* CalendarViewController.swift */,
 				3AF9C06D2A7D0B5E00A5A036 /* Views */,
 			);
 			path = Record;
@@ -461,6 +486,32 @@
 				3A9321DF2A8C9C5000C106DF /* WeekdayCollectionViewFlowLayout.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		3F75EF8D2AAB389000E9FEEB /* AddRecord */ = {
+			isa = PBXGroup;
+			children = (
+				3F75EF942AAB39CE00E9FEEB /* AddColorViewController.swift */,
+				3F75EF962AAB39EC00E9FEEB /* AddRhythmViewController.swift */,
+				3F75EF8F2AAB38DB00E9FEEB /* AddRecordsViewController.swift */,
+				3F75EF912AAB391600E9FEEB /* AddWordsViewController.swift */,
+				3F6984BE2AB79A7100E0892D /* AddRecordFinishViewController.swift */,
+				3F75EF8E2AAB38A200E9FEEB /* View */,
+			);
+			path = AddRecord;
+			sourceTree = "<group>";
+		};
+		3F75EF8E2AAB38A200E9FEEB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3F75EF982AAB3A1200E9FEEB /* NextButtonView.swift */,
+				3F75EF9A2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift */,
+				3F95401D2AAF11E500FE75E7 /* CircularSlider.swift */,
+				3F6984B42AB5AAC900E0892D /* CircularSliderHandle.swift */,
+				3F6984B82AB7631800E0892D /* CircularTrig.swift */,
+				3F6984BA2AB7634B00E0892D /* GradientCircularSlider.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -483,8 +534,6 @@
 			packageProductDependencies = (
 				3AC996732A5AE22700030AAD /* CombineCocoa */,
 				3AC996762A5AE23500030AAD /* SnapKit */,
-				3AC996792A5AE29600030AAD /* CombineMoya */,
-				3AC9967B2A5AE29600030AAD /* Moya */,
 			);
 			productName = Att;
 			productReference = 3A2202962A5AB7DA009DB223 /* Att.app */;
@@ -517,7 +566,6 @@
 			packageReferences = (
 				3AC996722A5AE22700030AAD /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				3AC996752A5AE23500030AAD /* XCRemoteSwiftPackageReference "SnapKit" */,
-				3AC996782A5AE29600030AAD /* XCRemoteSwiftPackageReference "Moya" */,
 			);
 			productRefGroup = 3A2202972A5AB7DA009DB223 /* Products */;
 			projectDirPath = "";
@@ -574,10 +622,14 @@
 				3AF9C0562A7CE3F500A5A036 /* RecordExistCardView.swift in Sources */,
 				3A9322402AA70F5A00C106DF /* AnnualAnalysisView.swift in Sources */,
 				3A9322382AA70ACA00C106DF /* MonthCollectionViewCell.swift in Sources */,
+				3F6984BB2AB7634B00E0892D /* GradientCircularSlider.swift in Sources */,
+				3F75EF992AAB3A1200E9FEEB /* NextButtonView.swift in Sources */,
 				3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */,
 				3A93222E2AA60BA900C106DF /* MonthlyMoodCollectionViewFlowLayout.swift in Sources */,
 				3A93224C2AA8794100C106DF /* DailyRecordViewModel.swift in Sources */,
 				3A5D0BE62A62B9B800064DCB /* UIColor+.swift in Sources */,
+				3F6984BF2AB79A7100E0892D /* AddRecordFinishViewController.swift in Sources */,
+				3F75EF9B2AAB3A3E00E9FEEB /* AddRecordTextFieldView.swift in Sources */,
 				3A93221E2AA5DAD300C106DF /* TextContentView.swift in Sources */,
 				3A985A742AB48B82003FBD3A /* DailyRecord+CoreDataClass.swift in Sources */,
 				3AE2D7582AAF55CD00052A0B /* Mood.swift in Sources */,
@@ -591,8 +643,10 @@
 				3AF9C0612A7CF09200A5A036 /* RecordViewController.swift in Sources */,
 				3A985A7E2AB5A808003FBD3A /* UIImage+.swift in Sources */,
 				3AF9C0652A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift in Sources */,
+				3F95401E2AAF11E500FE75E7 /* CircularSlider.swift in Sources */,
 				3A9321E32A8CA0BB00C106DF /* ATTSegmentedControl.swift in Sources */,
 				3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */,
+				3F6984B52AB5AAC900E0892D /* CircularSliderHandle.swift in Sources */,
 				3AF9C0692A7CFE4300A5A036 /* ATTFromYesterdayView.swift in Sources */,
 				3AF9C0732A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift in Sources */,
 				3A22029E2A5AB7DA009DB223 /* ViewController.swift in Sources */,
@@ -601,7 +655,9 @@
 				3AF9C0672A7CFDBC00A5A036 /* CardInfoType.swift in Sources */,
 				3AE2D7522AAEB5CA00052A0B /* DiaryView.swift in Sources */,
 				3A9322342AA7072C00C106DF /* AnalysisListViewController.swift in Sources */,
+				3F75EF972AAB39EC00E9FEEB /* AddRhythmViewController.swift in Sources */,
 				3A9322242AA5E69500C106DF /* MonthlyAnalysisViewController.swift in Sources */,
+				3F75EF9F2AACCB1D00E9FEEB /* RecordDetailViewController.swift in Sources */,
 				3A93223C2AA70DD700C106DF /* MonthListView.swift in Sources */,
 				3AF9C06C2A7D0B0000A5A036 /* RecordStatus.swift in Sources */,
 				3A9321DE2A8C9A0D00C106DF /* ComponentsSet.swift in Sources */,
@@ -617,12 +673,22 @@
 				3A9322482AA7532900C106DF /* YearSelectorView.swift in Sources */,
 				3AE2D7462AAEAB1900052A0B /* RecordBrowseOuterTitleDefaultView.swift in Sources */,
 				3AF9C05C2A7CEBCC00A5A036 /* ATTCardInfoView.swift in Sources */,
+				3F75EF952AAB39CE00E9FEEB /* AddColorViewController.swift in Sources */,
 				3AF9C0712A7D0FD900A5A036 /* ATTCardView.swift in Sources */,
 				3A93221C2AA5D82900C106DF /* AnalysisDefaultView.swift in Sources */,
 				3A5D0BE02A61542800064DCB /* Constraints.swift in Sources */,
+				3F75EF902AAB38DB00E9FEEB /* AddRecordsViewController.swift in Sources */,
 				3A9322302AA60DCB00C106DF /* MonthlyMoodCollectionViewCell.swift in Sources */,
 				3AE2D73C2AA9E88700052A0B /* CalendarViewController.swift in Sources */,
 				3A9322362AA707EA00C106DF /* MonthCollectionViewFlowLayout.swift in Sources */,
+				3A985A752AB48B82003FBD3A /* DailyRecord+CoreDataProperties.swift in Sources */,
+				3F75EF922AAB391600E9FEEB /* AddWordsViewController.swift in Sources */,
+				3A22029A2A5AB7DA009DB223 /* AppDelegate.swift in Sources */,
+				3A9322202AA5DCDB00C106DF /* MusicContentView.swift in Sources */,
+				3A22029C2A5AB7DA009DB223 /* SceneDelegate.swift in Sources */,
+				3A147B332A84EA130078050A /* WeekdayVisiblityViewModel.swift in Sources */,
+				3F6984B92AB7631800E0892D /* CircularTrig.swift in Sources */,
+				3A147B332A84EA130078050A /* MainViewModel.swift in Sources */,
 				3A985A752AB48B82003FBD3A /* DailyRecord+CoreDataProperties.swift in Sources */,
 				3A22029A2A5AB7DA009DB223 /* AppDelegate.swift in Sources */,
 				3A9322202AA5DCDB00C106DF /* MusicContentView.swift in Sources */,
@@ -779,6 +845,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -812,6 +879,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -867,14 +935,6 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		3AC996782A5AE29600030AAD /* XCRemoteSwiftPackageReference "Moya" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Moya/Moya";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 15.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -887,16 +947,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3AC996752A5AE23500030AAD /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		3AC996792A5AE29600030AAD /* CombineMoya */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3AC996782A5AE29600030AAD /* XCRemoteSwiftPackageReference "Moya" */;
-			productName = CombineMoya;
-		};
-		3AC9967B2A5AE29600030AAD /* Moya */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3AC996782A5AE29600030AAD /* XCRemoteSwiftPackageReference "Moya" */;
-			productName = Moya;
 		};
 /* End XCSwiftPackageProductDependency section */
 

@@ -57,7 +57,7 @@ final class YearSelectorView: UIView {
         
         yearLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(constraints.space40)
+            make.leading.trailing.equalToSuperview().inset(constraints.space42)
         }
         
         leftButton.snp.makeConstraints { make in
