@@ -180,7 +180,7 @@ final class AddColorViewController: UIViewController {
         
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(constraints.space42)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(constraints.space20)
             make.leading.trailing.equalToSuperview().inset(constraints.space20)
             make.height.equalTo(48)
         }

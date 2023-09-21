@@ -153,7 +153,7 @@ final class AddWordsViewController: UIViewController {
         
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(constraints.space42)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(constraints.space20)
             make.leading.trailing.equalToSuperview().inset(constraints.space20)
             make.height.equalTo(48)
         }
@@ -204,7 +204,7 @@ extension AddWordsViewController {
     
     @objc private func keyboardWillHide(_ notification: Notification) {
         nextButton.snp.updateConstraints { update in
-            update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(Constraints.shared.space42)
+            update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(Constraints.shared.space20)
         }
         view.layoutIfNeeded()
     }

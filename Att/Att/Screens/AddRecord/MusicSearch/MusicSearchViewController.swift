@@ -75,7 +75,6 @@ final class MusicSearchViewController: UIViewController {
             .debounce(for: .seconds(debounceInterval), scheduler: DispatchQueue.main) // 딜레이 설정
             .map { [weak self] _ in
                 self?.searchText = self?.searchController.searchBar.text ?? ""
-                print(self?.searchController.searchBar.text ?? "")
                 return self?.searchText
             }
             .compactMap { $0 }

@@ -13,7 +13,6 @@ import SnapKit
 final class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, AttDailyRecord?> { }
 final class WeekdayCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, Date> { }
 
-
 final class RecordViewController: UIViewController {
     private lazy var fromYesterdayView: ATTFromYesterdayView = {
         let view = ATTFromYesterdayView()
@@ -74,6 +73,7 @@ final class RecordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        CoreDataManager.shared.deleteAllDailyRecord()
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -22,18 +22,8 @@ final class AddRecordTextView: UITextView {
         backgroundColor = .gray100
         layer.cornerRadius = 10
         textColor = .white
-        tintColor = .white
+        font = .caption1
         keyboardType = .default
         textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     }
-    
-//    private func setUpConstraints() {
-//        let constraints = Constraints.shared
-//        addSubview(recordTextView)
-//        recordTextView.snp.makeConstraints { make in
-//            let height = UIScreen.main.bounds.width * 0.45
-//            make.leading.trailing.equalToSuperview().inset(constraints.space20)
-//            make.height.equalTo(height)
-//        }
-//    }
 }
