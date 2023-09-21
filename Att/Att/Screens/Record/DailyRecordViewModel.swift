@@ -31,13 +31,25 @@ final class DailyRecordViewModel {
     
     init() {
         today = Date().currentKoreanDate()
-        selectedDateIndexPath = IndexPath(row: weekday * 2 + weekdayIndex(date: today), section: 0)
+        updateSelectedDateIndexPath()
         
         centeredDate = getCurrentCenteredDate(from: today)
-        
+
         updateDates()
     }
 
+    private func updateDates() {
+        weekDates = getCurrentWeekDates()
+        visibleDates = getCurrentVisibleWeekDates()
+        
+        updateRecords()
+        updateSelectedDateRecord()
+    }
+    
+    private func updateSelectedDateIndexPath() {
+        selectedDateIndexPath = IndexPath(row: weekday * 2 + weekdayIndex(date: today), section: 0)
+    }
+    
     private func weekdayIndex(date: Date) -> Int {
 //        let weekdayArr: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         let weekdayArr: [String] = ["월", "화", "수", "목", "금", "토", "일"]
@@ -97,14 +109,6 @@ final class DailyRecordViewModel {
         centeredDate = date
     }
     
-    private func updateDates() {
-        weekDates = getCurrentWeekDates()
-        visibleDates = getCurrentVisibleWeekDates()
-        
-        updateRecords()
-        updateSelectedDateRecord()
-    }
-    
     private func updateCenteredDateWithSelectedDate(date: Date) {
         let weekDates = weekDates.map { $0.date() }
         if let idx = weekDates.firstIndex(of: date.date()) {
@@ -120,6 +124,11 @@ final class DailyRecordViewModel {
 
 // MARK: internal Methods
 extension DailyRecordViewModel {
+    func updateRecordsWhenViewWillAppear() {
+        updateDates()
+        updateSelectedDateIndexPath()
+    }
+    
     func updateCurrentSelectedDateIndexPath(as indexPath: IndexPath) {
         selectedDateIndexPath = indexPath
     }

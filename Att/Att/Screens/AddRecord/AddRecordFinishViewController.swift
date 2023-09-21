@@ -164,9 +164,26 @@ final class AddRecordFinishViewController: UIViewController {
     
     private func playTicketAnimation() {
         ticketImageView.rotateClockwise45Degrees { [weak self] _ in
-            let viewController = RecordBrowseViewController(recordCreationViewModel: self?.recordCreationViewModel)
-            viewController.modalPresentationStyle = .automatic
-            self?.present(viewController, animated: true)
+            self?.presentRecordBrowseViewController()
         }
+    }
+    
+    private func presentRecordBrowseViewController() {
+        let viewController = RecordBrowseViewController(recordCreationViewModel: recordCreationViewModel)
+        viewController.delegate = self
+        viewController.modalPresentationStyle = .automatic
+        present(viewController, animated: true)
+    }
+}
+
+extension AddRecordFinishViewController: RecordBrowseViewControllerDelegate {
+    func createDailyRecord() {
+        guard let dailyRecord = recordCreationViewModel?.dailyRecord else { return }
+        CoreDataManager.shared.createDailyRecord(dailyRecord: dailyRecord)
+    }
+    
+    func dismissAddRecordViewController() {
+        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+        rootViewController?.dismiss(animated: true)
     }
 }

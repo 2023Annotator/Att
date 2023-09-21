@@ -10,6 +10,11 @@ import CombineCocoa
 import SnapKit
 import UIKit
 
+protocol RecordBrowseViewControllerDelegate: AnyObject {
+    func createDailyRecord()
+    func dismissAddRecordViewController()
+}
+
 enum RecordBrowseMode {
     case read
     case create
@@ -17,6 +22,8 @@ enum RecordBrowseMode {
 
 final class RecordBrowseViewController: UIViewController {
 
+    weak var delegate: RecordBrowseViewControllerDelegate?
+    
     private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.showsVerticalScrollIndicator = false
@@ -240,7 +247,10 @@ final class RecordBrowseViewController: UIViewController {
     private func setUpAction() {
         confirmButton.tapPublisher
             .sink { [weak self] in
+                self?.delegate?.createDailyRecord()
+                self?.delegate?.dismissAddRecordViewController()
                 self?.dismiss(animated: true)
+                
             }.store(in: &cancellables)
     }
     
@@ -272,6 +282,11 @@ final class RecordBrowseViewController: UIViewController {
         recordCreationViewModel?.$dailyRecord
             .sink { [weak self] record in
                 self?.setUpComponent(record: record)
+            }.store(in: &cancellables)
+        
+        recordCreationViewModel?.$phraseFromYesterday
+            .sink { [weak self] phrase in
+                self?.fromYesterdayView.setUpComponent(text: phrase)
             }.store(in: &cancellables)
     }
 

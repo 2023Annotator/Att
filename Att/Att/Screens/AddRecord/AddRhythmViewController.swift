@@ -183,7 +183,7 @@ final class AddRhythmViewController: UIViewController {
         
         addMusicButton.tapPublisher
             .sink { [weak self] in
-                self?.showMusicSearchViewController()
+                self?.presentMusicSearchViewController()
             }.store(in: &cancellables)
     }
     
@@ -197,7 +197,7 @@ final class AddRhythmViewController: UIViewController {
 }
 
 extension AddRhythmViewController {
-    func showMusicSearchViewController() {
+    func presentMusicSearchViewController() {
         let musicSearchViewController = UINavigationController(rootViewController: MusicSearchViewController(recordCreationViewModel: recordCreationViewModel, musicManager: MusicManager()))
         musicSearchViewController.modalPresentationStyle = .automatic
         present(musicSearchViewController, animated: true)

@@ -13,6 +13,7 @@ import SnapKit
 final class RecordCardCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, AttDailyRecord?> { }
 final class WeekdayCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, Date> { }
 
+
 final class RecordViewController: UIViewController {
     private lazy var fromYesterdayView: ATTFromYesterdayView = {
         let view = ATTFromYesterdayView()
@@ -73,6 +74,11 @@ final class RecordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        dailyRecordViewModel?.updateRecordsWhenViewWillAppear()
     }
     
     private func configure() {
@@ -311,10 +317,7 @@ extension RecordViewController: UICollectionViewDelegate {
             if cardCollectionViewCell.getRecordStatus() == .exist {
                 presentRecordBrowseViewController()
             } else {
-                let addRecordViewController = UINavigationController(rootViewController: AddColorViewController(recordCreationViewModel: RecordCreationViewModel()))
-                addRecordViewController.navigationBar.tintColor = .green
-                addRecordViewController.modalPresentationStyle = .fullScreen
-                present(addRecordViewController, animated: true)
+                presentAddRecordViewController()
             }
         case weekdayCollectionView:
             isScrolling = false
@@ -405,5 +408,12 @@ extension RecordViewController {
         let recordBrowseViewController = RecordBrowseViewController(dailyRecordViewModel: dailyRecordViewModel)
         recordBrowseViewController.modalPresentationStyle = .automatic
         self.navigationController?.present(recordBrowseViewController, animated: true)
+    }
+    
+    private func presentAddRecordViewController() {
+        let addRecordViewController = UINavigationController(rootViewController: AddColorViewController(recordCreationViewModel: RecordCreationViewModel(phraseFromYesterday: dailyRecordViewModel?.currentPhraseFromYesterday)))
+        addRecordViewController.navigationBar.tintColor = .green
+        addRecordViewController.modalPresentationStyle = .fullScreen
+        present(addRecordViewController, animated: true)
     }
 }

@@ -8,8 +8,12 @@
 import Foundation
 
 final class RecordCreationViewModel {
+    @Published var phraseFromYesterday: String?
     @Published var dailyRecord: AttDailyRecord = AttDailyRecord(date: Date())
     
+    init(phraseFromYesterday: String?) {
+        self.phraseFromYesterday = phraseFromYesterday
+    }
     func setMusicInfo(musicInfo: MusicInfo?) {
         dailyRecord.musicInfo = musicInfo
     }
