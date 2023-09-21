@@ -18,9 +18,8 @@ final class AddRecordFinishViewController: UIViewController {
     }()
     
     private let xmarkButton: UIBarButtonItem = {
-        let testImage = UIImage()
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?
+            .withTintColor(.green, renderingMode: .alwaysOriginal))
         return button
     }()
     
@@ -41,13 +40,17 @@ final class AddRecordFinishViewController: UIViewController {
         return label
     }()
     
-    lazy var imageView: UIImageView = {
-        let posX: CGFloat = (self.view.bounds.width - 140)/2
-        let posY: CGFloat = (self.view.bounds.height - 140)/2
-        let imageView = UIImageView(frame: CGRect(x: posX, y: posY, width: 140, height: 140))
-        let image = UIImage(systemName: "ticket.fill")
-        imageView.image = image
-        return imageView
+    private lazy var ticketImageView: UIImageView = {
+        let image = UIImage(named: "ticket")
+        let insets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let imageWithInset = image?.imageWithInset(insets: insets)
+        let view = UIImageView()
+        view.image = imageWithInset
+        view.layer.cornerRadius = 70
+        view.layer.borderColor = UIColor.white.cgColor
+        view.layer.borderWidth = 2
+        view.transform = view.transform.rotated(by: -.pi / 4)
+        return view
     }()
     
     private lazy var recordExplainLabel: UILabel = {
@@ -60,13 +63,12 @@ final class AddRecordFinishViewController: UIViewController {
         return label
     }()
     
-    private lazy var finishButton: NextButtonView = {
-        let button = NextButtonView(title: "완료")
-        return button
-    }()
+    private var recordCreationViewModel: RecordCreationViewModel?
+    private var cancellables = Set<AnyCancellable>()
     
-    init() {
+    init(recordCreationViewModel: RecordCreationViewModel?) {
         super.init(nibName: nil, bundle: nil)
+        self.recordCreationViewModel = recordCreationViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -76,6 +78,7 @@ final class AddRecordFinishViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        playTicketAnimation()
     }
     
     private func setUpNavigationBar() {
@@ -87,11 +90,11 @@ final class AddRecordFinishViewController: UIViewController {
         setUpStyle()
         setUpNavigationBar()
         setUpAction()
-        bind()
     }
     
     private func setUpConstriants() {
         let constraints = Constraints.shared
+        
         view.addSubview(contentView)
         contentView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -103,7 +106,7 @@ final class AddRecordFinishViewController: UIViewController {
         [
             progressView,
             recordLabel,
-            imageView,
+            ticketImageView,
             recordExplainLabel
         ].forEach {
             contentView.addSubview($0)
@@ -125,19 +128,14 @@ final class AddRecordFinishViewController: UIViewController {
             make.height.equalTo(48)
         }
         
-        imageView.snp.makeConstraints { make in
-            make.top.equalTo(recordLabel.snp.bottom).offset(constraints.space142)
+        ticketImageView.snp.makeConstraints { make in
+            make.top.equalTo(recordLabel.snp.bottom).offset(constraints.space176)
+            make.centerX.equalToSuperview()
+            make.width.height.equalTo(140)
         }
-        imageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
         recordExplainLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(constraints.space12)
-            make.leading.trailing.equalToSuperview()
-        }
-        
-        view.addSubview(finishButton)
-        finishButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-constraints.space54)
+            make.top.equalTo(ticketImageView.snp.bottom).offset(constraints.space12)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -146,8 +144,6 @@ final class AddRecordFinishViewController: UIViewController {
         view.backgroundColor = .black
     }
     
-    private var cancellables = Set<AnyCancellable>()
-    
     private func setUpAction() {
         xmarkButton.tapPublisher
             .sink {
@@ -155,5 +151,28 @@ final class AddRecordFinishViewController: UIViewController {
             }.store(in: &cancellables)
     }
     
-    private func bind() { }
+    private func playTicketAnimation() {
+        ticketImageView.rotateClockwise45Degrees { [weak self] _ in
+            self?.presentRecordBrowseViewController()
+        }
+    }
+    
+    private func presentRecordBrowseViewController() {
+        let viewController = RecordBrowseViewController(recordCreationViewModel: recordCreationViewModel)
+        viewController.delegate = self
+        viewController.modalPresentationStyle = .automatic
+        present(viewController, animated: true)
+    }
+}
+
+extension AddRecordFinishViewController: RecordBrowseViewControllerDelegate {
+    func createDailyRecord() {
+        guard let dailyRecord = recordCreationViewModel?.dailyRecord else { return }
+        CoreDataManager.shared.createDailyRecord(dailyRecord: dailyRecord)
+    }
+    
+    func dismissAddRecordViewController() {
+        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+        rootViewController?.dismiss(animated: true)
+    }
 }

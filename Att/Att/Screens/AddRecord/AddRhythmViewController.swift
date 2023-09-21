@@ -13,9 +13,8 @@ import UIKit
 final class AddRhythmViewController: UIViewController {
     
     private let xmarkButton: UIBarButtonItem = {
-        let testImage = UIImage()
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?
+            .withTintColor(.green, renderingMode: .alwaysOriginal))
         return button
     }()
     
@@ -50,7 +49,7 @@ final class AddRhythmViewController: UIViewController {
         return label
     }()
     
-    private lazy var recordExplain2Label: UILabel = {
+    private lazy var recordDescriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption1
         label.textAlignment = .center
@@ -62,28 +61,36 @@ final class AddRhythmViewController: UIViewController {
     
     private lazy var addMusicButton: UIButton = {
         let button = UIButton()
+        let config = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 42.0))
+        let image = UIImage(systemName: "plus")?
+            .withTintColor(.green, renderingMode: .alwaysOriginal)
+            .withConfiguration(config)
+        button.setImage(image, for: .normal)
         button.backgroundColor = .gray100
         button.layer.cornerRadius = 20
-        let buttonimg = UIBarButtonItem(image: UIImage(systemName: "plus")?.withTintColor(.white, renderingMode: .alwaysOriginal))
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.layer.masksToBounds = true
         return button
     }()
     
-    init(viewModel: TestViewModel?) {
-        super.init(nibName: nil, bundle: nil)
-        guard let viewModel = viewModel else { return }
-        self.viewModel = viewModel
-    }
+    private lazy var musicDescriptionView: MusicDescriptionView = {
+        let view = MusicDescriptionView()
+        view.alpha = 0.0
+        return view
+    }()
     
-    private lazy var nextButton: NextButtonView = {
-        let button = NextButtonView(title: "다음")
+    private lazy var nextButton: NextButton = {
+        let button = NextButton(title: "다음")
         return button
     }()
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
-    }
+    private var recordCreationViewModel: RecordCreationViewModel?
+    private var cancellables = Set<AnyCancellable>()
     
+    init(recordCreationViewModel: RecordCreationViewModel?) {
+        super.init(nibName: nil, bundle: nil)
+        self.recordCreationViewModel = recordCreationViewModel
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -105,9 +112,6 @@ final class AddRhythmViewController: UIViewController {
         bind()
     }
     
-    private var viewModel: TestViewModel?
-    private var cancellables = Set<AnyCancellable>()
-    
     private func setUpConstriants() {
         let constraints = Constraints.shared
         
@@ -123,7 +127,7 @@ final class AddRhythmViewController: UIViewController {
             progressView,
             recordLabel,
             recordExplainLabel,
-            recordExplain2Label
+            recordDescriptionLabel
         ].forEach {
             contentView.addSubview($0)
         }
@@ -147,22 +151,30 @@ final class AddRhythmViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
         }
         
-        recordExplain2Label.snp.makeConstraints { make in
+        recordDescriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(recordExplainLabel.snp.bottom).offset(constraints.space28)
             make.leading.trailing.equalToSuperview()
+            make.height.equalTo(42)
         }
         
         view.addSubview(addMusicButton)
         addMusicButton.snp.makeConstraints { make in
-            make.top.equalTo(recordExplain2Label.snp.bottom).offset(constraints.space80)
+            make.top.equalTo(recordDescriptionLabel.snp.bottom).offset(constraints.space80)
             make.centerX.equalToSuperview()
             make.width.height.equalTo(258)
         }
         
+        view.addSubview(musicDescriptionView)
+        musicDescriptionView.snp.makeConstraints { make in
+            make.top.equalTo(addMusicButton.snp.bottom).offset(constraints.space12)
+            make.directionalHorizontalEdges.equalTo(addMusicButton.snp.directionalHorizontalEdges)
+            make.height.equalTo(60)
+        }
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-constraints.space54)
-            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(constraints.space20)
+            make.leading.trailing.equalToSuperview().inset(constraints.space20)
+            make.height.equalTo(48)
         }
     }
     
@@ -173,14 +185,43 @@ final class AddRhythmViewController: UIViewController {
     private func setUpAction() {
         nextButton.tapPublisher
             .sink { [weak self] in
-                self?.navigationController?.pushViewController(AddRecordsViewController(), animated: true)
+                self?.navigationController?.pushViewController(AddRecordsViewController(recordCreationViewModel: self?.recordCreationViewModel), animated: true)
             }.store(in: &cancellables)
         
         xmarkButton.tapPublisher
             .sink {
                 self.navigationController?.dismiss(animated: true)
             }.store(in: &cancellables)
+        
+        addMusicButton.tapPublisher
+            .sink { [weak self] in
+                self?.presentMusicSearchViewController()
+            }.store(in: &cancellables)
     }
     
-    private func bind() {}
+    private func bind() {
+        recordCreationViewModel?.$dailyRecord
+            .sink { [weak self] record in
+                guard let musicInfo = record.musicInfo else { return }
+                self?.addMusicButton.setImage(musicInfo.thumbnailImage, for: .normal)
+                self?.presentmusicDescriptionView(title: musicInfo.title, artist: musicInfo.artist)
+            }.store(in: &cancellables)
+    }
+}
+
+extension AddRhythmViewController {
+    func presentmusicDescriptionView(title: String?, artist: String?) {
+        musicDescriptionView.setUpMusicInfo(title: title, artist: artist)
+        
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.musicDescriptionView.alpha = 1.0
+        }
+    }
+}
+extension AddRhythmViewController {
+    func presentMusicSearchViewController() {
+        let musicSearchViewController = UINavigationController(rootViewController: MusicSearchViewController(recordCreationViewModel: recordCreationViewModel, musicManager: MusicManager()))
+        musicSearchViewController.modalPresentationStyle = .automatic
+        present(musicSearchViewController, animated: true)
+    }
 }

@@ -24,7 +24,7 @@ class CardCollectionViewFlowLayout: UICollectionViewFlowLayout {
         minimumLineSpacing = -24
         
         itemWidth = (width - viewMargin * 2) * 0.89
-        itemHeight = itemWidth * 1.53// 소수점 세번째 자리 이후 Ceil
+        itemHeight = itemWidth * 1.53
         itemSize = CGSize(width: itemWidth, height: itemHeight)
         
         yPositionFactor = itemHeight * 0.12

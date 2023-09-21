@@ -135,13 +135,11 @@ class MainPageViewController: UIViewController {
             }.store(in: &cancellables)
     }
     
-    // MARK: ViewModel Stuff - Optional
     private func bind() { }
 }
 
 extension MainPageViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    // UIPageViewControllerDataSource 구현
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let viewControllers = pageViewController.viewControllers else { return nil }
         guard let currentIndex = viewControllers.firstIndex(of: viewController) else {

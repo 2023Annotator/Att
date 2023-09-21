@@ -77,7 +77,7 @@ final class NowPlayingView: RecordBrowseInnerTitleDefaultView {
         
         musicTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(musicImageView.snp.trailing).offset(constraints.space4)
-            make.trailing.equalTo(thumbnailView.snp.leading).offset(constraints.space4)
+            make.trailing.equalTo(thumbnailView.snp.leading).inset(constraints.space4)
             make.centerY.equalTo(musicImageView)
             make.height.equalTo(22)
         }
@@ -89,7 +89,6 @@ final class NowPlayingView: RecordBrowseInnerTitleDefaultView {
         }
     }
     
-    // TODO: Background Image Set
     func setUpComponent(musicInfo: MusicInfo?) {
         musicTitleLabel.text = musicInfo?.artistAndTitleStr()
         self.image = musicInfo?.thumbnailImage

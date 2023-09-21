@@ -21,7 +21,7 @@ final class MusicInfoTableViewCell: UITableViewCell {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = .caption1
         label.textAlignment = .left
         label.textColor = .white
         return label
@@ -29,8 +29,7 @@ final class MusicInfoTableViewCell: UITableViewCell {
     
     private lazy var artistLabel: UILabel = {
         let label = UILabel()
-        //        label.font = .largeTitle
-        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.font = .caption1
         label.textAlignment = .left
         label.textColor = .white
         return label
@@ -49,8 +48,6 @@ final class MusicInfoTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     private func setUpConstraints() {

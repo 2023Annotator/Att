@@ -73,6 +73,12 @@ final class RecordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        CoreDataManager.shared.deleteAllDailyRecord()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        dailyRecordViewModel?.updateRecordsWhenViewWillAppear()
     }
     
     private func configure() {
@@ -311,7 +317,7 @@ extension RecordViewController: UICollectionViewDelegate {
             if cardCollectionViewCell.getRecordStatus() == .exist {
                 presentRecordBrowseViewController()
             } else {
-                print("CREATE RECORD")
+                presentAddRecordViewController()
             }
         case weekdayCollectionView:
             isScrolling = false
@@ -402,5 +408,12 @@ extension RecordViewController {
         let recordBrowseViewController = RecordBrowseViewController(dailyRecordViewModel: dailyRecordViewModel)
         recordBrowseViewController.modalPresentationStyle = .automatic
         self.navigationController?.present(recordBrowseViewController, animated: true)
+    }
+    
+    private func presentAddRecordViewController() {
+        let addRecordViewController = UINavigationController(rootViewController: AddColorViewController(recordCreationViewModel: RecordCreationViewModel(phraseFromYesterday: dailyRecordViewModel?.currentPhraseFromYesterday)))
+        addRecordViewController.navigationBar.tintColor = .green
+        addRecordViewController.modalPresentationStyle = .fullScreen
+        present(addRecordViewController, animated: true)
     }
 }

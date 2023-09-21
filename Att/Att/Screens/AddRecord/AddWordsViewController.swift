@@ -13,9 +13,8 @@ import UIKit
 final class AddWordsViewController: UIViewController {
     
     private let xmarkButton: UIBarButtonItem = {
-        let testImage = UIImage()
-        testImage.withTintColor(.yellow)
-        let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?.withTintColor(.white, renderingMode: .alwaysOriginal))
+        let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?
+            .withTintColor(.green, renderingMode: .alwaysOriginal))
         return button
     }()
     
@@ -43,14 +42,14 @@ final class AddWordsViewController: UIViewController {
     
     private lazy var recordExplainLabel: UILabel = {
         let label = UILabel()
-        label.font = .subtitle2
+        label.font = .subtitle3
         label.textAlignment = .center
         label.textColor = .white
         label.text = "내일의 나에게"
         return label
     }()
     
-    private lazy var recordExplain2Label: UILabel = {
+    private lazy var recordDescriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption1
         label.textAlignment = .center
@@ -60,21 +59,22 @@ final class AddWordsViewController: UIViewController {
         return label
     }()
     
-    private lazy var addRecordTextFieldView: AddRecordTextFieldView = {
-        let view = AddRecordTextFieldView()
+    private lazy var addRecordTextView: AddRecordTextView = {
+        let view = AddRecordTextView()
         return view
     }()
     
-    private lazy var nextButton: NextButtonView = {
-        let button = NextButtonView(title: "다음")
+    private lazy var nextButton: NextButton = {
+        let button = NextButton(title: "다음")
         return button
     }()
     
-    private var viewModel: TestViewModel?
+    private var recordCreationViewModel: RecordCreationViewModel?
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
+    init(recordCreationViewModel: RecordCreationViewModel?) {
         super.init(nibName: nil, bundle: nil)
+        self.recordCreationViewModel = recordCreationViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -95,6 +95,7 @@ final class AddWordsViewController: UIViewController {
         setUpStyle()
         setUpNavigationBar()
         setUpAction()
+        setUpKeyboard()
         bind()
     }
     
@@ -113,8 +114,8 @@ final class AddWordsViewController: UIViewController {
             progressView,
             recordLabel,
             recordExplainLabel,
-            recordExplain2Label,
-            addRecordTextFieldView
+            recordDescriptionLabel,
+            addRecordTextView
         ].forEach {
             contentView.addSubview($0)
         }
@@ -138,20 +139,23 @@ final class AddWordsViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
         }
         
-        recordExplain2Label.snp.makeConstraints { make in
+        recordDescriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(recordExplainLabel.snp.bottom).offset(constraints.space28)
             make.leading.trailing.equalToSuperview()
+            make.height.equalTo(42)
         }
         
-        addRecordTextFieldView.snp.makeConstraints { make in
-            make.top.equalTo(recordExplain2Label.snp.bottom).offset(constraints.space80)
-            make.leading.trailing.equalToSuperview()
+        addRecordTextView.snp.makeConstraints { make in
+            make.top.equalTo(recordDescriptionLabel.snp.bottom).offset(constraints.space36)
+            make.leading.trailing.equalToSuperview().inset(constraints.space20)
+            make.height.equalTo(160)
         }
         
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-constraints.space54)
-            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(constraints.space20)
+            make.leading.trailing.equalToSuperview().inset(constraints.space20)
+            make.height.equalTo(48)
         }
     }
     
@@ -161,8 +165,8 @@ final class AddWordsViewController: UIViewController {
     
     private func setUpAction() {
         nextButton.tapPublisher
-            .sink {
-                self.navigationController?.pushViewController(AddRecordFinishViewController(), animated: true)
+            .sink { [weak self] in
+                self?.navigationController?.pushViewController(AddRecordFinishViewController(recordCreationViewModel: self?.recordCreationViewModel), animated: true)
             }.store(in: &cancellables)
         
         xmarkButton.tapPublisher
@@ -171,5 +175,38 @@ final class AddWordsViewController: UIViewController {
             }.store(in: &cancellables)
     }
     
-    private func bind() { }
+    private func bind() {
+        addRecordTextView.textPublisher
+            .sink { [weak self] text in
+                self?.recordCreationViewModel?.setPraseToTomorrow(as: text)
+            }.store(in: &cancellables)
+    }
+}
+
+extension AddWordsViewController {
+    private func setUpKeyboard() {
+        addRecordTextView.becomeFirstResponder()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        hideKeyboardWhenTappedAround()
+    }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardHeight = keyboardFrame.cgRectValue.height
+
+            nextButton.snp.updateConstraints { update in
+                update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(keyboardHeight - Constraints.shared.space16)
+            }
+            view.layoutIfNeeded()
+        }
+    }
+    
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        nextButton.snp.updateConstraints { update in
+            update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(Constraints.shared.space20)
+        }
+        view.layoutIfNeeded()
+    }
+
 }
