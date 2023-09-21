@@ -58,7 +58,7 @@ final class AddColorViewController: UIViewController {
         return label
     }()
     
-    private lazy var imageView: UIImageView = {
+    private lazy var arrowImageView: UIImageView = {
         let width: CGFloat = 20
         let height: CGFloat = 30
         
@@ -67,8 +67,9 @@ final class AddColorViewController: UIViewController {
         
         let imageView = UIImageView(frame: CGRect(x: posX, y: posY, width: width, height: height))
         
-        let image = UIImage(systemName: "arrowtriangle.down.fill")
-        image?.withTintColor(.white)
+        let image = UIImage(systemName: "arrowtriangle.down.fill")?
+            .withTintColor(.white)
+            .withRenderingMode(.alwaysOriginal)
         
         imageView.image = image
         
@@ -76,15 +77,27 @@ final class AddColorViewController: UIViewController {
     }()
     
     private lazy var circularSlider: CircularSlider = {
-        let frame = CGRect(x: 0, y: 0, width: 300, height: 300)
-        var circularSlider = CircularSlider(frame: frame)
-        
-        circularSlider.unfilledArcLineCap = .round
-        circularSlider.filledArcLineCap = .round
+        let circularSlider = CircularSlider()
+        circularSlider.backgroundArcLineCap = .round
         circularSlider.currentValue = 10
         circularSlider.lineWidth = 54
-        
         return circularSlider
+    }()
+    
+    private lazy var moodDescriptionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .title2
+        label.textAlignment = .center
+        label.textColor = .white
+        return label
+    }()
+    
+    private lazy var moodSubDescriptionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .subtitle3
+        label.textAlignment = .center
+        label.textColor = .white
+        return label
     }()
     
     private lazy var nextButton: NextButton = {
@@ -118,6 +131,7 @@ final class AddColorViewController: UIViewController {
         setUpStyle()
         setUpNavigationBar()
         setUpAction()
+        bind()
     }
     
     private func setUpConstriants() {
@@ -135,7 +149,7 @@ final class AddColorViewController: UIViewController {
             recordLabel,
             recordExplainLabel,
             recordDescriptionLabel,
-            imageView,
+            arrowImageView,
             circularSlider
         ].forEach {
             contentView.addSubview($0)
@@ -167,15 +181,42 @@ final class AddColorViewController: UIViewController {
             make.height.equalTo(42)
         }
         
-        imageView.snp.makeConstraints { make in
-            make.top.equalTo(recordDescriptionLabel.snp.bottom).offset(constraints.space12)
+        arrowImageView.snp.makeConstraints { make in
+            make.top.equalTo(recordDescriptionLabel.snp.bottom).offset(constraints.space22)
             make.centerX.equalToSuperview()
         }
         
         circularSlider.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(constraints.space42)
-            make.height.equalTo(300)
+            make.top.equalTo(arrowImageView.snp.bottom).offset(constraints.space32)
+            make.width.height.equalTo(300)
             make.leading.trailing.equalToSuperview()
+        }
+        
+        let moodDescriptionStackView = UIStackView()
+        moodDescriptionStackView.axis = .vertical
+        moodDescriptionStackView.alignment = .center
+        moodDescriptionStackView.distribution = .equalSpacing
+        moodDescriptionStackView.spacing = constraints.space4
+        
+        view.addSubview(moodDescriptionStackView)
+        moodDescriptionStackView.snp.makeConstraints { make in
+            make.center.equalTo(circularSlider.snp.center)
+            make.width.equalTo(circularSlider.snp.width)
+            make.height.equalTo(48)
+        }
+        [
+            moodDescriptionLabel,
+            moodSubDescriptionLabel
+        ].forEach {
+            moodDescriptionStackView.addArrangedSubview($0)
+        }
+        
+        moodDescriptionLabel.snp.makeConstraints { make in
+            make.height.equalTo(26)
+        }
+        
+        moodSubDescriptionLabel.snp.makeConstraints { make in
+            make.height.equalTo(20)
         }
         
         view.addSubview(nextButton)
@@ -198,9 +239,30 @@ final class AddColorViewController: UIViewController {
             }.store(in: &cancellables)
         
         xmarkButton.tapPublisher
-            .sink {
-                self.navigationController?.dismiss(animated: true)
+            .sink { [weak self] in
+                self?.navigationController?.dismiss(animated: true)
+            }.store(in: &cancellables)
+        
+        circularSlider.addTarget(self, action: #selector(handleControlValueChanged), for: .valueChanged)
+    }
+    
+    private func bind() {
+        recordCreationViewModel?.$dailyRecord
+            .sink { [weak self] record in
+                self?.setUpComponent(mood: record.mood)
             }.store(in: &cancellables)
     }
     
+    private func setUpComponent(mood: Mood?) {
+        moodDescriptionLabel.text = mood?.description
+        moodSubDescriptionLabel.text = mood?.subDescription
+    }
+    
+}
+
+extension AddColorViewController {
+    @objc private func handleControlValueChanged(_ sender: CircularSlider?) {
+        guard let currentValue = sender?.currentValue else { return }
+        recordCreationViewModel?.setMoodWithSliderValue(with: currentValue)
+    }
 }

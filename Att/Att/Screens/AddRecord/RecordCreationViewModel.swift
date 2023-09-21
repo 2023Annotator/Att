@@ -13,7 +13,13 @@ final class RecordCreationViewModel {
     
     init(phraseFromYesterday: String?) {
         self.phraseFromYesterday = phraseFromYesterday
+        dailyRecord.mood = Mood.anger
     }
+    
+    func setMoodWithSliderValue(with value: Float) {
+        dailyRecord.mood?.changeMoodWithSliderValue(value: value)
+    }
+    
     func setMusicInfo(musicInfo: MusicInfo?) {
         dailyRecord.musicInfo = musicInfo
     }
