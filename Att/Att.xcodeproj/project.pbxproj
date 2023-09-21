@@ -299,8 +299,8 @@
 				3A5D0BE52A62B9B800064DCB /* UIColor+.swift */,
 				3AF9C0622A7CF74500A5A036 /* Date+.swift */,
 				3A985A7D2AB5A808003FBD3A /* UIImage+.swift */,
-				3A8D8B402ABB0E8200D7A61A /* UIViewController+.swift */,
 				3A8D8B422ABB17F300D7A61A /* UIView+.swift */,
+				3A8D8B402ABB0E8200D7A61A /* UIViewController+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

@@ -36,14 +36,6 @@ final class RecordBrowseViewController: UIViewController {
         return view
     }()
     
-    private lazy var editButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("수정하기", for: .normal)
-        button.titleLabel?.font = .caption
-        button.setTitleColor(.black, for: .normal)
-        return button
-    }()
-    
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.font = .largeTitle
@@ -152,7 +144,6 @@ final class RecordBrowseViewController: UIViewController {
         }
         
         [
-            editButton,
             dateLabel,
             publicationTimeLabel,
             todaysMoodView,
@@ -165,23 +156,16 @@ final class RecordBrowseViewController: UIViewController {
             contentView.addSubview($0)
         }
         
-        editButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(constraints.space22)
-            make.trailing.equalToSuperview().inset(constraints.space26)
-            make.width.equalTo(60)
-            make.height.equalTo(22)
-        }
-        
         dateLabel.snp.makeConstraints { make in
-            make.top.equalTo(editButton.snp.bottom).offset(constraints.space24)
-            make.trailing.equalTo(editButton)
+            make.top.equalToSuperview().offset(constraints.space24)
+            make.trailing.equalToSuperview().inset(constraints.space26)
             make.width.equalTo(240)
             make.height.equalTo(36)
         }
         
         publicationTimeLabel.snp.makeConstraints { make in
             make.top.equalTo(dateLabel.snp.bottom).offset(constraints.space4)
-            make.trailing.equalTo(editButton)
+            make.trailing.equalTo(dateLabel)
             make.width.equalTo(240)
             make.height.equalTo(20)
         }
@@ -233,7 +217,7 @@ final class RecordBrowseViewController: UIViewController {
                 make.top.equalTo(toTomorrowView.snp.bottom).offset(constraints.space22)
                 make.leading.trailing.equalToSuperview().inset(constraints.space20)
                 make.height.equalTo(48)
-                make.bottom.equalTo(contentView.snp.bottom).inset(constraints.space42)
+                make.bottom.equalTo(contentView.snp.bottom).inset(constraints.space22)
             }
         case .none:
             break

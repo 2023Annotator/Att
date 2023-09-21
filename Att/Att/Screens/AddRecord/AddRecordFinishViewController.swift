@@ -49,6 +49,7 @@ final class AddRecordFinishViewController: UIViewController {
         view.layer.cornerRadius = 70
         view.layer.borderColor = UIColor.white.cgColor
         view.layer.borderWidth = 2
+        view.transform = view.transform.rotated(by: -.pi / 4)
         return view
     }()
     
@@ -60,11 +61,6 @@ final class AddRecordFinishViewController: UIViewController {
         label.text = "당신의 소중한 기억을 발권중입니다.\n잠시만 기다려주세요"
         label.numberOfLines = 2
         return label
-    }()
-    
-    private lazy var finishButton: NextButton = {
-        let button = NextButton(title: "완료")
-        return button
     }()
     
     private var recordCreationViewModel: RecordCreationViewModel?
@@ -133,7 +129,7 @@ final class AddRecordFinishViewController: UIViewController {
         }
         
         ticketImageView.snp.makeConstraints { make in
-            make.top.equalTo(recordLabel.snp.bottom).offset(constraints.space142)
+            make.top.equalTo(recordLabel.snp.bottom).offset(constraints.space176)
             make.centerX.equalToSuperview()
             make.width.height.equalTo(140)
         }
@@ -141,13 +137,6 @@ final class AddRecordFinishViewController: UIViewController {
         recordExplainLabel.snp.makeConstraints { make in
             make.top.equalTo(ticketImageView.snp.bottom).offset(constraints.space12)
             make.leading.trailing.equalToSuperview()
-        }
-        
-        view.addSubview(finishButton)
-        finishButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(constraints.space20)
-            make.leading.trailing.equalToSuperview().inset(constraints.space20)
-            make.height.equalTo(48)
         }
     }
     

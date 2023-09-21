@@ -49,7 +49,7 @@ final class AddRecordsViewController: UIViewController {
         return label
     }()
     
-    private lazy var recordExplain2Label: UILabel = {
+    private lazy var recordDescriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption1
         label.textAlignment = .center
@@ -113,7 +113,7 @@ final class AddRecordsViewController: UIViewController {
             progressView,
             recordLabel,
             recordExplainLabel,
-            recordExplain2Label,
+            recordDescriptionLabel,
             addRecordTextView
         ].forEach {
             contentView.addSubview($0)
@@ -139,14 +139,14 @@ final class AddRecordsViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
         }
         
-        recordExplain2Label.snp.makeConstraints { make in
+        recordDescriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(recordExplainLabel.snp.bottom).offset(constraints.space28)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(42)
         }
         
         addRecordTextView.snp.makeConstraints { make in
-            make.top.equalTo(recordExplain2Label.snp.bottom).offset(constraints.space36)
+            make.top.equalTo(recordDescriptionLabel.snp.bottom).offset(constraints.space36)
             make.leading.trailing.equalToSuperview().inset(constraints.space20)
             make.height.equalTo(160)
         }
@@ -205,7 +205,7 @@ extension AddRecordsViewController {
     
     @objc private func keyboardWillHide(_ notification: Notification) {
         nextButton.snp.updateConstraints { update in
-            update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(Constraints.shared.space42)
+            update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(Constraints.shared.space20)
         }
         view.layoutIfNeeded()
     }

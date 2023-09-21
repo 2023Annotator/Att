@@ -49,7 +49,7 @@ final class AddRhythmViewController: UIViewController {
         return label
     }()
     
-    private lazy var recordExplain2Label: UILabel = {
+    private lazy var recordDescriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption1
         label.textAlignment = .center
@@ -127,7 +127,7 @@ final class AddRhythmViewController: UIViewController {
             progressView,
             recordLabel,
             recordExplainLabel,
-            recordExplain2Label
+            recordDescriptionLabel
         ].forEach {
             contentView.addSubview($0)
         }
@@ -151,7 +151,7 @@ final class AddRhythmViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
         }
         
-        recordExplain2Label.snp.makeConstraints { make in
+        recordDescriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(recordExplainLabel.snp.bottom).offset(constraints.space28)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(42)
@@ -159,7 +159,7 @@ final class AddRhythmViewController: UIViewController {
         
         view.addSubview(addMusicButton)
         addMusicButton.snp.makeConstraints { make in
-            make.top.equalTo(recordExplain2Label.snp.bottom).offset(constraints.space80)
+            make.top.equalTo(recordDescriptionLabel.snp.bottom).offset(constraints.space80)
             make.centerX.equalToSuperview()
             make.width.height.equalTo(258)
         }

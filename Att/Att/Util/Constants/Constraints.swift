@@ -29,5 +29,5 @@ struct Constraints {
     let space60: CGFloat = 60
     let space80: CGFloat = 80
     let space100: CGFloat = 100
-    let space142: CGFloat = 142
+    let space176: CGFloat = 176
 }

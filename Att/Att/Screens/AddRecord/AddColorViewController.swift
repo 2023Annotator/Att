@@ -48,7 +48,7 @@ final class AddColorViewController: UIViewController {
         return label
     }()
     
-    private lazy var recordExplain2Label: UILabel = {
+    private lazy var recordDescriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .caption1
         label.textAlignment = .center
@@ -58,7 +58,7 @@ final class AddColorViewController: UIViewController {
         return label
     }()
     
-    lazy var imageView: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let width: CGFloat = 20
         let height: CGFloat = 30
         
@@ -134,7 +134,7 @@ final class AddColorViewController: UIViewController {
             progressView,
             recordLabel,
             recordExplainLabel,
-            recordExplain2Label,
+            recordDescriptionLabel,
             imageView,
             circularSlider
         ].forEach {
@@ -161,14 +161,14 @@ final class AddColorViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
         }
         
-        recordExplain2Label.snp.makeConstraints { make in
+        recordDescriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(recordExplainLabel.snp.bottom).offset(constraints.space28)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(42)
         }
         
         imageView.snp.makeConstraints { make in
-            make.top.equalTo(recordExplain2Label.snp.bottom).offset(constraints.space12)
+            make.top.equalTo(recordDescriptionLabel.snp.bottom).offset(constraints.space12)
             make.centerX.equalToSuperview()
         }
         
