@@ -72,6 +72,12 @@ final class AddRhythmViewController: UIViewController {
         return button
     }()
     
+    private lazy var musicDescriptionView: MusicDescriptionView = {
+        let view = MusicDescriptionView()
+        view.alpha = 0.0
+        return view
+    }()
+    
     private lazy var nextButton: NextButton = {
         let button = NextButton(title: "다음")
         return button
@@ -158,9 +164,15 @@ final class AddRhythmViewController: UIViewController {
             make.width.height.equalTo(258)
         }
         
+        view.addSubview(musicDescriptionView)
+        musicDescriptionView.snp.makeConstraints { make in
+            make.top.equalTo(addMusicButton.snp.bottom).offset(constraints.space12)
+            make.directionalHorizontalEdges.equalTo(addMusicButton.snp.directionalHorizontalEdges)
+            make.height.equalTo(60)
+        }
         view.addSubview(nextButton)
         nextButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(constraints.space42)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(constraints.space20)
             make.leading.trailing.equalToSuperview().inset(constraints.space20)
             make.height.equalTo(48)
         }
@@ -192,10 +204,20 @@ final class AddRhythmViewController: UIViewController {
             .sink { [weak self] record in
                 guard let musicInfo = record.musicInfo else { return }
                 self?.addMusicButton.setImage(musicInfo.thumbnailImage, for: .normal)
+                self?.presentmusicDescriptionView(title: musicInfo.title, artist: musicInfo.artist)
             }.store(in: &cancellables)
     }
 }
 
+extension AddRhythmViewController {
+    func presentmusicDescriptionView(title: String?, artist: String?) {
+        musicDescriptionView.setUpMusicInfo(title: title, artist: artist)
+        
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.musicDescriptionView.alpha = 1.0
+        }
+    }
+}
 extension AddRhythmViewController {
     func presentMusicSearchViewController() {
         let musicSearchViewController = UINavigationController(rootViewController: MusicSearchViewController(recordCreationViewModel: recordCreationViewModel, musicManager: MusicManager()))
