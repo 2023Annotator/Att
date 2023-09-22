@@ -27,6 +27,8 @@
 		3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BE12A61553100064DCB /* TestViewModel.swift */; };
 		3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BE32A62B9AF00064DCB /* UIFont+.swift */; };
 		3A5D0BE62A62B9B800064DCB /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5D0BE52A62B9B800064DCB /* UIColor+.swift */; };
+		3A8C805B2ABD63E10039CDE6 /* WordAnalysisManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C805A2ABD63E10039CDE6 /* WordAnalysisManager.swift */; };
+		3A8C805D2ABD74B50039CDE6 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C805C2ABD74B50039CDE6 /* String+.swift */; };
 		3A8D8B412ABB0E8200D7A61A /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8D8B402ABB0E8200D7A61A /* UIViewController+.swift */; };
 		3A8D8B432ABB17F300D7A61A /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8D8B422ABB17F300D7A61A /* UIView+.swift */; };
 		3A8D8B4A2ABC1EA400D7A61A /* MusicDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8D8B492ABC1EA400D7A61A /* MusicDescriptionView.swift */; };
@@ -119,6 +121,8 @@
 		3A5D0BE12A61553100064DCB /* TestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewModel.swift; sourceTree = "<group>"; };
 		3A5D0BE32A62B9AF00064DCB /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		3A5D0BE52A62B9B800064DCB /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		3A8C805A2ABD63E10039CDE6 /* WordAnalysisManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordAnalysisManager.swift; sourceTree = "<group>"; };
+		3A8C805C2ABD74B50039CDE6 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		3A8D8B402ABB0E8200D7A61A /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 		3A8D8B422ABB17F300D7A61A /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		3A8D8B492ABC1EA400D7A61A /* MusicDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDescriptionView.swift; sourceTree = "<group>"; };
@@ -242,6 +246,7 @@
 			children = (
 				3A985A662AB47D5F003FBD3A /* CoreDataManager.swift */,
 				3A34410D2AB9ADC7009B554A /* MusicManager.swift */,
+				3A8C805A2ABD63E10039CDE6 /* WordAnalysisManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -299,6 +304,7 @@
 				3A985A7D2AB5A808003FBD3A /* UIImage+.swift */,
 				3A8D8B422ABB17F300D7A61A /* UIView+.swift */,
 				3A8D8B402ABB0E8200D7A61A /* UIViewController+.swift */,
+				3A8C805C2ABD74B50039CDE6 /* String+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -697,6 +703,7 @@
 				3AE2D7562AAEE2EA00052A0B /* DottedLineView.swift in Sources */,
 				3AF9C0612A7CF09200A5A036 /* RecordViewController.swift in Sources */,
 				3A985A7E2AB5A808003FBD3A /* UIImage+.swift in Sources */,
+				3A8C805D2ABD74B50039CDE6 /* String+.swift in Sources */,
 				3AF9C0652A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift in Sources */,
 				3F95401E2AAF11E500FE75E7 /* CircularSlider.swift in Sources */,
 				3A9321E32A8CA0BB00C106DF /* ATTSegmentedControl.swift in Sources */,
@@ -717,6 +724,7 @@
 				3A8D8B432ABB17F300D7A61A /* UIView+.swift in Sources */,
 				3AF9C06C2A7D0B0000A5A036 /* RecordStatus.swift in Sources */,
 				3A9321DE2A8C9A0D00C106DF /* ComponentsSet.swift in Sources */,
+				3A8C805B2ABD63E10039CDE6 /* WordAnalysisManager.swift in Sources */,
 				3AF9C0752A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift in Sources */,
 				3A3441232AB9BD74009B554A /* DailyRecord+CoreDataClass.swift in Sources */,
 				3A2202A42A5AB7DA009DB223 /* Att.xcdatamodeld in Sources */,

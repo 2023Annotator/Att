@@ -19,7 +19,6 @@ final class RecordNonExistCardView: ATTCardView {
         return view
     }()
     
-    // TODO: 이미지 삽입
     private let ticketImageView: UIImageView = {
         let view = UIImageView()
         let image = UIImage(named: "ticket")
