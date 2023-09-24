@@ -5,6 +5,7 @@
 //  Created by 황정현 on 2023/09/05.
 //
 
+import Combine
 import UIKit
 
 final class YearSelectorView: UIView {
@@ -28,16 +29,19 @@ final class YearSelectorView: UIView {
     
     private lazy var rightButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(systemName: "chevron.right")?
-            .withTintColor(.white, renderingMode: .alwaysOriginal)
-        button.setImage(image, for: .normal)
         return button
     }()
     
-    init() {
+    private var analysisViewModel: AnalysisViewModel?
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(analysisViewModel: AnalysisViewModel?) {
         super.init(frame: CGRect.zero)
+        self.analysisViewModel = analysisViewModel
         setUpConstraints()
         setUpStyle()
+        setUpAction()
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -45,8 +49,6 @@ final class YearSelectorView: UIView {
     }
     
     private func setUpConstraints() {
-        let constraints = Constraints.shared
-        
         [
             yearLabel,
             leftButton,
@@ -57,7 +59,7 @@ final class YearSelectorView: UIView {
         
         yearLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(constraints.space42)
+            make.leading.trailing.equalToSuperview()
         }
         
         leftButton.snp.makeConstraints { make in
@@ -75,5 +77,49 @@ final class YearSelectorView: UIView {
     
     private func setUpStyle() {
         backgroundColor = .clear
+    }
+    
+    private func setUpAction() {
+        leftButton.tapPublisher
+            .sink { [weak self] in
+                self?.analysisViewModel?.decreaseYear()
+            }.store(in: &cancellables)
+        
+        rightButton.tapPublisher
+            .sink { [weak self] in
+                self?.analysisViewModel?.increaseYear()
+            }.store(in: &cancellables)
+    }
+    
+    private func bind() {
+        analysisViewModel?.$currentYear
+            .sink { [weak self] year in
+                self?.setUpYearLabel(year: year)
+                self?.isRightButtonUserInteractionEnabled(with: year)
+            }.store(in: &cancellables)
+    }
+    
+    private func setUpYearLabel(year: Int) {
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            self?.yearLabel.text = "\(year)"
+        }
+    }
+    
+    private func isRightButtonUserInteractionEnabled(with year: Int) {
+        let isEnabled = !(String(year) == Date().year())
+        rightButton.isUserInteractionEnabled = isEnabled
+        changeRightButtonTintColor(isUserInteractionEnabled: isEnabled)
+    }
+    
+    private func changeRightButtonTintColor(isUserInteractionEnabled: Bool) {
+        var imageTintColor: UIColor = .white
+        
+        if !isUserInteractionEnabled {
+            imageTintColor = .gray100
+        }
+        
+        let image = UIImage(systemName: "chevron.right")?
+            .withTintColor(imageTintColor, renderingMode: .alwaysOriginal)
+        rightButton.setImage(image, for: .normal)
     }
 }

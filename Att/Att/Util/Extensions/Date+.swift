@@ -29,6 +29,20 @@ extension Date {
         return convertedDate
     }
     
+    func previousMonth() -> Int? {
+        if let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: self) {
+            return Int(previousMonth.month())
+        }
+        return nil
+    }
+    
+    func yearAndMonth() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY.MM"
+        let convertedDate = dateFormatter.string(from: self)
+        return convertedDate
+    }
+    
     func monthAndDay() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMdd"
@@ -46,6 +60,13 @@ extension Date {
     func weekday() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EE"
+        let convertedDate = dateFormatter.string(from: self)
+        return convertedDate
+    }
+    
+    func hour() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
         let convertedDate = dateFormatter.string(from: self)
         return convertedDate
     }
@@ -95,4 +116,43 @@ extension Date {
             return .future
         }
     }
+    
+    func isFirstDayOfTheMonthPassed() -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd"
+        let convertedDateStr = dateFormatter.string(from: self)
+        guard let convertedDateInt = Int(convertedDateStr) else { return  false }
+        if convertedDateInt >= 1 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func startOfMonth() -> Date? {
+        
+        let calendar = Calendar.current
+        
+        let year = calendar.component(.year, from: self)
+        let month = calendar.component(.month, from: self)
+        
+        let startComponents = DateComponents(year: year, month: month, day: 1)
+        guard let startDate = calendar.date(from: startComponents) else {
+            return nil
+        }
+        
+        return startDate
+    }
+    
+    func endOfMonth() -> Date? {
+        let calendar = Calendar.current
+        
+        let nextMonth = calendar.date(byAdding: .month, value: 1, to: self)
+        let endComponents = calendar.dateComponents([.year, .month], from: nextMonth!)
+        let endDate = calendar.date(from: endComponents)?.addingTimeInterval(-1)
+        
+        return endDate
+    }
+
 }
+        

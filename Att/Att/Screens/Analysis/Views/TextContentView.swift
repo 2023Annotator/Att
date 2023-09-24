@@ -63,7 +63,7 @@ final class TextContentView: AnalysisDefaultView {
     
     func setUpComponent(as time: String?) {
         if let time = time {
-            contentLabel.text = "\(time) 사이에 일기를 작성하는 편"
+            contentLabel.text = "\(time) 사이에 일기를 작성하는 편입니다."
         } else {
             contentLabel.text = "기록을 불러오지 못하였습니다."
         }

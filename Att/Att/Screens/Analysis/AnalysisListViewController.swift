@@ -9,10 +9,12 @@ import Combine
 import SnapKit
 import UIKit
 
-class AnalysisListViewController: UIViewController {
+final class MonthListCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, MonthlyMoodRecord?> { }
+
+final class AnalysisListViewController: UIViewController {
     
     private lazy var yearSelectorView: YearSelectorView = {
-        let view = YearSelectorView()
+        let view = YearSelectorView(analysisViewModel: analysisViewModel)
         return view
     }()
     
@@ -31,6 +33,8 @@ class AnalysisListViewController: UIViewController {
         let view = MonthListView()
         return view
     }()
+    
+    private var monthListCollectionDiffableDataSource: MonthListCollectionViewDiffableDataSource?
     
     private var analysisViewModel: AnalysisViewModel?
     private var cancellables = Set<AnyCancellable>()
@@ -52,7 +56,7 @@ class AnalysisListViewController: UIViewController {
     private func configure() {
         setUpConstriants()
         setUpMonthCollectionView()
-        setUpAction()
+        setUpMonthCollectionViewDataSource()
         bind()
     }
     
@@ -90,65 +94,92 @@ class AnalysisListViewController: UIViewController {
             contentView.addSubview($0)
         }
         
-        let itemWidth = UIScreen.main.bounds.width
-        let itemHeight = itemWidth * 0.22
         monthListView.snp.makeConstraints { make in
             make.top.equalTo(contentView.snp.top).offset(constraints.space28)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(itemHeight * 9 + 50)
+            make.height.equalTo(0)
             make.bottom.equalToSuperview()
         }
     }
     
     private func setUpMonthCollectionView() {
-        monthListView.monthCollectionView.dataSource = self
         monthListView.monthCollectionView.delegate = self
         monthListView.monthCollectionView.register(MonthCollectionViewCell.self, forCellWithReuseIdentifier: MonthCollectionViewCell.identifier)
     }
     
-    // MARK: TabPulisher etc - Optional
-    private func setUpAction() { }
+    private func setUpMonthCollectionViewDataSource() {
+        let collectionView = monthListView.monthCollectionView
+        collectionView.register(MonthCollectionViewCell.self, forCellWithReuseIdentifier: MonthCollectionViewCell.identifier)
+        collectionView.dataSource = monthListCollectionDiffableDataSource
+        
+        monthListCollectionDiffableDataSource = MonthListCollectionViewDiffableDataSource(collectionView: collectionView) { (collectionView, indexPath, moodRecord) ->
+            MonthCollectionViewCell? in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MonthCollectionViewCell.identifier, for: indexPath) as? MonthCollectionViewCell else {
+                return MonthCollectionViewCell()
+            }
+            
+            cell.setUpComponent(monthlyMoodRecord: moodRecord)
+            
+            return cell
+        }
+    }
     
-    // MARK: ViewModel Stuff - Optional
-    private func bind() { }
+    private func performMonthCollectionViewCell(moodRecords: [MonthlyMoodRecord?]?) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, MonthlyMoodRecord?>()
+        snapshot.appendSections([0])
+        if let moodRecords = moodRecords {
+            snapshot.appendItems(moodRecords)
+        }
+        monthListCollectionDiffableDataSource?.apply(snapshot)
+    }
+    
+    private func bind() {
+        analysisViewModel?.$monthlyMoodRecords
+            .sink { [weak self] moodRecords in
+                self?.performMonthCollectionViewCell(moodRecords: moodRecords)
+                self?.updateMonthListViewHeightConstraints(monthCount: moodRecords?.count)
+            }.store(in: &cancellables)
+    }
 }
 
-extension AnalysisListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension AnalysisListViewController: UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 9
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let monthNameArr: [String] = [
-            "JANUARY",
-            "FEBRUARY",
-            "MARCH",
-            "APRIL",
-            "MAY",
-            "JUNE",
-            "JULY",
-            "AUGUST",
-            "SEPTEMBER"
-        ]
-        
-        let sampleColors: [UIColor] = [.cherry, .blue, .yellow, .yellowGreen, .blue, .purple, .gray100]
-        
-        guard let cell = self.monthListView.monthCollectionView.dequeueReusableCell(
-            withReuseIdentifier: MonthCollectionViewCell.identifier,
-            for: indexPath) as? MonthCollectionViewCell else { return UICollectionViewCell() }
-        
-        cell.setUpCell(month: monthNameArr[indexPath.row], color: sampleColors[indexPath.row%7])
-        
-        return cell
+        if let dataCount = monthListCollectionDiffableDataSource?.accessibilityElementCount() {
+            return dataCount
+        } else {
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if analysisViewModel?.isMonthlyRecordAccessible(indexPath: indexPath) == true {
+            presentMonthlyAnalysisViewController(indexPath: indexPath)
+        }
+    }
+}
+
+extension AnalysisListViewController {
+    private func updateMonthListViewHeightConstraints(monthCount: Int?) {
+        guard let monthCount = monthCount else { return }
+        
+        let itemWidth = UIScreen.main.bounds.width
+        let itemHeight = itemWidth * 0.22
+        let updatedHeight: CGFloat = itemHeight * CGFloat(monthCount) + 50
+        monthListView.snp.updateConstraints { update in
+            update.height.equalTo(updatedHeight)
+        }
+        
+    }
+    
+    private func presentMonthlyAnalysisViewController(indexPath: IndexPath) {
+        let month = indexPath.row + 1
+        analysisViewModel?.updateMonthlyRecord(month: month)
         let targetVC = MonthlyAnalysisViewController(analysisViewModel: analysisViewModel)
         targetVC.modalPresentationStyle = .automatic
-        self.present(targetVC, animated: true)
+        present(targetVC, animated: true)
     }
 }

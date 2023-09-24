@@ -46,8 +46,13 @@ class MainPageViewController: UIViewController {
     }()
     
     private lazy var analysisViewController: AnalysisListViewController = {
-        let viewController = AnalysisListViewController()
+        let viewController = AnalysisListViewController(analysisViewModel: AnalysisViewModel(manager: recordAnalysisManager))
         return viewController
+    }()
+    
+    private lazy var recordAnalysisManager: RecordAnalysisManager = {
+        let manager = RecordAnalysisManager(wordAnalysisManager: WordAnalysisManager())
+        return manager
     }()
     
     private var weekdayVisibilityViewModel: WeekdayVisiblityViewModel?
