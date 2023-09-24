@@ -131,7 +131,6 @@ final class MoodSummaryContentView: AnalysisDefaultView {
     func setUpComponent(moodFrequencyDictionary: [Mood: Int]?) {
         guard let sortedMoodFrequencyArr = moodFrequencyDictionary?.sorted(by: { $0.value > $1.value }) else { return }
         let views = [primaryColorView, secondaryColorView, thirdColorView, fourthColorView, fifthColorView]
-        print(views)
         var idx: Int = 0
         for moodDictionary in sortedMoodFrequencyArr {
             views[idx].backgroundColor = moodDictionary.key.moodColor
