@@ -5,9 +5,13 @@
         <attribute name="diary" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="mood" optional="YES" attributeType="String"/>
-        <attribute name="musicArtist" optional="YES" attributeType="String"/>
-        <attribute name="musicThumbnail" optional="YES" attributeType="Binary"/>
-        <attribute name="musicTitle" optional="YES" attributeType="String"/>
         <attribute name="phraseToTomorrow" optional="YES" attributeType="String"/>
+        <relationship name="music" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Music" inverseName="dailyRecord" inverseEntity="Music"/>
+    </entity>
+    <entity name="Music" representedClassName="Music" syncable="YES">
+        <attribute name="artist" optional="YES" attributeType="String"/>
+        <attribute name="thumbnail" optional="YES" attributeType="Binary"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="dailyRecord" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DailyRecord" inverseName="music" inverseEntity="DailyRecord"/>
     </entity>
 </model>

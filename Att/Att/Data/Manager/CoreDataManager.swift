@@ -43,18 +43,25 @@ final class CoreDataManager {
 extension CoreDataManager {
     // MARK: C
     func createDailyRecord(dailyRecord: AttDailyRecord) {
-        guard let entity = NSEntityDescription.entity(forEntityName: "DailyRecord", in: context) else { return }
+        guard let dailyRecordEntity = NSEntityDescription.insertNewObject(forEntityName: "DailyRecord", into: context) as? DailyRecord else { return }
         guard let musicThumbnailData = dailyRecord.musicInfo?.thumbnailImage?.jpegData(compressionQuality: 0.0) else { return }
         
-        let record = NSManagedObject(entity: entity, insertInto: context)
-        record.setValue(dailyRecord.date, forKey: "date")
-        record.setValue(UUID(), forKey: "id")
-        record.setValue(dailyRecord.mood?.rawValue, forKey: "mood")
-        record.setValue(dailyRecord.musicInfo?.title, forKey: "musicTitle")
-        record.setValue(dailyRecord.musicInfo?.artist, forKey: "musicArtist")
-        record.setValue(musicThumbnailData, forKey: "musicThumbnail")
-        record.setValue(dailyRecord.diary, forKey: "diary")
-        record.setValue(dailyRecord.phraseToTomorrow, forKey: "phraseToTomorrow")
+        dailyRecordEntity.setValue(dailyRecord.date, forKey: "date")
+        dailyRecordEntity.setValue(UUID(), forKey: "id")
+        dailyRecordEntity.setValue(dailyRecord.mood?.rawValue, forKey: "mood")
+        dailyRecordEntity.setValue(dailyRecord.diary, forKey: "diary")
+        dailyRecordEntity.setValue(dailyRecord.phraseToTomorrow, forKey: "phraseToTomorrow")
+        
+        if let existedMusicEntity = isMusicExist(title: dailyRecord.musicInfo?.title, artist: dailyRecord.musicInfo?.artist) {
+            existedMusicEntity.addToDailyRecord(dailyRecordEntity)
+        } else {
+            guard let musicEntity = NSEntityDescription.insertNewObject(forEntityName: "Music", into: context) as? Music else { return }
+            musicEntity.setValue(dailyRecord.musicInfo?.title, forKey: "title")
+            musicEntity.setValue(dailyRecord.musicInfo?.artist, forKey: "artist")
+            musicEntity.setValue(musicThumbnailData, forKey: "thumbnail")
+            
+            musicEntity.addToDailyRecord(dailyRecordEntity)
+        }
         
         saveContext()
     }
@@ -68,6 +75,8 @@ extension CoreDataManager {
         
         do {
             let filteredData = try context.fetch(fetchRequest)
+            let dailyRecord = filteredData.compactMap { $0.mapToModel() }
+            
             return filteredData.compactMap { $0.mapToModel() }
         } catch {
             print("데이터를 가져올 때 오류 발생: \(error.localizedDescription)")
@@ -114,6 +123,24 @@ extension CoreDataManager {
             print("Core Data fetch error: \(error.localizedDescription)")
         }
     }
+    
+    func isMusicExist(title: String?, artist: String?) -> Music? {
+        guard let title = title,
+              let artist = artist else { return nil }
+        let fetchRequest: NSFetchRequest<Music> = Music.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "(title == %@) AND (artist == %@)", title, artist)
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            
+            if let musicEntity = results.first {
+                return musicEntity
+            }
+        } catch {
+            print("데이터 검색 또는 저장 오류: \(error.localizedDescription)")
+        }
+        return nil
+    }
 }
 
 // MARK: TEST SET
@@ -143,6 +170,17 @@ extension CoreDataManager {
         } catch {
             print("데이터를 가져올 때 오류 발생: \(error.localizedDescription)")
             return nil
+        }
+    }
+    
+    func fetchAllMusicRecords() {
+        let fetchRequest: NSFetchRequest<Music> = Music.fetchRequest()
+        
+        do {
+            let data = try context.fetch(fetchRequest)
+            print(data)
+        } catch {
+            print("데이터를 가져올 때 오류 발생: \(error.localizedDescription)")
         }
     }
 }

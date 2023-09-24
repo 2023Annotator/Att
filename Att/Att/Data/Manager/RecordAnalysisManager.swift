@@ -8,34 +8,26 @@
 import Foundation
 
 final class RecordAnalysisManager {
-    var wordAnalysisManager: WordAnalysisManager?
-    var dailyRecordList: [AttDailyRecord]?
-    var monthlyRecord: AttMonthlyRecord?
+    private var wordAnalysisManager: WordAnalysisManager?
+
+    private var minimumNeedRecordValue: Int = 10
+    private let musicCount = 3
+    private let wordCount = 3
     
-    var minimumNeedRecordValue: Int = 10
-    
-    let musicCount = 3
-    let wordCount = 3
-    
-    init(date: Date, wordAnalysisManager: WordAnalysisManager) {
+    init(wordAnalysisManager: WordAnalysisManager) {
         self.wordAnalysisManager = wordAnalysisManager
-        
-        if !isAvailableToMakeMonthAnalysis(date: date) { return }
-        
-        guard let dailyRecordList = getDataList(date: date) else { return }
-        monthlyRecord = getMonthlyRecord(dailyRecordList: dailyRecordList)
     }
-    
-    // 조건 1. 한 달이 종료되었는지
-    // 조건 2. 기록이 이미 쌓였는지 -> 쌓인 경우 break
-    // 조건 3. 최소 기록 필요 수를 넘겼는지
+
     private func isAvailableToMakeMonthAnalysis(date: Date) -> Bool {
         guard let dailyRecordList = getDataList(date: date) else { return false }
         if dailyRecordList.count < minimumNeedRecordValue { return false }
         return true
     }
     
-    private func getMonthlyRecord(dailyRecordList: [AttDailyRecord]) -> AttMonthlyRecord? {
+    func getMonthlyRecord(date: Date) -> AttMonthlyRecord? {
+        if !isAvailableToMakeMonthAnalysis(date: date) { return nil }
+        
+        guard let dailyRecordList = getDataList(date: date) else { return nil }
         
         wordAnalysisManager?.tokenizeText(getDiaryTexts(dailyRecords: dailyRecordList))
         let yearAndMonth = getYearAndMonth(dailyRecords: dailyRecordList)
@@ -53,6 +45,13 @@ final class RecordAnalysisManager {
                                              mostUsedWordDictionary: mostUsedWordDictionary)
         
         return monthlyRecord
+    }
+    
+    func getMonthlyMood(date: Date) -> Mood? {
+        if !isAvailableToMakeMonthAnalysis(date: date) { return nil }
+        guard let dailyRecordList = getDataList(date: date) else { return nil }
+        let moodFrequencyList = getMoodFrequencyDictionary(dailyRecords: dailyRecordList)?.first
+        return moodFrequencyList?.key
     }
     
     private func getDataList(date: Date) -> [AttDailyRecord]? {
@@ -80,7 +79,12 @@ final class RecordAnalysisManager {
         }
         
         let sortedRecordedTimeDictionary = recordedTimeDictionary.sorted(by: {$0.value > $1.value})
-        return sortedRecordedTimeDictionary.first?.key
+        guard let startTime = sortedRecordedTimeDictionary.first?.key else { return nil }
+        if let startTime = Int(startTime) {
+            let endTime = (startTime + 1) % 24
+            return "\(startTime)시 - \(endTime)시"
+        }
+        return nil
     }
     
     private func getMoodList(dailyRecords: [AttDailyRecord]) -> [Mood?] {
@@ -106,15 +110,19 @@ final class RecordAnalysisManager {
     }
     
     private func getMostPlayedMusicDictionary(dailyRecords: [AttDailyRecord]) -> [MusicInfo: Int]? {
-        let recordedMusicList = dailyRecords.map { $0.musicInfo }
+        let recordedMusicList = dailyRecords.map { MusicInfo(title: $0.musicInfo?.title, artist: $0.musicInfo?.artist) }
+        var tempDictionary: [String: Int] = [:]
+        
+        for music in recordedMusicList {
+            let titleAndArtist = music.artistAndTitleStr()
+            tempDictionary[titleAndArtist, default: 0] += 1
+        }
+        
         var mostPlayedMusicDictionary: [MusicInfo: Int] = [:]
-        for recordedMusic in recordedMusicList {
-            guard let recordedMusic = recordedMusic else { continue }
-            if let recordedTimeCount = mostPlayedMusicDictionary[recordedMusic] {
-                mostPlayedMusicDictionary.updateValue(recordedTimeCount + 1, forKey: recordedMusic)
-            } else {
-                mostPlayedMusicDictionary[recordedMusic] = 1
-            }
+        for temp in tempDictionary {
+            guard let info = dailyRecords.filter({$0.musicInfo?.artistAndTitleStr() == temp.key}).first else { return nil }
+            guard let musicInfo = info.musicInfo else { return nil }
+            mostPlayedMusicDictionary[musicInfo] = temp.value
         }
         
         let sortedMusicDictionary = mostPlayedMusicDictionary

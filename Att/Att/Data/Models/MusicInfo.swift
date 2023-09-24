@@ -8,7 +8,7 @@
 import Foundation
 import UIKit.UIImage
 
-struct MusicInfo: Hashable {
+struct MusicInfo: Hashable, Equatable {
     let title: String?
     let artist: String?
     var thumbnailImage: UIImage?
