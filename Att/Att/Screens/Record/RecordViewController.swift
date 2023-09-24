@@ -73,7 +73,6 @@ final class RecordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        CoreDataManager.shared.deleteAllDailyRecord()
     }
     
     override func viewWillAppear(_ animated: Bool) {
