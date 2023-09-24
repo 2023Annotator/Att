@@ -17,7 +17,6 @@ final class MonthlyMoodContentView: AnalysisDefaultView {
         return view
     }()
     
-    // TODO: Init 시 Mood 값 받아와서 갱신
     init() {
         super.init(title: "Mood Tracker")
         setUpConstraints()

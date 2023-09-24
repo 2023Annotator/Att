@@ -11,7 +11,7 @@ final class MonthlyMoodCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
     override init() {
         super.init()
-        scrollDirection = .horizontal
+        scrollDirection = .vertical
         let width = UIScreen.main.bounds.width
         let itemWidth = (width - Constraints.shared.space20 * 2) / 7
         let flooredItemWidth = floor(itemWidth)

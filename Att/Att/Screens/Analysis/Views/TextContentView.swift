@@ -25,10 +25,9 @@ final class TextContentView: AnalysisDefaultView {
         return label
     }()
     
-    init(title: String, content: String) {
+    override init(title: String) {
         super.init(title: title)
         setUpConstraints()
-        setUpContentLabel(as: content)
         setUpCornerRadius()
     }
     
@@ -62,8 +61,12 @@ final class TextContentView: AnalysisDefaultView {
         }
     }
     
-    private func setUpContentLabel(as text: String) {
-        contentLabel.text = text
+    func setUpComponent(as time: String?) {
+        if let time = time {
+            contentLabel.text = "\(time) 사이에 일기를 작성하는 편"
+        } else {
+            contentLabel.text = "기록을 불러오지 못하였습니다."
+        }
     }
     
     private func setUpCornerRadius() {

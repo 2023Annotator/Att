@@ -49,11 +49,9 @@ final class MoodSummaryContentView: AnalysisDefaultView {
         return view
     }()
     
-    // TODO: Init 시 Mood 값 받아와서 갱신
     init() {
         super.init(title: "이달의 컬러")
         setUpConstraints()
-        setUpComponent() // TODO
     }
     
     required init?(coder: NSCoder) {
@@ -130,13 +128,18 @@ final class MoodSummaryContentView: AnalysisDefaultView {
         }
     }
     
-    func setUpComponent() {
-        primaryColorView.backgroundColor = .yellow
-        secondaryColorView.backgroundColor = .green
-        thirdColorView.backgroundColor = .black
-        fourthColorView.backgroundColor = .pink
-        fifthColorView.backgroundColor = .purpleBlue
+    func setUpComponent(moodFrequencyDictionary: [Mood: Int]?) {
+        guard let sortedMoodFrequencyArr = moodFrequencyDictionary?.sorted(by: { $0.value > $1.value }) else { return }
+        let views = [primaryColorView, secondaryColorView, thirdColorView, fourthColorView, fifthColorView]
+        print(views)
+        var idx: Int = 0
+        for moodDictionary in sortedMoodFrequencyArr {
+            views[idx].backgroundColor = moodDictionary.key.moodColor
+            idx += 1
+        }
         
-        primaryMoodLabel.text = "즐거움\n(총 12일)"
+        let mood = sortedMoodFrequencyArr[0].key.description
+        let dateNum = sortedMoodFrequencyArr[0].value
+        primaryMoodLabel.text = "\(mood)\n(총 \(dateNum)일)"
     }
 }

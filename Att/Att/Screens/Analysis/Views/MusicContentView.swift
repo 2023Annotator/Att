@@ -9,47 +9,24 @@ import UIKit
 
 final class MusicContentView: AnalysisDefaultView {
 
-    private let contentView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white.withAlphaComponent(0.3) // TEST
-        view.layer.cornerRadius = 12.0
+    private lazy var firstMusicFrameView: MusicFrameView = {
+        let view = MusicFrameView()
         return view
     }()
     
-    private lazy var listenRecordLabel: UILabel = {
-        let label = UILabel()
-        label.font = .subtitle3
-        label.textAlignment = .left
-        label.textColor = .white
-        return label
-    }()
-    
-    private lazy var headphoneImageView: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "headphone")
+    private lazy var secondMusicFrameView: MusicFrameView = {
+        let view = MusicFrameView()
         return view
     }()
     
-    private lazy var musicTitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .caption1
-        label.textAlignment = .left
-        label.textColor = .white
-        return label
-    }()
-    
-    private lazy var thumbnailImageView: UIImageView = {
-       let view = UIImageView()
-        view.backgroundColor = .blue // TEST
+    private lazy var thirdMusicFrameView: MusicFrameView = {
+        let view = MusicFrameView()
         return view
     }()
 
-    // TODO: Init 시 Music Info ViewModel로부터 받아와 ContentView를 갱신
     init() {
         super.init(title: "Music of the Month")
         setUpConstraints()
-        setUpStyle()
-        test() // TEST
     }
     
     required init?(coder: NSCoder) {
@@ -62,62 +39,39 @@ final class MusicContentView: AnalysisDefaultView {
         
         let constraints = Constraints.shared
         
-        addSubview(contentView)
-        
-        contentView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(constraints.space8)
-            make.leading.trailing.equalToSuperview().inset(constraints.space20)
-            make.bottom.equalToSuperview()
-        }
+        let musicFrameStackView = UIStackView()
+        musicFrameStackView.axis = .vertical
+        musicFrameStackView.alignment = .center
+        musicFrameStackView.distribution = .equalSpacing
         
         [
-            listenRecordLabel,
-            headphoneImageView,
-            musicTitleLabel,
-            thumbnailImageView
+            firstMusicFrameView,
+            secondMusicFrameView,
+            thirdMusicFrameView
         ].forEach {
-            contentView.addSubview($0)
+            musicFrameStackView.addArrangedSubview($0)
+            $0.snp.makeConstraints { make in
+                make.horizontalEdges.equalToSuperview()
+                make.height.equalTo(96)
+            }
         }
         
-        listenRecordLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(constraints.space12)
-            make.leading.equalToSuperview().offset(constraints.space18)
-            make.trailing.equalTo(thumbnailImageView.snp.leading).offset(-constraints.space18)
-            make.height.equalTo(22)
-        }
-        
-        headphoneImageView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-constraints.space12)
-            make.leading.equalToSuperview().offset(constraints.space18)
-            make.width.height.equalTo(23)
-        }
-        
-        musicTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(headphoneImageView.snp.trailing).offset(constraints.space8)
-            make.trailing.equalTo(thumbnailImageView.snp.leading).offset(-constraints.space18)
-            make.centerY.equalTo(headphoneImageView.snp.centerY)
-            make.height.equalTo(22)
-        }
-        
-        thumbnailImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(constraints.space20)
-            make.centerY.equalToSuperview()
-            make.width.height.equalTo(72)
+        addSubview(musicFrameStackView)
+        musicFrameStackView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(constraints.space8)
+            make.horizontalEdges.equalTo(titleLabel.snp.horizontalEdges)
+            make.height.equalTo(304)
         }
         
     }
     
-    private func setUpStyle() {
-        layer.cornerRadius = 12
+    func setUpComponent(mostPlayedMusicDictionary: [MusicInfo: Int]?) {
+        guard let sortedPlayedMusicArr = mostPlayedMusicDictionary?.sorted(by: { $0.value > $1.value }) else { return }
+        let views: [MusicFrameView] = [firstMusicFrameView, secondMusicFrameView, thirdMusicFrameView]
+        for idx in 0..<sortedPlayedMusicArr.count {
+            let info = sortedPlayedMusicArr[idx]
+            views[idx].setUpComponent(playedFor: info.value, musicInfo: info.key)
+        }
     }
     
-    // TEST
-    private func test() {
-        
-        listenRecordLabel.text = "17회 기록"
-        musicTitleLabel.text = "???? - ?????"
-    }
-    
-    // TODO: Music Info ViewModel로부터 받아와 ContentView를 갱신하는 메소드
-
 }

@@ -5,6 +5,8 @@
 //  Created by 황정현 on 2023/09/05.
 //
 
+import Combine
+import SnapKit
 import UIKit
 
 class AnalysisListViewController: UIViewController {
@@ -16,6 +18,7 @@ class AnalysisListViewController: UIViewController {
     
     private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
+        view.showsVerticalScrollIndicator = false
         return view
     }()
     
@@ -24,18 +27,17 @@ class AnalysisListViewController: UIViewController {
         return view
     }()
     
-    private lazy var annualView: AnnualAnalysisView = {
-        let view = AnnualAnalysisView()
-        return view
-    }()
-    
     private lazy var monthListView: MonthListView = {
         let view = MonthListView()
         return view
     }()
     
-    init() {
+    private var analysisViewModel: AnalysisViewModel?
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(analysisViewModel: AnalysisViewModel?) {
         super.init(nibName: nil, bundle: nil)
+        self.analysisViewModel = analysisViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -45,8 +47,6 @@ class AnalysisListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        
-        // Do any additional setup after loading the view.
     }
     
     private func configure() {
@@ -85,24 +85,17 @@ class AnalysisListViewController: UIViewController {
         }
         
         [
-            annualView,
             monthListView
         ].forEach {
             contentView.addSubview($0)
         }
         
-        annualView.snp.makeConstraints { make in
-            make.top.equalTo(contentView.snp.top).offset(constraints.space28)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(162)
-        }
-        
         let itemWidth = UIScreen.main.bounds.width
         let itemHeight = itemWidth * 0.22
         monthListView.snp.makeConstraints { make in
-            make.top.equalTo(annualView.snp.bottom).offset(constraints.space42)
+            make.top.equalTo(contentView.snp.top).offset(constraints.space28)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(itemHeight * 12 + 50) // TODO: item 갯수 받아와서 높이 작성
+            make.height.equalTo(itemHeight * 9 + 50)
             make.bottom.equalToSuperview()
         }
     }
@@ -126,11 +119,10 @@ extension AnalysisListViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 12
+        return 9
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // TEST
         let monthNameArr: [String] = [
             "JANUARY",
             "FEBRUARY",
@@ -140,13 +132,10 @@ extension AnalysisListViewController: UICollectionViewDelegate, UICollectionView
             "JUNE",
             "JULY",
             "AUGUST",
-            "SEPTEMBER",
-            "OCTOBER",
-            "NOVEMBER",
-            "DECEMBER"
+            "SEPTEMBER"
         ]
         
-        let sampleColors: [UIColor] = [.cherry, .blue, .yellow, .yellowGreen, .blue, .purple, .gray100] // TEST
+        let sampleColors: [UIColor] = [.cherry, .blue, .yellow, .yellowGreen, .blue, .purple, .gray100]
         
         guard let cell = self.monthListView.monthCollectionView.dequeueReusableCell(
             withReuseIdentifier: MonthCollectionViewCell.identifier,
@@ -158,7 +147,7 @@ extension AnalysisListViewController: UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let targetVC = MonthlyAnalysisViewController()
+        let targetVC = MonthlyAnalysisViewController(analysisViewModel: analysisViewModel)
         targetVC.modalPresentationStyle = .automatic
         self.present(targetVC, animated: true)
     }
