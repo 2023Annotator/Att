@@ -9,20 +9,14 @@ import Foundation
 import NaturalLanguage
 
 final class WordAnalysisManager {
-    private var rawTextList: [String] = []
     private var wordFrequencyDictionary: [String: Int] = [:]
     
-    init(textList: [String]) {
-        rawTextList = textList
-        tokenizeInitialText()
-    }
-    
-    private func tokenizeInitialText() {
+    func tokenizeText(_ rawTextList: [String?]) {
         let tokenizer = NLTokenizer(unit: .word)
         
         for rawText in rawTextList {
             tokenizer.string = rawText
-
+            guard let rawText = rawText else { continue }
             tokenizer.enumerateTokens(in: rawText.startIndex..<rawText.endIndex) { tokenRange, _ in
                 let token = String(rawText[tokenRange])
                     .removeSpecialCharacters()
@@ -38,7 +32,13 @@ final class WordAnalysisManager {
         }
     }
     
-    private func sortWordFrequencyDictionary() -> [Dictionary<String, Int>.Element] {
-        return wordFrequencyDictionary.sorted { $0.value > $1.value }
+    func sortWordFrequencyDictionary() -> [String: Int] {
+        return Dictionary(uniqueKeysWithValues: wordFrequencyDictionary.sorted { $0.value > $1.value })
+    }
+    
+    func getMostUsedWordDicionry() -> [String: Int] {
+        let dictionary = sortWordFrequencyDictionary()
+        let mostUsedWordArray = Array(dictionary.prefix(3))
+        return Dictionary(uniqueKeysWithValues: mostUsedWordArray)
     }
 }
