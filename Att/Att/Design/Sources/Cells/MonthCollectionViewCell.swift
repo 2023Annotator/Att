@@ -19,7 +19,6 @@ class MonthCollectionViewCell: UICollectionViewCell {
         return label
     }()
 
-    // MARK: Init 선언부
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -29,7 +28,6 @@ class MonthCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: viewDidLoad 시 1회성 호출을 필요로하는 method 일괄
     private func configure() {
         setUpConstriants()
         setUpStyle()
@@ -44,11 +42,13 @@ class MonthCollectionViewCell: UICollectionViewCell {
     
     private func setUpStyle() {
         layer.cornerRadius = 43
+        backgroundColor = .gray100
     }
     
-    // TODO: Month 구조체를 통해 데이터를 갱신하는 형태로 변경
-    func setUpCell(month: String, color: UIColor) {
-        monthNameLabel.text = month
-        backgroundColor = color
+    func setUpComponent(monthlyMoodRecord: MonthlyMoodRecord?) {
+        monthNameLabel.text = monthlyMoodRecord?.month
+        if let color = monthlyMoodRecord?.mood?.moodColor {
+            backgroundColor = color
+        }
     }
 }

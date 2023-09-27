@@ -40,7 +40,7 @@ class RecordBrowseInnerTitleDefaultView: UIImageView {
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(constraints.space12)
             make.leading.equalToSuperview().offset(constraints.space20)
-            make.width.equalTo(180)
+            make.trailing.equalToSuperview().inset(constraints.space20)
             make.height.equalTo(26)
         }
     }

@@ -5,17 +5,22 @@
 //  Created by 황정현 on 2023/09/05.
 //
 
+import Combine
+import SnapKit
 import UIKit
 
-class AnalysisListViewController: UIViewController {
+final class MonthListCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, MonthlyMoodRecord?> { }
+
+final class AnalysisListViewController: UIViewController {
     
     private lazy var yearSelectorView: YearSelectorView = {
-        let view = YearSelectorView()
+        let view = YearSelectorView(analysisViewModel: analysisViewModel)
         return view
     }()
     
     private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
+        view.showsVerticalScrollIndicator = false
         return view
     }()
     
@@ -24,18 +29,19 @@ class AnalysisListViewController: UIViewController {
         return view
     }()
     
-    private lazy var annualView: AnnualAnalysisView = {
-        let view = AnnualAnalysisView()
-        return view
-    }()
-    
     private lazy var monthListView: MonthListView = {
         let view = MonthListView()
         return view
     }()
     
-    init() {
+    private var monthListCollectionDiffableDataSource: MonthListCollectionViewDiffableDataSource?
+    
+    private var analysisViewModel: AnalysisViewModel?
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(analysisViewModel: AnalysisViewModel?) {
         super.init(nibName: nil, bundle: nil)
+        self.analysisViewModel = analysisViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -45,14 +51,12 @@ class AnalysisListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        
-        // Do any additional setup after loading the view.
     }
     
     private func configure() {
         setUpConstriants()
         setUpMonthCollectionView()
-        setUpAction()
+        setUpMonthCollectionViewDataSource()
         bind()
     }
     
@@ -85,81 +89,97 @@ class AnalysisListViewController: UIViewController {
         }
         
         [
-            annualView,
             monthListView
         ].forEach {
             contentView.addSubview($0)
         }
         
-        annualView.snp.makeConstraints { make in
+        monthListView.snp.makeConstraints { make in
             make.top.equalTo(contentView.snp.top).offset(constraints.space28)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(162)
-        }
-        
-        let itemWidth = UIScreen.main.bounds.width
-        let itemHeight = itemWidth * 0.22
-        monthListView.snp.makeConstraints { make in
-            make.top.equalTo(annualView.snp.bottom).offset(constraints.space42)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(itemHeight * 12 + 50) // TODO: item 갯수 받아와서 높이 작성
+            make.height.equalTo(0)
             make.bottom.equalToSuperview()
         }
     }
     
     private func setUpMonthCollectionView() {
-        monthListView.monthCollectionView.dataSource = self
         monthListView.monthCollectionView.delegate = self
         monthListView.monthCollectionView.register(MonthCollectionViewCell.self, forCellWithReuseIdentifier: MonthCollectionViewCell.identifier)
     }
     
-    // MARK: TabPulisher etc - Optional
-    private func setUpAction() { }
+    private func setUpMonthCollectionViewDataSource() {
+        let collectionView = monthListView.monthCollectionView
+        collectionView.register(MonthCollectionViewCell.self, forCellWithReuseIdentifier: MonthCollectionViewCell.identifier)
+        collectionView.dataSource = monthListCollectionDiffableDataSource
+        
+        monthListCollectionDiffableDataSource = MonthListCollectionViewDiffableDataSource(collectionView: collectionView) { (collectionView, indexPath, moodRecord) ->
+            MonthCollectionViewCell? in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MonthCollectionViewCell.identifier, for: indexPath) as? MonthCollectionViewCell else {
+                return MonthCollectionViewCell()
+            }
+            
+            cell.setUpComponent(monthlyMoodRecord: moodRecord)
+            
+            return cell
+        }
+    }
     
-    // MARK: ViewModel Stuff - Optional
-    private func bind() { }
+    private func performMonthCollectionViewCell(moodRecords: [MonthlyMoodRecord?]?) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, MonthlyMoodRecord?>()
+        snapshot.appendSections([0])
+        if let moodRecords = moodRecords {
+            snapshot.appendItems(moodRecords)
+        }
+        monthListCollectionDiffableDataSource?.apply(snapshot)
+    }
+    
+    private func bind() {
+        analysisViewModel?.$monthlyMoodRecords
+            .sink { [weak self] moodRecords in
+                self?.performMonthCollectionViewCell(moodRecords: moodRecords)
+                self?.updateMonthListViewHeightConstraints(monthCount: moodRecords?.count)
+            }.store(in: &cancellables)
+    }
 }
 
-extension AnalysisListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension AnalysisListViewController: UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 12
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // TEST
-        let monthNameArr: [String] = [
-            "JANUARY",
-            "FEBRUARY",
-            "MARCH",
-            "APRIL",
-            "MAY",
-            "JUNE",
-            "JULY",
-            "AUGUST",
-            "SEPTEMBER",
-            "OCTOBER",
-            "NOVEMBER",
-            "DECEMBER"
-        ]
-        
-        let sampleColors: [UIColor] = [.cherry, .blue, .yellow, .yellowGreen, .blue, .purple, .gray100] // TEST
-        
-        guard let cell = self.monthListView.monthCollectionView.dequeueReusableCell(
-            withReuseIdentifier: MonthCollectionViewCell.identifier,
-            for: indexPath) as? MonthCollectionViewCell else { return UICollectionViewCell() }
-        
-        cell.setUpCell(month: monthNameArr[indexPath.row], color: sampleColors[indexPath.row%7])
-        
-        return cell
+        if let dataCount = monthListCollectionDiffableDataSource?.accessibilityElementCount() {
+            return dataCount
+        } else {
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let targetVC = MonthlyAnalysisViewController()
+        if analysisViewModel?.isMonthlyRecordAccessible(indexPath: indexPath) == true {
+            presentMonthlyAnalysisViewController(indexPath: indexPath)
+        }
+    }
+}
+
+extension AnalysisListViewController {
+    private func updateMonthListViewHeightConstraints(monthCount: Int?) {
+        guard let monthCount = monthCount else { return }
+        
+        let itemWidth = UIScreen.main.bounds.width
+        let itemHeight = itemWidth * 0.22
+        let updatedHeight: CGFloat = itemHeight * CGFloat(monthCount) + 50
+        monthListView.snp.updateConstraints { update in
+            update.height.equalTo(updatedHeight)
+        }
+        
+    }
+    
+    private func presentMonthlyAnalysisViewController(indexPath: IndexPath) {
+        let month = indexPath.row + 1
+        analysisViewModel?.updateMonthlyRecord(month: month)
+        let targetVC = MonthlyAnalysisViewController(analysisViewModel: analysisViewModel)
         targetVC.modalPresentationStyle = .automatic
-        self.present(targetVC, animated: true)
+        present(targetVC, animated: true)
     }
 }

@@ -140,7 +140,6 @@ final class RecordBrowseViewController: UIViewController {
             make.leading.equalTo(scrollView.contentLayoutGuide.snp.leading)
             make.trailing.equalTo(scrollView.contentLayoutGuide.snp.trailing)
             make.width.equalTo(scrollView.snp.width)
-            make.height.greaterThanOrEqualTo(view.snp.height)
         }
         
         [
@@ -197,7 +196,7 @@ final class RecordBrowseViewController: UIViewController {
         diaryView.snp.makeConstraints { make in
             make.top.equalTo(fromYesterdayView.snp.bottom).offset(constraints.space22)
             make.leading.trailing.equalToSuperview()
-            make.height.greaterThanOrEqualTo(100)
+            make.height.greaterThanOrEqualTo(180)
         }
         
         toTomorrowView.snp.makeConstraints { make in

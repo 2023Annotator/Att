@@ -5,7 +5,11 @@
 //  Created by 황정현 on 2023/09/04.
 //
 
+import Combine
+import SnapKit
 import UIKit
+
+final class MonthlyMoodCollectionViewDiffableDataSource: UICollectionViewDiffableDataSource<Int, Mood?> { }
 
 final class MonthlyAnalysisViewController: UIViewController {
 
@@ -14,7 +18,6 @@ final class MonthlyAnalysisViewController: UIViewController {
         label.font = .title3
         label.textAlignment = .center
         label.textColor = .white
-        label.text = "2023.04" // TEST
         return label
     }()
     
@@ -30,7 +33,7 @@ final class MonthlyAnalysisViewController: UIViewController {
     }()
     
     private lazy var timeAnalysisView: TextContentView = {
-        let view = TextContentView(title: "주로 일기를 작성하는 시간", content: "00님은 보통 새벽 2-3시 사이에 일기를 작성하는 편입니다.")
+        let view = TextContentView(title: "주로 일기를 작성하는 시간")
         return view
     }()
     
@@ -44,18 +47,24 @@ final class MonthlyAnalysisViewController: UIViewController {
         return view
     }()
     
-    private lazy var musicAnalysisView: MusicContentView = {
+    private lazy var mostPlayedMusicAnalysisView: MusicContentView = {
         let view = MusicContentView()
         return view
     }()
     
-    private lazy var mostUsedWordAnalysisView: MostUsedWordContentView = {
-        let view = MostUsedWordContentView()
+    private lazy var mostUsedWordAnalysisView: UsedWordContentView = {
+        let view = UsedWordContentView()
         return view
     }()
     
-    init() {
+    private var monthlyMoodCollectionViewDiffableDataSource: MonthlyMoodCollectionViewDiffableDataSource?
+    
+    private var analysisViewModel: AnalysisViewModel?
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(analysisViewModel: AnalysisViewModel?) {
         super.init(nibName: nil, bundle: nil)
+        self.analysisViewModel = analysisViewModel
     }
     
     required init?(coder: NSCoder) {
@@ -67,12 +76,10 @@ final class MonthlyAnalysisViewController: UIViewController {
         configure()
     }
     
-    // MARK: viewDidLoad 시 1회성 호출을 필요로하는 method 일괄
     private func configure() {
         setUpConstriants()
         setUpStyle()
         setUpMonthlyMoodCollectionView()
-        setUpAction()
         bind()
     }
     
@@ -108,7 +115,7 @@ final class MonthlyAnalysisViewController: UIViewController {
             timeAnalysisView,
             monthlyMoodAnalysisView,
             monthlyMoodSummaryAnalysisView,
-            musicAnalysisView,
+            mostPlayedMusicAnalysisView,
             mostUsedWordAnalysisView
         ].forEach {
             contentView.addSubview($0)
@@ -130,15 +137,16 @@ final class MonthlyAnalysisViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
         }
         
-        musicAnalysisView.snp.makeConstraints { make in
+        mostPlayedMusicAnalysisView.snp.makeConstraints { make in
             make.top.equalTo(monthlyMoodSummaryAnalysisView.snp.bottom).offset(constraints.space24)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(126)
+            make.height.equalTo(334)
         }
         
         mostUsedWordAnalysisView.snp.makeConstraints { make in
-            make.top.equalTo(musicAnalysisView.snp.bottom).offset(constraints.space36)
+            make.top.equalTo(mostPlayedMusicAnalysisView.snp.bottom).offset(constraints.space24)
             make.leading.trailing.equalToSuperview()
+            make.height.equalTo(238)
             make.bottom.equalTo(contentView.snp.bottom)
         }
     }
@@ -153,11 +161,20 @@ final class MonthlyAnalysisViewController: UIViewController {
         monthlyMoodAnalysisView.moodCollectionView.register(MonthlyMoodCollectionViewCell.self, forCellWithReuseIdentifier: MonthlyMoodCollectionViewCell.identifier)
     }
     
-    // MARK: TabPulisher etc - Optional
-    private func setUpAction() { }
+    private func bind() {
+        analysisViewModel?.$currentMonthlyRecord
+            .sink { [weak self] monthlyRecord in
+                self?.setUpComponent(monthlyRecord: monthlyRecord)
+            }.store(in: &cancellables)
+    }
     
-    // MARK: ViewModel Stuff - Optional
-    private func bind() { }
+    private func setUpComponent(monthlyRecord: AttMonthlyRecord?) {
+        setUpYearMonthLabelText(as: monthlyRecord?.yearAndMonth)
+        timeAnalysisView.setUpComponent(as: monthlyRecord?.averageRecordTime)
+        monthlyMoodSummaryAnalysisView.setUpComponent(moodFrequencyDictionary: monthlyRecord?.moodFrequencyDictionary)
+        mostPlayedMusicAnalysisView.setUpComponent(mostPlayedMusicDictionary: monthlyRecord?.mostPlayedMusicInfoDictionary)
+        mostUsedWordAnalysisView.setUpComponent(wordDictionary: monthlyRecord?.mostUsedWordDictionary)
+    }
 }
 
 extension MonthlyAnalysisViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -166,23 +183,23 @@ extension MonthlyAnalysisViewController: UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 35
+        guard let moods = analysisViewModel?.getMoodList() else { return 0 }
+        return moods.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let sampleColors: [UIColor] = [.cherry, .blue, .yellow, .yellowGreen, .blue, .purple, .gray100]
         guard let cell = self.monthlyMoodAnalysisView.moodCollectionView.dequeueReusableCell(
             withReuseIdentifier: MonthlyMoodCollectionViewCell.identifier,
-            for: indexPath) as? MonthlyMoodCollectionViewCell else { return UICollectionViewCell() }
-        
-        cell.setUpBackgroundColor(bgColor: sampleColors[indexPath.row%7])
+            for: indexPath) as? MonthlyMoodCollectionViewCell,
+              let moods = analysisViewModel?.getMoodList() else { return UICollectionViewCell() }
+        cell.setUpBackgroundColor(bgColor: moods[indexPath.row]?.moodColor)
         
         return cell
     }
 }
 
 extension MonthlyAnalysisViewController {
-    private func setUpYearMonthLabelText(as date: String) {
+    private func setUpYearMonthLabelText(as date: String?) {
         yearMonthLabel.text = date
     }
 }

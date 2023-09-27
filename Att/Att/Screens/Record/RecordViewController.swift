@@ -59,6 +59,7 @@ final class RecordViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     
     private var isScrolling = true
+    private var isFirsTimeAppear = true
     
     init(weekdayVisibilityViewModel: WeekdayVisiblityViewModel, dailyRecordViewModel: DailyRecordViewModel) {
         super.init(nibName: nil, bundle: nil)
@@ -73,12 +74,16 @@ final class RecordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        CoreDataManager.shared.deleteAllDailyRecord()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        dailyRecordViewModel?.updateRecordsWhenViewWillAppear()
+
+        if isFirsTimeAppear == false {
+            dailyRecordViewModel?.updateRecordsWhenViewWillAppear()
+        } else {
+            isFirsTimeAppear = false
+        }
     }
     
     private func configure() {
@@ -405,7 +410,7 @@ extension RecordViewController {
     }
     
     private func presentRecordBrowseViewController() {
-        let recordBrowseViewController = RecordBrowseViewController(dailyRecordViewModel: dailyRecordViewModel)
+        let recordBrowseViewController = RecordBrowseViewController(dailyRecordViewModel: dailyRecordViewModel, musicManager: MusicManager(musicID: dailyRecordViewModel?.getMusicID()))
         recordBrowseViewController.modalPresentationStyle = .automatic
         self.navigationController?.present(recordBrowseViewController, animated: true)
     }
