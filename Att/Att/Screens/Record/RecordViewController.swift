@@ -82,7 +82,7 @@ final class RecordViewController: UIViewController {
         if isFirsTimeAppear == false {
             dailyRecordViewModel?.updateRecordsWhenViewWillAppear()
         } else {
-            isFirsTimeAppear = true
+            isFirsTimeAppear = false
         }
     }
     

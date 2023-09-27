@@ -25,6 +25,7 @@ final class MusicSearchViewController: UIViewController {
     
     private lazy var searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: MusicSearchResultViewController(recordCreationViewModel: recordCreationViewModel))
+        controller.searchBar.tintColor = .green
         return controller
     }()
     
