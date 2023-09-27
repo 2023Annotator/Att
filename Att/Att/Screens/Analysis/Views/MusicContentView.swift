@@ -23,7 +23,7 @@ final class MusicContentView: AnalysisDefaultView {
         let view = MusicFrameView()
         return view
     }()
-
+    
     init() {
         super.init(title: "Music of the Month")
         setUpConstraints()

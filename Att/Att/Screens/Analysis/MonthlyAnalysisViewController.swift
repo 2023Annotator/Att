@@ -58,6 +58,7 @@ final class MonthlyAnalysisViewController: UIViewController {
     }()
     
     private var monthlyMoodCollectionViewDiffableDataSource: MonthlyMoodCollectionViewDiffableDataSource?
+    
     private var analysisViewModel: AnalysisViewModel?
     private var cancellables = Set<AnyCancellable>()
     

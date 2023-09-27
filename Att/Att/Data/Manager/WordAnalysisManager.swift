@@ -12,6 +12,7 @@ final class WordAnalysisManager {
     private var wordFrequencyDictionary: [String: Int] = [:]
     
     func tokenizeText(_ rawTextList: [String?]) {
+        wordFrequencyDictionary = [:]
         let tokenizer = NLTokenizer(unit: .word)
         
         for rawText in rawTextList {
@@ -32,12 +33,8 @@ final class WordAnalysisManager {
         }
     }
     
-    func sortWordFrequencyDictionary() -> [String: Int] {
-        return Dictionary(uniqueKeysWithValues: wordFrequencyDictionary.sorted { $0.value > $1.value })
-    }
-    
     func getMostUsedWordDicionry() -> [String: Int] {
-        let dictionary = sortWordFrequencyDictionary()
+        let dictionary = wordFrequencyDictionary.sorted(by: {$0.value > $1.value})
         let mostUsedWordArray = Array(dictionary.prefix(3))
         return Dictionary(uniqueKeysWithValues: mostUsedWordArray)
     }

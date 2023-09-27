@@ -126,7 +126,7 @@ final class DailyRecordViewModel {
 extension DailyRecordViewModel {
     func updateRecordsWhenViewWillAppear() {
         updateDates()
-        updateSelectedDateIndexPath()
+        selectedDateIndexPath = IndexPath(row: weekday * 2 + selectedCardIndexPath.row, section: 0)
     }
     
     func updateCurrentSelectedDateIndexPath(as indexPath: IndexPath) {

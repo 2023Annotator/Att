@@ -50,8 +50,10 @@ final class RecordAnalysisManager {
     func getMonthlyMood(date: Date) -> Mood? {
         if !isAvailableToMakeMonthAnalysis(date: date) { return nil }
         guard let dailyRecordList = getDataList(date: date) else { return nil }
-        let moodFrequencyList = getMoodFrequencyDictionary(dailyRecords: dailyRecordList)?.first
-        return moodFrequencyList?.key
+        let moodFrequencyList = getMoodFrequencyDictionary(dailyRecords: dailyRecordList)
+        let sortedmoodFrequencyListy = moodFrequencyList?
+            .sorted(by: {$0.value > $1.value}).first
+        return sortedmoodFrequencyListy?.key
     }
     
     private func getDataList(date: Date) -> [AttDailyRecord]? {
@@ -104,13 +106,15 @@ final class RecordAnalysisManager {
             }
         }
         
-        let dictionary = Array(moodFrequencyDictionary.prefix(5))
+        let sortedMoodDictionary = moodFrequencyDictionary
+            .sorted(by: {$0.value > $1.value})
+        let dictionary = Array(sortedMoodDictionary.prefix(5))
         
         return Dictionary(uniqueKeysWithValues: dictionary)
     }
     
     private func getMostPlayedMusicDictionary(dailyRecords: [AttDailyRecord]) -> [MusicInfo: Int]? {
-        let recordedMusicList = dailyRecords.map { MusicInfo(title: $0.musicInfo?.title, artist: $0.musicInfo?.artist) }
+        let recordedMusicList = dailyRecords.map { MusicInfo(id: $0.musicInfo?.id, title: $0.musicInfo?.title, artist: $0.musicInfo?.artist) }
         var tempDictionary: [String: Int] = [:]
         
         for music in recordedMusicList {
