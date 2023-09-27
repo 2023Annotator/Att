@@ -14,12 +14,14 @@ final class MusicFrameView: UIImageView {
         view.effect = UIBlurEffect(style: .regular)
         view.alpha = 0.8
         view.layer.cornerRadius = 12
+        view.clipsToBounds = true
         return view
     }()
     
     private let contentView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 12.0
+        view.clipsToBounds = true
         return view
     }()
     
@@ -73,7 +75,7 @@ final class MusicFrameView: UIImageView {
         }
         
         blurEffectView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(constraints.space8)
+            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
@@ -121,6 +123,7 @@ final class MusicFrameView: UIImageView {
     
     private func setUpStyle() {
         layer.cornerRadius = 12
+        clipsToBounds = true
     }
     
     func setUpComponent(playedFor: Int, musicInfo: MusicInfo) {

@@ -11,7 +11,6 @@ final class MoodSummaryContentView: AnalysisDefaultView {
 
     private lazy var moodListView: UIView = {
         let view = UIView()
-        view.backgroundColor = .blue // TEST
         return view
     }()
     
@@ -130,6 +129,7 @@ final class MoodSummaryContentView: AnalysisDefaultView {
     
     func setUpComponent(moodFrequencyDictionary: [Mood: Int]?) {
         guard let sortedMoodFrequencyArr = moodFrequencyDictionary?.sorted(by: { $0.value > $1.value }) else { return }
+        
         let views = [primaryColorView, secondaryColorView, thirdColorView, fourthColorView, fifthColorView]
         var idx: Int = 0
         for moodDictionary in sortedMoodFrequencyArr {

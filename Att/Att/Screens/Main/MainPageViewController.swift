@@ -10,14 +10,7 @@ import CombineCocoa
 import SnapKit
 import UIKit
 
-class MainPageViewController: UIViewController {
-    
-    private let mypageButton: UIBarButtonItem = {
-        let image = UIImage(systemName: "person")?
-            .withTintColor(.white, renderingMode: .alwaysOriginal)
-        let button = UIBarButtonItem(image: image)
-        return button
-    }()
+final class MainPageViewController: UIViewController {
     
     private let calendarButton: UIBarButtonItem = {
         let image = UIImage(named: "calendar")?
@@ -114,7 +107,6 @@ class MainPageViewController: UIViewController {
     
     private func setUpNavigationBar() {
         navigationController?.navigationBar.topItem?.title = "Annotation"
-        navigationItem.leftBarButtonItem = mypageButton
         navigationItem.rightBarButtonItem = calendarButton
     }
     
