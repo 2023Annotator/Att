@@ -2,7 +2,7 @@
 //  Music+CoreDataProperties.swift
 //  Att
 //
-//  Created by 황정현 on 2023/09/24.
+//  Created by 황정현 on 2023/09/25.
 //
 //
 
@@ -16,9 +16,10 @@ extension Music {
         return NSFetchRequest<Music>(entityName: "Music")
     }
 
-    @NSManaged public var title: String?
     @NSManaged public var artist: String?
+    @NSManaged public var id: String?
     @NSManaged public var thumbnail: Data?
+    @NSManaged public var title: String?
     @NSManaged public var dailyRecord: NSSet?
 
 }
@@ -40,6 +41,6 @@ extension Music {
 
 }
 
-extension Music: Identifiable {
+extension Music : Identifiable {
 
 }

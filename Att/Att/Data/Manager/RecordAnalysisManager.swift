@@ -8,19 +8,15 @@
 import Foundation
 
 final class RecordAnalysisManager {
-    private var wordAnalysisManager: WordAnalysisManager?
-
     private var minimumNeedRecordValue: Int = 10
     private let musicCount = 3
     private let wordCount = 3
     
-    init(wordAnalysisManager: WordAnalysisManager) {
-        self.wordAnalysisManager = wordAnalysisManager
-    }
-
     private func isAvailableToMakeMonthAnalysis(date: Date) -> Bool {
-        guard let dailyRecordList = getDataList(date: date) else { return false }
-        if dailyRecordList.count < minimumNeedRecordValue { return false }
+        guard let dailyRecordList = getDataList(date: date) else {
+            return false }
+        if dailyRecordList.count < minimumNeedRecordValue {
+            return false }
         return true
     }
     
@@ -28,21 +24,18 @@ final class RecordAnalysisManager {
         if !isAvailableToMakeMonthAnalysis(date: date) { return nil }
         
         guard let dailyRecordList = getDataList(date: date) else { return nil }
-        
-        wordAnalysisManager?.tokenizeText(getDiaryTexts(dailyRecords: dailyRecordList))
+    
         let yearAndMonth = getYearAndMonth(dailyRecords: dailyRecordList)
         let averageRecordTime = getAverageRecordTime(dailyRecords: dailyRecordList)
         let moodList = getMoodList(dailyRecords: dailyRecordList)
         let moodFrequencyList = getMoodFrequencyDictionary(dailyRecords: dailyRecordList)
         let mostPlayedMusicInfo = getMostPlayedMusicDictionary(dailyRecords: dailyRecordList)
-        let mostUsedWordDictionary = wordAnalysisManager?.getMostUsedWordDicionry()
         
         let monthlyRecord = AttMonthlyRecord(yearAndMonth: yearAndMonth,
                                               averageRecordTime: averageRecordTime,
                                               moodList: moodList,
                                               moodFrequencyDictionary: moodFrequencyList,
-                                              mostPlayedMusicInfoDictionary: mostPlayedMusicInfo,
-                                             mostUsedWordDictionary: mostUsedWordDictionary)
+                                              mostPlayedMusicInfoDictionary: mostPlayedMusicInfo)
         
         return monthlyRecord
     }

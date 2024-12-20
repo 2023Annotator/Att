@@ -52,11 +52,6 @@ final class MonthlyAnalysisViewController: UIViewController {
         return view
     }()
     
-    private lazy var mostUsedWordAnalysisView: UsedWordContentView = {
-        let view = UsedWordContentView()
-        return view
-    }()
-    
     private var monthlyMoodCollectionViewDiffableDataSource: MonthlyMoodCollectionViewDiffableDataSource?
     
     private var analysisViewModel: AnalysisViewModel?
@@ -115,8 +110,7 @@ final class MonthlyAnalysisViewController: UIViewController {
             timeAnalysisView,
             monthlyMoodAnalysisView,
             monthlyMoodSummaryAnalysisView,
-            mostPlayedMusicAnalysisView,
-            mostUsedWordAnalysisView
+            mostPlayedMusicAnalysisView
         ].forEach {
             contentView.addSubview($0)
         }
@@ -141,12 +135,6 @@ final class MonthlyAnalysisViewController: UIViewController {
             make.top.equalTo(monthlyMoodSummaryAnalysisView.snp.bottom).offset(constraints.space24)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(334)
-        }
-        
-        mostUsedWordAnalysisView.snp.makeConstraints { make in
-            make.top.equalTo(mostPlayedMusicAnalysisView.snp.bottom).offset(constraints.space24)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(238)
             make.bottom.equalTo(contentView.snp.bottom)
         }
     }
@@ -173,7 +161,6 @@ final class MonthlyAnalysisViewController: UIViewController {
         timeAnalysisView.setUpComponent(as: monthlyRecord?.averageRecordTime)
         monthlyMoodSummaryAnalysisView.setUpComponent(moodFrequencyDictionary: monthlyRecord?.moodFrequencyDictionary)
         mostPlayedMusicAnalysisView.setUpComponent(mostPlayedMusicDictionary: monthlyRecord?.mostPlayedMusicInfoDictionary)
-        mostUsedWordAnalysisView.setUpComponent(wordDictionary: monthlyRecord?.mostUsedWordDictionary)
     }
 }
 

@@ -91,11 +91,14 @@ final class RecordBrowseViewController: UIViewController {
     private var recordCreationViewModel: RecordCreationViewModel?
     private var cancellables = Set<AnyCancellable>()
     
+    private var musicManager: MusicManager?
+    
     private var recordBrowseMode: RecordBrowseMode?
     
-    init(dailyRecordViewModel: DailyRecordViewModel?) {
+    init(dailyRecordViewModel: DailyRecordViewModel?, musicManager: MusicManager?) {
         super.init(nibName: nil, bundle: nil)
         self.dailyRecordViewModel = dailyRecordViewModel
+        self.musicManager = musicManager
         recordBrowseMode = .read
     }
     
@@ -115,11 +118,17 @@ final class RecordBrowseViewController: UIViewController {
         bind()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        musicManager?.stop()
+    }
+    
     private func configure() {
         setUpConstriants()
         setUpStyle()
         setUpAction()
         bind()
+        playMusic()
     }
     
     private func setUpConstriants() {
@@ -282,5 +291,11 @@ final class RecordBrowseViewController: UIViewController {
         ticketDecorationView.setUpLineColor(color: moodColor)
         diaryView.setUpComponent(color: moodColor, content: record.diary)
         toTomorrowView.setUpComponent(text: record.phraseToTomorrow)
+    }
+    
+    private func playMusic() {
+        if recordBrowseMode == .read {
+            musicManager?.play()
+        }
     }
 }
