@@ -12,28 +12,31 @@ final class CoreDataManager {
     
     static let shared = CoreDataManager()
     
-    lazy var persistentContainer: NSPersistentCloudKitContainer = {
-        let container = NSPersistentCloudKitContainer(name: "Att")
-        container.loadPersistentStores(completionHandler: { (_, error) in
+    private var persistentContainer: NSPersistentCloudKitContainer!
+    
+    private init() {
+        initializePersistentContainer()
+    }
+    
+    private func initializePersistentContainer() {
+        persistentContainer = NSPersistentCloudKitContainer(name: "Att")
+        
+        persistentContainer.loadPersistentStores { _, error in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-        })
-        return container
-    }()
-    
-    private lazy var context = persistentContainer.viewContext
-    
-    private init() { }
+        }
+    }
     
     func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        persistentContainer.viewContext.performAndWait {
+            if self.persistentContainer.viewContext.hasChanges {
+                do {
+                    try self.persistentContainer.viewContext.save()
+                } catch {
+                    let nserror = error as NSError
+                    print("SAVE NON COMPLETE: \(nserror)")
+                }
             }
         }
     }
@@ -43,8 +46,8 @@ final class CoreDataManager {
 extension CoreDataManager {
     // MARK: C
     func createDailyRecord(dailyRecord: AttDailyRecord) {
+        let context = persistentContainer.viewContext
         guard let dailyRecordEntity = NSEntityDescription.insertNewObject(forEntityName: "DailyRecord", into: context) as? DailyRecord else { return }
-        guard let musicThumbnailData = dailyRecord.musicInfo?.thumbnailImage?.jpegData(compressionQuality: 0.0) else { return }
         
         dailyRecordEntity.setValue(dailyRecord.date, forKey: "date")
         dailyRecordEntity.setValue(UUID(), forKey: "id")
@@ -52,22 +55,25 @@ extension CoreDataManager {
         dailyRecordEntity.setValue(dailyRecord.diary, forKey: "diary")
         dailyRecordEntity.setValue(dailyRecord.phraseToTomorrow, forKey: "phraseToTomorrow")
         
-        if let existedMusicEntity = isMusicExist(title: dailyRecord.musicInfo?.title, artist: dailyRecord.musicInfo?.artist) {
+        guard let musicInfo = dailyRecord.musicInfo else { return }
+        
+        if let existedMusicEntity = isMusicExist(title: musicInfo.title, artist: musicInfo.artist) {
             existedMusicEntity.addToDailyRecord(dailyRecordEntity)
         } else {
             guard let musicEntity = NSEntityDescription.insertNewObject(forEntityName: "Music", into: context) as? Music else { return }
-            musicEntity.setValue(dailyRecord.musicInfo?.title, forKey: "title")
-            musicEntity.setValue(dailyRecord.musicInfo?.artist, forKey: "artist")
+            guard let musicThumbnailData = musicInfo.thumbnailImage?.jpegData(compressionQuality: 0.0) else { return }
+            musicEntity.setValue(musicInfo.id, forKey: "id")
+            musicEntity.setValue(musicInfo.title, forKey: "title")
+            musicEntity.setValue(musicInfo.artist, forKey: "artist")
             musicEntity.setValue(musicThumbnailData, forKey: "thumbnail")
-            
             musicEntity.addToDailyRecord(dailyRecordEntity)
         }
-        
         saveContext()
     }
     
     // MARK: R
     func fetchDailyRecords(startDate: Date, endDate: Date) -> [AttDailyRecord]? {
+        let context = persistentContainer.viewContext
         let predicate = NSPredicate(format: "(date >= %@) AND (date <= %@)", startDate as NSDate, endDate as NSDate)
         
         let fetchRequest: NSFetchRequest<DailyRecord> = DailyRecord.fetchRequest()
@@ -75,6 +81,7 @@ extension CoreDataManager {
         
         do {
             let filteredData = try context.fetch(fetchRequest)
+            
             let dailyRecord = filteredData.compactMap { $0.mapToModel() }
             
             return filteredData.compactMap { $0.mapToModel() }
@@ -86,6 +93,7 @@ extension CoreDataManager {
     
     // MARK: U
     func updateDailyRecord(dailyRecord: AttDailyRecord) {
+        let context = persistentContainer.viewContext
         let targetDate = dailyRecord.date
         
         let fetchRequest: NSFetchRequest<DailyRecord> = DailyRecord.fetchRequest()
@@ -106,6 +114,7 @@ extension CoreDataManager {
     
     // MARK: D
     func deleteDailyRecord(dailyRecord: AttDailyRecord) {
+        let context = persistentContainer.viewContext
         let targetDate = dailyRecord.date
         
         let fetchRequest: NSFetchRequest<DailyRecord> = DailyRecord.fetchRequest()
@@ -125,6 +134,7 @@ extension CoreDataManager {
     }
     
     func isMusicExist(title: String?, artist: String?) -> Music? {
+        let context = persistentContainer.viewContext
         guard let title = title,
               let artist = artist else { return nil }
         let fetchRequest: NSFetchRequest<Music> = Music.fetchRequest()
@@ -146,6 +156,7 @@ extension CoreDataManager {
 // MARK: TEST SET
 extension CoreDataManager {
     func deleteAllDailyRecord() {
+        let context = persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<DailyRecord> = DailyRecord.fetchRequest()
         
         do {
@@ -162,6 +173,7 @@ extension CoreDataManager {
     }
     
     func fetchAllDailyRecords() -> [AttDailyRecord]? {
+        let context = persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<DailyRecord> = DailyRecord.fetchRequest()
         
         do {
@@ -174,11 +186,11 @@ extension CoreDataManager {
     }
     
     func fetchAllMusicRecords() {
+        let context = persistentContainer.viewContext
         let fetchRequest: NSFetchRequest<Music> = Music.fetchRequest()
         
         do {
             let data = try context.fetch(fetchRequest)
-            print(data)
         } catch {
             print("데이터를 가져올 때 오류 발생: \(error.localizedDescription)")
         }
