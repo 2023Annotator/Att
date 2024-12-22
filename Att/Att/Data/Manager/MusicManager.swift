@@ -8,8 +8,27 @@
 import Combine
 import UIKit.UIImage
 import MusadoraKit
+import MediaPlayer
 
 final class MusicManager {
+    let musicPlayer: MPMusicPlayerController?
+    let musicID: MusicItemID?
+    
+    init() {
+        musicPlayer = nil
+        musicID = nil
+    }
+    
+    init(musicID: String?) {
+        musicPlayer = MPMusicPlayerController.applicationMusicPlayer
+        
+        if let musicID = musicID {
+            self.musicID = MusicItemID(musicID)
+        } else {
+            self.musicID = nil
+        }
+    }
+    
     func getMusicList(named: String) async -> [MusicInfo]? {
         var musicInfoList: [MusicInfo] = []
         
@@ -17,7 +36,7 @@ final class MusicManager {
             let searchResponse = try await MCatalog.search(for: named, types: [.songs], limit: 10)
             for song in searchResponse.songs {
                 let thumbnailImage = await getArtworkUIImage(artwork: song.artwork)
-                let musicInfo = MusicInfo(title: song.title, artist: song.artistName, thumbnailImage: thumbnailImage)
+                let musicInfo = MusicInfo(id: song.id.rawValue, title: song.title, artist: song.artistName, thumbnailImage: thumbnailImage)
                 musicInfoList.append(musicInfo)
             }
             return musicInfoList
@@ -37,5 +56,22 @@ final class MusicManager {
             print("Error: \(error)")
             return nil
         }
+    }
+    
+    func play() {
+        Task {
+            do {
+                guard let musicID = musicID else { return }
+                let searchResponse = try await MCatalog.song(id: musicID)
+                musicPlayer?.setQueue(with: [searchResponse.id.rawValue])
+                musicPlayer?.play()
+            } catch {
+                print("Error playing the song: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func stop() {
+        musicPlayer?.stop()
     }
 }

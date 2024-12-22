@@ -51,8 +51,8 @@ final class DailyRecordViewModel {
     }
     
     private func weekdayIndex(date: Date) -> Int {
-//        let weekdayArr: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-        let weekdayArr: [String] = ["월", "화", "수", "목", "금", "토", "일"]
+        let weekdayArr: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+//        let weekdayArr: [String] = ["월", "화", "수", "목", "금", "토", "일"]
         let currentDayStr = date.weekday()
         guard let weekdayIdx = weekdayArr.firstIndex(of: currentDayStr) else { return  6 }
         
@@ -164,6 +164,10 @@ extension DailyRecordViewModel {
     
     func dismissCalendarView() {
         isCalendarViewDismissed = true
+    }
+    
+    func getMusicID() -> String? {
+        return currentDailyRecord?.musicInfo?.id
     }
 }
 extension DailyRecordViewModel {

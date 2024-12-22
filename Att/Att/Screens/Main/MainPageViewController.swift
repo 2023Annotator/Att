@@ -44,8 +44,7 @@ final class MainPageViewController: UIViewController {
     }()
     
     private lazy var recordAnalysisManager: RecordAnalysisManager = {
-        let manager = RecordAnalysisManager(wordAnalysisManager: WordAnalysisManager())
-        return manager
+        return RecordAnalysisManager()
     }()
     
     private var weekdayVisibilityViewModel: WeekdayVisiblityViewModel?
@@ -106,7 +105,7 @@ final class MainPageViewController: UIViewController {
     private func setUpStyle() { }
     
     private func setUpNavigationBar() {
-        navigationController?.navigationBar.topItem?.title = "Annotation"
+        navigationController?.navigationBar.topItem?.title = "Journey"
         navigationItem.rightBarButtonItem = calendarButton
     }
     

@@ -51,8 +51,8 @@ final class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-//        CoreDataManager.shared.deleteAllDailyRecord()
-//        DummyCoreDataManager.shared.testGeneration()
+        CoreDataManager.shared.deleteAllDailyRecord()
+        DummyCoreDataManager.shared.generateTestData()
     }
 
     // MARK: viewDidLoad 시 1회성 호출부

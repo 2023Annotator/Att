@@ -2,14 +2,13 @@
 //  DailyRecord+CoreDataProperties.swift
 //  Att
 //
-//  Created by 황정현 on 2023/09/24.
+//  Created by 황정현 on 2023/09/25.
 //
 //
 
 import Foundation
 import CoreData
 import UIKit.UIImage
-
 
 extension DailyRecord {
 
@@ -26,7 +25,7 @@ extension DailyRecord {
 
 }
 
-extension DailyRecord : Identifiable {
+extension DailyRecord: Identifiable {
     func mapToModel() -> AttDailyRecord? {
         guard let date = self.date,
               let moodRawValue = self.mood,
@@ -39,7 +38,7 @@ extension DailyRecord : Identifiable {
         let model = AttDailyRecord(
             date: date,
             mood: mood,
-            musicInfo: MusicInfo(title: music.title, artist: music.artist, thumbnailImage: UIImage(data: musicThumbnailData)),
+            musicInfo: MusicInfo(id: music.id, title: music.title, artist: music.artist, thumbnailImage: UIImage(data: musicThumbnailData)),
             diary: self.diary,
             phraseToTomorrow: self.phraseToTomorrow)
         

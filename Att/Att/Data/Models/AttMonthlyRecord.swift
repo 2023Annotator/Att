@@ -13,5 +13,4 @@ struct AttMonthlyRecord {
     var moodList: [Mood?]?
     var moodFrequencyDictionary: [Mood: Int]?
     var mostPlayedMusicInfoDictionary: [MusicInfo: Int]?
-    var mostUsedWordDictionary: [String: Int]?
 }
