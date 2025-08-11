@@ -2,13 +2,12 @@
 //  Music+CoreDataProperties.swift
 //  Att
 //
-//  Created by 황정현 on 2023/09/25.
+//  Created by 황정현 on 8/11/25.
 //
 //
 
 import Foundation
 import CoreData
-
 
 extension Music {
 
@@ -18,8 +17,9 @@ extension Music {
 
     @NSManaged public var artist: String?
     @NSManaged public var id: String?
-    @NSManaged public var thumbnail: Data?
     @NSManaged public var title: String?
+    @NSManaged public var artworkURL: String?
+    @NSManaged public var previewURL: String?
     @NSManaged public var dailyRecord: NSSet?
 
 }
@@ -38,9 +38,26 @@ extension Music {
 
     @objc(removeDailyRecord:)
     @NSManaged public func removeFromDailyRecord(_ values: NSSet)
-
 }
 
-extension Music : Identifiable {
+// MARK: - Music ↔ MusicInfo
+extension Music {
+    func toDomain() -> MusicInfo? {
+        guard let id, let title, let artist else { return nil }
+        return MusicInfo(
+            id: id,
+            title: title,
+            artist: artist,
+            artworkURL: artworkURL.flatMap(URL.init(string:)),
+            previewURL: previewURL.flatMap(URL.init(string:))
+        )
+    }
 
+    func apply(from info: MusicInfo) {
+        self.id = info.id
+        self.title = info.title
+        self.artist = info.artist
+        self.artworkURL = info.artworkURL?.absoluteString
+        self.previewURL = info.previewURL?.absoluteString
+    }
 }

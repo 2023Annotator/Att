@@ -410,7 +410,7 @@ extension RecordViewController {
     }
     
     private func presentRecordBrowseViewController() {
-        let recordBrowseViewController = RecordBrowseViewController(dailyRecordViewModel: dailyRecordViewModel, musicManager: MusicManager(musicID: dailyRecordViewModel?.getMusicID()))
+        let recordBrowseViewController = RecordBrowseViewController(dailyRecordViewModel: dailyRecordViewModel)
         recordBrowseViewController.modalPresentationStyle = .automatic
         self.navigationController?.present(recordBrowseViewController, animated: true)
     }

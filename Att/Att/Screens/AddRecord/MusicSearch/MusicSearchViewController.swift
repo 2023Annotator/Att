@@ -6,95 +6,92 @@
 //
 
 import Combine
-import MusicKit
 import SnapKit
 import UIKit
 
-final class MusicInfoTableViewDiffableDataSource: UITableViewDiffableDataSource<Int, MusicInfo?> { }
+final class MusicInfoTableViewDiffableDataSource: UITableViewDiffableDataSource<Int, MusicInfo> { }
 
 final class MusicSearchViewController: UIViewController {
 
-    private var musicManager: MusicManager?
-    
-    private var searchSubscriber: AnyCancellable?
-    private var searchText = ""
-    private let debounceInterval: TimeInterval = 0.5
-    
+    private let searchViewModel: SearchViewModel
     private var recordCreationViewModel: RecordCreationViewModel?
-    private var cancellables = Set<AnyCancellable>()
-    
+
+    private var searchSubscriber: AnyCancellable?
+    private let debounceInterval: TimeInterval = 0.5
+
     private lazy var searchController: UISearchController = {
-        let controller = UISearchController(searchResultsController: MusicSearchResultViewController(recordCreationViewModel: recordCreationViewModel))
+        let resultsVC = MusicSearchResultViewController(recordCreationViewModel: recordCreationViewModel)
+        let controller = UISearchController(searchResultsController: resultsVC)
         controller.searchBar.tintColor = .green
         return controller
     }()
-    
-    init(recordCreationViewModel: RecordCreationViewModel?, musicManager: MusicManager) {
-        super.init(nibName: nil, bundle: nil)
-        self.musicManager = musicManager
+
+    init(searchViewModel: SearchViewModel, recordCreationViewModel: RecordCreationViewModel?) {
+        self.searchViewModel = searchViewModel
         self.recordCreationViewModel = recordCreationViewModel
+        super.init(nibName: nil, bundle: nil)
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        getAuthorization()
+        getAuthorizationIfNeeded()
         setUpStyle()
         setUpNavigationItem()
         setUpDelegate()
         setUpSubscriber()
     }
-    
-    private func getAuthorization() {
-        Task {
-            await MusicAuthorizationManager.shared.requestMusicAuthorization()
-        }
+
+    private func getAuthorizationIfNeeded() {
+        Task { await MusicAuthorizationManager.shared.requestIfNeeded() }
     }
-    
+
     private func setUpStyle() {
         view.backgroundColor = .black
     }
-    
+
     private func setUpNavigationItem() {
-        self.navigationItem.title = "음악 검색"
-        self.navigationItem.searchController = searchController
+        navigationItem.title = "음악 검색"
+        navigationItem.searchController = searchController
     }
-    
+
     private func setUpDelegate() {
         searchController.searchBar.delegate = self
-        
-        if let searchResultController = searchController.searchResultsController as? MusicSearchResultViewController {
-            searchResultController.delegate = self
+
+        if let resultsVC = searchController.searchResultsController as? MusicSearchResultViewController {
+            resultsVC.delegate = self
+            // 결과 셀에서 artwork 필요하면 resultsVC가 vm.loadArtwork(for:)를 호출하도록 바인딩
+            resultsVC.bind(viewModel: searchViewModel)
         }
     }
-    
+
     private func setUpSubscriber() {
-        searchSubscriber = NotificationCenter.default.publisher(for: UISearchTextField.textDidChangeNotification, object: searchController.searchBar.searchTextField)
-            .debounce(for: .seconds(debounceInterval), scheduler: DispatchQueue.main) // 딜레이 설정
-            .map { [weak self] _ in
-                self?.searchText = self?.searchController.searchBar.text ?? ""
-                return self?.searchText
-            }
-            .compactMap { $0 }
+        searchSubscriber = NotificationCenter.default
+            .publisher(for: UISearchTextField.textDidChangeNotification,
+                       object: searchController.searchBar.searchTextField)
+            .debounce(for: .seconds(debounceInterval), scheduler: DispatchQueue.main)
+            .compactMap { [weak self] _ in self?.searchController.searchBar.text }
             .removeDuplicates()
-            .sink { [weak self] searchText in
-                self?.updateSearchResults(as: searchText)
+            .sink { [weak self] text in
+                self?.updateSearchResults(as: text)
             }
     }
-    
+
     private func updateSearchResults(as title: String?) {
-        guard let title = title else { return }
-        guard let resultController = searchController.searchResultsController as? MusicSearchResultViewController else { return }
-        if title == "" {
-            resultController.performMusicInfoTableViewCell(musicInfoList: nil)
+        guard let title,
+              let resultsVC = searchController.searchResultsController as? MusicSearchResultViewController
+        else { return }
+
+        if title.isEmpty {
+            resultsVC.render(items: [])
             return
         }
+
         Task {
-            let musicInfoList = await musicManager?.getMusicList(named: title)
-            resultController.performMusicInfoTableViewCell(musicInfoList: musicInfoList)
+            await searchViewModel.search(term: title)
+            resultsVC.render(items: searchViewModel.results)
         }
     }
 }

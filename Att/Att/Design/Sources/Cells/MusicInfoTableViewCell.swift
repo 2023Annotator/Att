@@ -15,6 +15,7 @@ final class MusicInfoTableViewCell: UITableViewCell {
         let view = UIImageView()
         view.layer.cornerRadius = 12
         view.clipsToBounds = true
+        view.contentMode = .scaleAspectFill
         view.backgroundColor = .white
         return view
     }()
@@ -45,7 +46,7 @@ final class MusicInfoTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
@@ -82,12 +83,16 @@ final class MusicInfoTableViewCell: UITableViewCell {
     
     func setUpComponent(info: MusicInfo?) {
         musicInfo = info
-        thumbnailImageView.image = musicInfo?.thumbnailImage
         titleLabel.text = musicInfo?.title
         artistLabel.text = musicInfo?.artist
     }
     
     func getMusicInfo() -> MusicInfo? {
         return musicInfo
+    }
+    
+    func setArtworkImage(_ image: UIImage?) {
+        thumbnailImageView.image = image ?? UIImage(named: "placeholder")
+        setNeedsLayout()
     }
 }

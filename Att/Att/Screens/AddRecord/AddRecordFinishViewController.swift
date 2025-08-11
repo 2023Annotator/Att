@@ -172,7 +172,6 @@ extension AddRecordFinishViewController: RecordBrowseViewControllerDelegate {
     }
     
     func dismissAddRecordViewController() {
-        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-        rootViewController?.dismiss(animated: true)
+        dismiss(animated: true)
     }
 }

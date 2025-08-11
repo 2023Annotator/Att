@@ -22,7 +22,7 @@ final class RecordCardCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    private var recordExistView = RecordExistCardView()
+    private var recordExistView = RecordExistCardView(imageLoader: DefaultImageLoader())
     private var recordNonExistView = RecordNonExistCardView()
     
     private var cardView: ATTCardView = ATTCardView()

@@ -1,4 +1,5 @@
 {
+  "originHash" : "93afab90c44b6b3b3845e985a93b88d833f281cf3efdb581a79cf9ea073b6ace",
   "pins" : [
     {
       "identity" : "combinecocoa",
@@ -7,15 +8,6 @@
       "state" : {
         "revision" : "7300c75ff9e072aa7fd0fccefcc88f74aae9bf56",
         "version" : "0.4.1"
-      }
-    },
-    {
-      "identity" : "musadorakit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/rryam/MusadoraKit.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "dee3a2d2cd52a14109e56be7aa7773de641d449e"
       }
     },
     {
@@ -28,5 +20,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

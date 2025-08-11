@@ -6,7 +6,6 @@
 //
 
 import CoreData
-import UIKit
 
 final class CoreDataManager {
     
@@ -47,26 +46,24 @@ extension CoreDataManager {
     // MARK: C
     func createDailyRecord(dailyRecord: AttDailyRecord) {
         let context = persistentContainer.viewContext
-        guard let dailyRecordEntity = NSEntityDescription.insertNewObject(forEntityName: "DailyRecord", into: context) as? DailyRecord else { return }
-        
+        guard let dailyRecordEntity = NSEntityDescription
+            .insertNewObject(forEntityName: "DailyRecord", into: context) as? DailyRecord else { return }
+
         dailyRecordEntity.setValue(dailyRecord.date, forKey: "date")
         dailyRecordEntity.setValue(UUID(), forKey: "id")
         dailyRecordEntity.setValue(dailyRecord.mood?.rawValue, forKey: "mood")
         dailyRecordEntity.setValue(dailyRecord.diary, forKey: "diary")
         dailyRecordEntity.setValue(dailyRecord.phraseToTomorrow, forKey: "phraseToTomorrow")
-        
-        guard let musicInfo = dailyRecord.musicInfo else { return }
-        
-        if let existedMusicEntity = isMusicExist(title: musicInfo.title, artist: musicInfo.artist) {
-            existedMusicEntity.addToDailyRecord(dailyRecordEntity)
-        } else {
-            guard let musicEntity = NSEntityDescription.insertNewObject(forEntityName: "Music", into: context) as? Music else { return }
-            guard let musicThumbnailData = musicInfo.thumbnailImage?.jpegData(compressionQuality: 0.0) else { return }
-            musicEntity.setValue(musicInfo.id, forKey: "id")
-            musicEntity.setValue(musicInfo.title, forKey: "title")
-            musicEntity.setValue(musicInfo.artist, forKey: "artist")
-            musicEntity.setValue(musicThumbnailData, forKey: "thumbnail")
-            musicEntity.addToDailyRecord(dailyRecordEntity)
+
+        if let info = dailyRecord.musicInfo {
+            // 1) id로 우선 탐색, 2) 없으면 title+artist로 폴백
+            if let existed = findMusic(by: info, in: context) {
+                existed.addToDailyRecord(dailyRecordEntity)
+            } else if let music = NSEntityDescription
+                        .insertNewObject(forEntityName: "Music", into: context) as? Music {
+                music.apply(from: info)
+                music.addToDailyRecord(dailyRecordEntity)
+            }
         }
         saveContext()
     }
@@ -81,10 +78,8 @@ extension CoreDataManager {
         
         do {
             let filteredData = try context.fetch(fetchRequest)
-            
-            let dailyRecord = filteredData.compactMap { $0.mapToModel() }
-            
-            return filteredData.compactMap { $0.mapToModel() }
+            let dailyRecords = filteredData.compactMap { $0.toDomain() }
+            return dailyRecords
         } catch {
             print("데이터를 가져올 때 오류 발생: \(error.localizedDescription)")
             return nil
@@ -151,6 +146,28 @@ extension CoreDataManager {
         }
         return nil
     }
+    
+    // id 우선 조회 -> 없으면 title+artist로 폴백
+    private func findMusic(by info: MusicInfo, in context: NSManagedObjectContext) -> Music? {
+        if let foundByID = fetchMusic(byID: info.id, in: context) {
+            return foundByID
+        }
+        return fetchMusic(title: info.title, artist: info.artist, in: context)
+    }
+
+    private func fetchMusic(byID id: String, in context: NSManagedObjectContext) -> Music? {
+        let req: NSFetchRequest<Music> = Music.fetchRequest()
+        req.fetchLimit = 1
+        req.predicate = NSPredicate(format: "id == %@", id)
+        return try? context.fetch(req).first
+    }
+
+    private func fetchMusic(title: String, artist: String, in context: NSManagedObjectContext) -> Music? {
+        let req: NSFetchRequest<Music> = Music.fetchRequest()
+        req.fetchLimit = 1
+        req.predicate = NSPredicate(format: "title == %@ AND artist == %@", title, artist)
+        return try? context.fetch(req).first
+    }
 }
 
 // MARK: TEST SET
@@ -178,7 +195,7 @@ extension CoreDataManager {
         
         do {
             let data = try context.fetch(fetchRequest)
-            return data.compactMap { $0.mapToModel() }
+            return data.compactMap { $0.toDomain() }
         } catch {
             print("데이터를 가져올 때 오류 발생: \(error.localizedDescription)")
             return nil

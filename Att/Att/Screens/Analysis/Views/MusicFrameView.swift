@@ -8,6 +8,7 @@
 import UIKit
 
 final class MusicFrameView: UIImageView {
+    private let binder: ArtworkBinder
     
     private let blurEffectView: UIVisualEffectView = {
         let view = UIVisualEffectView()
@@ -54,7 +55,8 @@ final class MusicFrameView: UIImageView {
         return view
     }()
     
-    init() {
+    init(imageLoader: ImageLoader) {
+        self.binder = ArtworkBinder(loader: imageLoader)
         super.init(frame: CGRect.zero)
         setUpConstraints()
         setUpStyle()
@@ -128,8 +130,8 @@ final class MusicFrameView: UIImageView {
     
     func setUpComponent(playedFor: Int, musicInfo: MusicInfo) {
         listenRecordLabel.text = "\(playedFor)회 기록"
-        musicTitleLabel.text = musicInfo.artistAndTitleStr()
-        self.image = musicInfo.thumbnailImage
-        thumbnailImageView.image = musicInfo.thumbnailImage
+        musicTitleLabel.text = musicInfo.artistAndTitle
+        binder.bind(url: musicInfo.artworkURL, applyMultiple: [ { [weak self] img in self?.thumbnailImageView.image = img},
+                                                                { [weak self] img in self?.image = img } ])
     }
 }
