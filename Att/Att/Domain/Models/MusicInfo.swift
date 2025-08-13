@@ -18,8 +18,8 @@ public struct MusicInfo: Hashable, Sendable {
         id: String,
         title: String,
         artist: String,
-        artworkURL: URL?,
-        previewURL: URL?
+        artworkURL: URL? = nil,
+        previewURL: URL? = nil
     ) {
         self.id = id
         self.title = title
