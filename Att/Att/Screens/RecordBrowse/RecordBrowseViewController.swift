@@ -10,20 +10,13 @@ import CombineCocoa
 import SnapKit
 import UIKit
 
-protocol RecordBrowseViewControllerDelegate: AnyObject {
-    func createDailyRecord()
-    func dismissAddRecordViewController()
-}
-
 enum RecordBrowseMode {
     case read
     case create
 }
 
 final class RecordBrowseViewController: UIViewController {
-    
-    weak var delegate: RecordBrowseViewControllerDelegate?
-    
+
     private let previewPlayer: AudioPreviewPlayer
     private var currentPreviewURL: URL?
     
@@ -242,9 +235,8 @@ final class RecordBrowseViewController: UIViewController {
     private func setUpAction() {
         confirmButton.tapPublisher
             .sink { [weak self] in
-                self?.delegate?.createDailyRecord()
-                self?.delegate?.dismissAddRecordViewController()
-                self?.dismiss(animated: true)
+                self?.recordCreationViewModel?.createDailyRecord()
+                self?.view.window?.rootViewController?.dismiss(animated: true)
                 
             }.store(in: &cancellables)
     }

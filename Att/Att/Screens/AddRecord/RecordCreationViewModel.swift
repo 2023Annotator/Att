@@ -31,4 +31,8 @@ final class RecordCreationViewModel {
     func setPraseToTomorrow(as text: String?) {
         dailyRecord.phraseToTomorrow = text
     }
+    
+    func createDailyRecord() {
+        CoreDataManager.shared.createDailyRecord(dailyRecord: dailyRecord)
+    }
 }

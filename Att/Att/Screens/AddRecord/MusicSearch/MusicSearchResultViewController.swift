@@ -20,7 +20,6 @@ final class MusicSearchResultViewController: UIViewController {
     
     func bind(viewModel: SearchViewModel) { self.viewModel = viewModel }
 
-    // MARK: - UI
     private lazy var musicSearchResultTableView: UITableView = {
         let view = UITableView()
         view.contentInsetAdjustmentBehavior = .always

@@ -159,19 +159,7 @@ final class AddRecordFinishViewController: UIViewController {
     
     private func presentRecordBrowseViewController() {
         let viewController = RecordBrowseViewController(recordCreationViewModel: recordCreationViewModel)
-        viewController.delegate = self
         viewController.modalPresentationStyle = .automatic
         present(viewController, animated: true)
-    }
-}
-
-extension AddRecordFinishViewController: RecordBrowseViewControllerDelegate {
-    func createDailyRecord() {
-        guard let dailyRecord = recordCreationViewModel?.dailyRecord else { return }
-        CoreDataManager.shared.createDailyRecord(dailyRecord: dailyRecord)
-    }
-    
-    func dismissAddRecordViewController() {
-        dismiss(animated: true)
     }
 }
