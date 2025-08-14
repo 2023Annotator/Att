@@ -6,14 +6,17 @@
 //
 
 import UIKit
+import SnapKit
 
 final class NowPlayingView: RecordBrowseInnerTitleDefaultView {
-    
+
+    private let binder: ArtworkBinder
+
     private let blurEffectView: UIVisualEffectView = {
-        let view = UIVisualEffectView()
-        view.effect = UIBlurEffect(style: .regular)
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
         view.alpha = 0.8
         view.layer.cornerRadius = 12
+        view.clipsToBounds = true
         return view
     }()
 
@@ -25,7 +28,7 @@ final class NowPlayingView: RecordBrowseInnerTitleDefaultView {
         view.image = image
         return view
     }()
-    
+
     private lazy var musicTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .caption3
@@ -33,65 +36,63 @@ final class NowPlayingView: RecordBrowseInnerTitleDefaultView {
         label.textColor = .white
         return label
     }()
-    
-    private lazy var thumbnailView = {
+
+    private lazy var thumbnailView: UIImageView = {
         let view = UIImageView()
         view.clipsToBounds = true
         view.layer.cornerRadius = 2
+        view.contentMode = .scaleAspectFill
+        view.image = UIImage(named: "placeholder")
         return view
     }()
-    
-    override init(title: String) {
+
+    init(title: String, imageLoader: ImageLoader) {
+        self.binder = ArtworkBinder(loader: imageLoader)
         super.init(title: title)
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
     override func setUpConstraints() {
         super.setUpConstraints()
-        
+
         let constraints = Constraints.shared
-        
-        [
-            blurEffectView,
-            musicImageView,
-            musicTitleLabel,
-            thumbnailView
-        ].forEach {
-            addSubview($0)
-        }
-        
+
+        [blurEffectView, musicImageView, musicTitleLabel, thumbnailView].forEach { addSubview($0) }
+
         blurEffectView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview()
+            make.edges.equalToSuperview()
         }
-        
-        addSubview(titleLabel)
         
         musicImageView.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(constraints.space16)
             make.leading.equalTo(titleLabel.snp.leading)
             make.width.height.equalTo(17)
         }
-        
+
         musicTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(musicImageView.snp.trailing).offset(constraints.space4)
-            make.trailing.equalTo(thumbnailView.snp.leading).inset(constraints.space4)
+            make.trailing.equalTo(thumbnailView.snp.leading).offset(-constraints.space4) // ← inset 대신 offset(-)
             make.centerY.equalTo(musicImageView)
             make.height.equalTo(22)
         }
-        
+
         thumbnailView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(constraints.space20)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(72)
         }
+        
+        sendSubviewToBack(blurEffectView)
     }
-    
-    func setUpComponent(musicInfo: MusicInfo?) {
-        musicTitleLabel.text = musicInfo?.artistAndTitleStr()
-        self.image = musicInfo?.thumbnailImage
-        thumbnailView.image = musicInfo?.thumbnailImage
+
+    func configure(with musicInfo: MusicInfo?) {
+        musicTitleLabel.text = musicInfo?.artistAndTitle ?? ""
+
+        thumbnailView.image = UIImage(named: "placeholder")
+        binder.bind(url: musicInfo?.artworkURL, applyMultiple: [ { [weak self] img in
+            self?.thumbnailView.image = img
+        } ])
     }
 }

@@ -10,17 +10,17 @@ import UIKit
 final class MusicContentView: AnalysisDefaultView {
 
     private lazy var firstMusicFrameView: MusicFrameView = {
-        let view = MusicFrameView()
+        let view = MusicFrameView(imageLoader: DefaultImageLoader())
         return view
     }()
     
     private lazy var secondMusicFrameView: MusicFrameView = {
-        let view = MusicFrameView()
+        let view = MusicFrameView(imageLoader: DefaultImageLoader())
         return view
     }()
     
     private lazy var thirdMusicFrameView: MusicFrameView = {
-        let view = MusicFrameView()
+        let view = MusicFrameView(imageLoader: DefaultImageLoader())
         return view
     }()
     

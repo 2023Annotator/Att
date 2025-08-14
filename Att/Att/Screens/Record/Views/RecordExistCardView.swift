@@ -9,7 +9,8 @@ import UIKit
 import SnapKit
 
 final class RecordExistCardView: ATTCardView {
-
+    private let binder: ArtworkBinder
+    
     private lazy var musicThumbnailView: UIImageView = {
         let view = UIImageView()
         view.clipsToBounds = true
@@ -24,7 +25,8 @@ final class RecordExistCardView: ATTCardView {
         return view
     }()
     
-    override init() {
+    init(imageLoader: ImageLoader) {
+        self.binder = ArtworkBinder(loader: imageLoader)
         super.init()
         setUpConstraints()
     }
@@ -54,7 +56,7 @@ final class RecordExistCardView: ATTCardView {
     
     func setUpComponent(record: AttDailyRecord) {
         backgroundColor = record.mood?.moodColor
-        musicThumbnailView.image = record.musicInfo?.thumbnailImage
+        binder.bind(url: record.musicInfo?.artworkURL, applyMultiple: [ { [weak self] img in self?.musicThumbnailView.image = img } ])
         cardInfoview.setUpComponent(record: record)
     }
 }

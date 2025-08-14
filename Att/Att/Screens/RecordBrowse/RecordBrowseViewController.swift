@@ -10,11 +10,6 @@ import CombineCocoa
 import SnapKit
 import UIKit
 
-protocol RecordBrowseViewControllerDelegate: AnyObject {
-    func createDailyRecord()
-    func dismissAddRecordViewController()
-}
-
 enum RecordBrowseMode {
     case read
     case create
@@ -22,7 +17,8 @@ enum RecordBrowseMode {
 
 final class RecordBrowseViewController: UIViewController {
 
-    weak var delegate: RecordBrowseViewControllerDelegate?
+    private let previewPlayer: AudioPreviewPlayer
+    private var currentPreviewURL: URL?
     
     private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
@@ -51,14 +47,14 @@ final class RecordBrowseViewController: UIViewController {
         label.textColor = .black
         return label
     }()
-
+    
     private lazy var todaysMoodView: TodaysMoodView = {
         let view = TodaysMoodView(title: "Today's Mood")
         return view
     }()
     
     private lazy var nowPlayingView: NowPlayingView = {
-        let view = NowPlayingView(title: "Now Playing")
+        let view = NowPlayingView(title: "Now Playing", imageLoader: DefaultImageLoader())
         return view
     }()
     
@@ -91,36 +87,37 @@ final class RecordBrowseViewController: UIViewController {
     private var recordCreationViewModel: RecordCreationViewModel?
     private var cancellables = Set<AnyCancellable>()
     
-    private var musicManager: MusicManager?
-    
     private var recordBrowseMode: RecordBrowseMode?
     
-    init(dailyRecordViewModel: DailyRecordViewModel?, musicManager: MusicManager?) {
-        super.init(nibName: nil, bundle: nil)
+    init(dailyRecordViewModel: DailyRecordViewModel?,
+         previewPlayer: AudioPreviewPlayer = DefaultAudioPreviewPlayer()) {
         self.dailyRecordViewModel = dailyRecordViewModel
-        self.musicManager = musicManager
-        recordBrowseMode = .read
+        self.previewPlayer = previewPlayer
+        self.recordBrowseMode = .read
+        super.init(nibName: nil, bundle: nil)
     }
     
-    init(recordCreationViewModel: RecordCreationViewModel?) {
-        super.init(nibName: nil, bundle: nil)
+    init(recordCreationViewModel: RecordCreationViewModel?,
+         previewPlayer: AudioPreviewPlayer = DefaultAudioPreviewPlayer()) {
         self.recordCreationViewModel = recordCreationViewModel
-        recordBrowseMode = .create
+        self.previewPlayer = previewPlayer
+        self.recordBrowseMode = .create
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
         bind()
     }
-
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        musicManager?.stop()
+        previewPlayer.stop()
     }
     
     private func configure() {
@@ -128,7 +125,6 @@ final class RecordBrowseViewController: UIViewController {
         setUpStyle()
         setUpAction()
         bind()
-        playMusic()
     }
     
     private func setUpConstriants() {
@@ -239,9 +235,8 @@ final class RecordBrowseViewController: UIViewController {
     private func setUpAction() {
         confirmButton.tapPublisher
             .sink { [weak self] in
-                self?.delegate?.createDailyRecord()
-                self?.delegate?.dismissAddRecordViewController()
-                self?.dismiss(animated: true)
+                self?.recordCreationViewModel?.createDailyRecord()
+                self?.view.window?.rootViewController?.dismiss(animated: true)
                 
             }.store(in: &cancellables)
     }
@@ -281,21 +276,27 @@ final class RecordBrowseViewController: UIViewController {
                 self?.fromYesterdayView.setUpComponent(text: phrase)
             }.store(in: &cancellables)
     }
-
+    
     private func setUpComponent(record: AttDailyRecord) {
         guard let moodColor = record.mood?.moodColor else { return }
         dateLabel.text = record.date.date()
         publicationTimeLabel.text = record.date.publicationDate()
         todaysMoodView.setUpColor(color: moodColor)
-        nowPlayingView.setUpComponent(musicInfo: record.musicInfo)
+        nowPlayingView.configure(with: record.musicInfo)
         ticketDecorationView.setUpLineColor(color: moodColor)
         diaryView.setUpComponent(color: moodColor, content: record.diary)
         toTomorrowView.setUpComponent(text: record.phraseToTomorrow)
-    }
-    
-    private func playMusic() {
-        if recordBrowseMode == .read {
-            musicManager?.play()
+        
+        // READ 모드에서만 미리듣기 자동재생
+        guard recordBrowseMode == .read else { return }
+        if let url = record.musicInfo?.previewURL {
+            if url != currentPreviewURL {
+                currentPreviewURL = url
+                previewPlayer.play(url: url)
+            }
+        } else {
+            currentPreviewURL = nil
+            previewPlayer.stop()
         }
     }
 }

@@ -12,6 +12,10 @@ import UIKit
 
 final class AddRhythmViewController: UIViewController {
     
+    private let imageLoader: ImageLoader = DefaultImageLoader() // 메모리 캐시만(ephemeral)
+    private var artworkTask: Task<Void, Never>?
+    private var currentArtworkURL: URL?
+
     private let xmarkButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(systemName: "xmark")?
             .withTintColor(.green, renderingMode: .alwaysOriginal))
@@ -201,12 +205,51 @@ final class AddRhythmViewController: UIViewController {
     
     private func bind() {
         recordCreationViewModel?.$dailyRecord
-            .sink { [weak self] record in
-                guard let musicInfo = record.musicInfo else { return }
-                self?.addMusicButton.setImage(musicInfo.thumbnailImage, for: .normal)
-                self?.presentmusicDescriptionView(title: musicInfo.title, artist: musicInfo.artist)
-            }.store(in: &cancellables)
+            .compactMap { $0.musicInfo }
+            .receive(on: RunLoop.main)
+            .sink { [weak self] info in
+                guard let self = self else { return }
+                
+                // 텍스트 먼저
+                self.presentmusicDescriptionView(title: info.title, artist: info.artist)
+
+                // 이전 로딩 취소 + 현재 URL 기억
+                self.artworkTask?.cancel()
+                self.currentArtworkURL = info.artworkURL
+
+                // 기본 아이콘(플레이스홀더)
+                let plus = UIImage(systemName: "plus")?
+                    .withTintColor(.green, renderingMode: .alwaysOriginal)
+                    .withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 42)))
+                self.addMusicButton.setImage(plus, for: .normal)
+
+                // URL 없으면 여기서 끝
+                guard let url = info.artworkURL else { return }
+
+                // 1) 캐시 히트면 즉시 적용
+                if let cached = self.imageLoader.cachedImage(for: url) {
+                    self.addMusicButton.setImage(cached, for: .normal)
+                    return
+                }
+
+                // 2) 미스면 비동기 로드
+                self.artworkTask = Task { [weak self] in
+                    guard let self = self else { return }
+                    let img = try? await self.imageLoader.loadImage(from: url,
+                                                                    targetPointSize: CGSize(width: 500, height: 500),
+                                                                    screenScale: UIScreen.main.scale)
+
+                    // 레이스 가드: 가장 최근 바인딩된 URL인지 확인
+                    guard self.currentArtworkURL == url else { return }
+
+                    await MainActor.run {
+                        self.addMusicButton.setImage(img ?? plus, for: .normal)
+                    }
+                }
+            }
+            .store(in: &cancellables)
     }
+
 }
 
 extension AddRhythmViewController {
@@ -220,7 +263,7 @@ extension AddRhythmViewController {
 }
 extension AddRhythmViewController {
     func presentMusicSearchViewController() {
-        let musicSearchViewController = UINavigationController(rootViewController: MusicSearchViewController(recordCreationViewModel: recordCreationViewModel, musicManager: MusicManager()))
+        let musicSearchViewController = UINavigationController(rootViewController: MusicSearchViewController(searchViewModel: AppFlow.makeSearchViewModel(), recordCreationViewModel: recordCreationViewModel))
         musicSearchViewController.modalPresentationStyle = .automatic
         present(musicSearchViewController, animated: true)
     }

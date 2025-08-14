@@ -3,11 +3,26 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		3A147B332A84EA130078050A /* WeekdayVisiblityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A147B322A84EA130078050A /* WeekdayVisiblityViewModel.swift */; };
+		3A1E18212E49CE1100624431 /* MusicSearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E18202E49CE0700624431 /* MusicSearchRepository.swift */; };
+		3A1E18242E49CE3000624431 /* SearchMusicUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E18232E49CE2B00624431 /* SearchMusicUseCase.swift */; };
+		3A1E18272E49CE4D00624431 /* DomainError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E18262E49CE4A00624431 /* DomainError.swift */; };
+		3A1E182C2E49CF6C00624431 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E182B2E49CF6900624431 /* ImageLoader.swift */; };
+		3A1E182E2E49CF7A00624431 /* DefaultImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E182D2E49CF7800624431 /* DefaultImageLoader.swift */; };
+		3A1E18302E49D0C500624431 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E182F2E49D0C200624431 /* SearchViewModel.swift */; };
+		3A1E18322E49D13500624431 /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E18312E49D13400624431 /* AppFlow.swift */; };
+		3A1E18362E49D24F00624431 /* Song+DomainMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E18352E49D24300624431 /* Song+DomainMapper.swift */; };
+		3A1E18382E49D27700624431 /* AppleMusicSearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E18372E49D27300624431 /* AppleMusicSearchRepository.swift */; };
+		3A1E183D2E49D73600624431 /* Music+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E183B2E49D73600624431 /* Music+CoreDataClass.swift */; };
+		3A1E183E2E49D73600624431 /* DailyRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E183A2E49D73600624431 /* DailyRecord+CoreDataProperties.swift */; };
+		3A1E183F2E49D73600624431 /* DailyRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E18392E49D73600624431 /* DailyRecord+CoreDataClass.swift */; };
+		3A1E18402E49D73600624431 /* Music+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E183C2E49D73600624431 /* Music+CoreDataProperties.swift */; };
+		3A1E18432E49E43300624431 /* AudioPreviewPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E18422E49E42F00624431 /* AudioPreviewPlayer.swift */; };
+		3A1E18462E49E68600624431 /* ArtworkBinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1E18452E49E68400624431 /* ArtworkBinder.swift */; };
 		3A22029A2A5AB7DA009DB223 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2202992A5AB7DA009DB223 /* AppDelegate.swift */; };
 		3A22029C2A5AB7DA009DB223 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22029B2A5AB7DA009DB223 /* SceneDelegate.swift */; };
 		3A22029E2A5AB7DA009DB223 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A22029D2A5AB7DA009DB223 /* ViewController.swift */; };
@@ -18,12 +33,7 @@
 		3A2EF1C72ABF2B8C00E2C18F /* AnalysisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2EF1C62ABF2B8C00E2C18F /* AnalysisViewModel.swift */; };
 		3A2EF1C92ABF3AB500E2C18F /* MusicFrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2EF1C82ABF3AB500E2C18F /* MusicFrameView.swift */; };
 		3A2EF1D92AC073D100E2C18F /* MonthlyMoodRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2EF1D82AC073D100E2C18F /* MonthlyMoodRecord.swift */; };
-		3A2EF1EA2AC1AC8600E2C18F /* DailyRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2EF1E62AC1AC8600E2C18F /* DailyRecord+CoreDataClass.swift */; };
-		3A2EF1EB2AC1AC8600E2C18F /* DailyRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2EF1E72AC1AC8600E2C18F /* DailyRecord+CoreDataProperties.swift */; };
-		3A2EF1EC2AC1AC8600E2C18F /* Music+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2EF1E82AC1AC8600E2C18F /* Music+CoreDataClass.swift */; };
-		3A2EF1ED2AC1AC8600E2C18F /* Music+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2EF1E92AC1AC8600E2C18F /* Music+CoreDataProperties.swift */; };
-		3A34410B2AB9AD3E009B554A /* MusadoraKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A34410A2AB9AD3E009B554A /* MusadoraKit */; };
-		3A34410E2AB9ADC7009B554A /* MusicManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A34410D2AB9ADC7009B554A /* MusicManager.swift */; };
+		3A2EF1DB2AC08A1600E2C18F /* DummyCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2EF1DA2AC08A1600E2C18F /* DummyCoreDataManager.swift */; };
 		3A3441112AB9B365009B554A /* MusicSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3441102AB9B365009B554A /* MusicSearchViewController.swift */; };
 		3A3441132AB9B3AF009B554A /* MusicSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3441122AB9B3AF009B554A /* MusicSearchResultViewController.swift */; };
 		3A3441152AB9B3CC009B554A /* MusicInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3441142AB9B3CC009B554A /* MusicInfoTableViewCell.swift */; };
@@ -103,8 +113,34 @@
 		3F95401E2AAF11E500FE75E7 /* CircularSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F95401D2AAF11E500FE75E7 /* CircularSlider.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3A1E184F2E4B609700624431 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A22028E2A5AB7DA009DB223 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3A2202952A5AB7DA009DB223;
+			remoteInfo = Att;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		3A147B322A84EA130078050A /* WeekdayVisiblityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayVisiblityViewModel.swift; sourceTree = "<group>"; };
+		3A1E18202E49CE0700624431 /* MusicSearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSearchRepository.swift; sourceTree = "<group>"; };
+		3A1E18232E49CE2B00624431 /* SearchMusicUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMusicUseCase.swift; sourceTree = "<group>"; };
+		3A1E18262E49CE4A00624431 /* DomainError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainError.swift; sourceTree = "<group>"; };
+		3A1E182B2E49CF6900624431 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		3A1E182D2E49CF7800624431 /* DefaultImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultImageLoader.swift; sourceTree = "<group>"; };
+		3A1E182F2E49D0C200624431 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		3A1E18312E49D13400624431 /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
+		3A1E18352E49D24300624431 /* Song+DomainMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Song+DomainMapper.swift"; sourceTree = "<group>"; };
+		3A1E18372E49D27300624431 /* AppleMusicSearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicSearchRepository.swift; sourceTree = "<group>"; };
+		3A1E18392E49D73600624431 /* DailyRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3A1E183A2E49D73600624431 /* DailyRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3A1E183B2E49D73600624431 /* Music+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Music+CoreDataClass.swift"; sourceTree = "<group>"; };
+		3A1E183C2E49D73600624431 /* Music+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Music+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3A1E18422E49E42F00624431 /* AudioPreviewPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPreviewPlayer.swift; sourceTree = "<group>"; };
+		3A1E18452E49E68400624431 /* ArtworkBinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkBinder.swift; sourceTree = "<group>"; };
+		3A1E184B2E4B609700624431 /* AttTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AttTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A2202962A5AB7DA009DB223 /* Att.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Att.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A2202992A5AB7DA009DB223 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A22029B2A5AB7DA009DB223 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -117,11 +153,7 @@
 		3A2EF1C62ABF2B8C00E2C18F /* AnalysisViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisViewModel.swift; sourceTree = "<group>"; };
 		3A2EF1C82ABF3AB500E2C18F /* MusicFrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicFrameView.swift; sourceTree = "<group>"; };
 		3A2EF1D82AC073D100E2C18F /* MonthlyMoodRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyMoodRecord.swift; sourceTree = "<group>"; };
-		3A2EF1E62AC1AC8600E2C18F /* DailyRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
-		3A2EF1E72AC1AC8600E2C18F /* DailyRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DailyRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		3A2EF1E82AC1AC8600E2C18F /* Music+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Music+CoreDataClass.swift"; sourceTree = "<group>"; };
-		3A2EF1E92AC1AC8600E2C18F /* Music+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Music+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		3A34410D2AB9ADC7009B554A /* MusicManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicManager.swift; sourceTree = "<group>"; };
+		3A2EF1DA2AC08A1600E2C18F /* DummyCoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyCoreDataManager.swift; sourceTree = "<group>"; };
 		3A3441102AB9B365009B554A /* MusicSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSearchViewController.swift; sourceTree = "<group>"; };
 		3A3441122AB9B3AF009B554A /* MusicSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSearchResultViewController.swift; sourceTree = "<group>"; };
 		3A3441142AB9B3CC009B554A /* MusicInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicInfoTableViewCell.swift; sourceTree = "<group>"; };
@@ -199,12 +231,22 @@
 		3F95401D2AAF11E500FE75E7 /* CircularSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularSlider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		3A1E184C2E4B609700624431 /* AttTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = AttTests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		3A1E18482E4B609700624431 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3A2202932A5AB7DA009DB223 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A34410B2AB9AD3E009B554A /* MusadoraKit in Frameworks */,
 				3AC996742A5AE22700030AAD /* CombineCocoa in Frameworks */,
 				3AC996772A5AE23500030AAD /* SnapKit in Frameworks */,
 			);
@@ -213,12 +255,88 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A1E181F2E49CDF000624431 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				3A1E18202E49CE0700624431 /* MusicSearchRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		3A1E18222E49CE1B00624431 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				3A1E18232E49CE2B00624431 /* SearchMusicUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		3A1E18252E49CE4500624431 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				3A1E18262E49CE4A00624431 /* DomainError.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		3A1E18292E49CF5900624431 /* SharedInfra */ = {
+			isa = PBXGroup;
+			children = (
+				3A1E18442E49E68000624431 /* Artwork */,
+				3A1E18412E49E42800624431 /* Audio */,
+				3A1E182A2E49CF5E00624431 /* ImageLoader */,
+			);
+			path = SharedInfra;
+			sourceTree = "<group>";
+		};
+		3A1E182A2E49CF5E00624431 /* ImageLoader */ = {
+			isa = PBXGroup;
+			children = (
+				3A1E182D2E49CF7800624431 /* DefaultImageLoader.swift */,
+				3A1E182B2E49CF6900624431 /* ImageLoader.swift */,
+			);
+			path = ImageLoader;
+			sourceTree = "<group>";
+		};
+		3A1E18342E49D23C00624431 /* MusicKit */ = {
+			isa = PBXGroup;
+			children = (
+				3A1E18372E49D27300624431 /* AppleMusicSearchRepository.swift */,
+				3A1E18352E49D24300624431 /* Song+DomainMapper.swift */,
+			);
+			path = MusicKit;
+			sourceTree = "<group>";
+		};
+		3A1E18412E49E42800624431 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				3A1E18422E49E42F00624431 /* AudioPreviewPlayer.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		3A1E18442E49E68000624431 /* Artwork */ = {
+			isa = PBXGroup;
+			children = (
+				3A1E18452E49E68400624431 /* ArtworkBinder.swift */,
+			);
+			path = Artwork;
+			sourceTree = "<group>";
+		};
+		3A1E18542E4B60A900624431 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		3A22028D2A5AB7DA009DB223 = {
 			isa = PBXGroup;
 			children = (
 				3AECF7542A65225D0086C5F2 /* .swiftlint.yml */,
-				3A3441162AB9B3F4009B554A /* Auth */,
 				3A2202982A5AB7DA009DB223 /* Att */,
+				3A1E184C2E4B609700624431 /* AttTests */,
+				3A1E18542E4B60A900624431 /* Frameworks */,
 				3A2202972A5AB7DA009DB223 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -227,6 +345,7 @@
 			isa = PBXGroup;
 			children = (
 				3A2202962A5AB7DA009DB223 /* Att.app */,
+				3A1E184B2E4B609700624431 /* AttTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -234,6 +353,8 @@
 		3A2202982A5AB7DA009DB223 /* Att */ = {
 			isa = PBXGroup;
 			children = (
+				3A1E18292E49CF5900624431 /* SharedInfra */,
+				3A5299132E435CF500CBFBB9 /* Domain */,
 				3A701F752A5ABE8C00D6913A /* Application */,
 				3A701F762A5ABE9B00D6913A /* Util */,
 				3A701F792A5ABEAB00D6913A /* Screens */,
@@ -245,23 +366,25 @@
 				3A2202A72A5AB7DB009DB223 /* LaunchScreen.storyboard */,
 				3A2202AA2A5AB7DB009DB223 /* Info.plist */,
 				3A2202A22A5AB7DA009DB223 /* Att.xcdatamodeld */,
+				3A3441162AB9B3F4009B554A /* Auth */,
 			);
 			path = Att;
 			sourceTree = "<group>";
 		};
-		3A34410C2AB9AD9A009B554A /* Manager */ = {
+		3A34410C2AB9AD9A009B554A /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				3A985A662AB47D5F003FBD3A /* CoreDataManager.swift */,
-				3A34410D2AB9ADC7009B554A /* MusicManager.swift */,
 				3A8C805E2ABD7B340039CDE6 /* RecordAnalysisManager.swift */,
+				3A2EF1DA2AC08A1600E2C18F /* DummyCoreDataManager.swift */,
 			);
-			path = Manager;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		3A34410F2AB9B289009B554A /* MusicSearch */ = {
 			isa = PBXGroup;
 			children = (
+				3A1E182F2E49D0C200624431 /* SearchViewModel.swift */,
 				3A3441102AB9B365009B554A /* MusicSearchViewController.swift */,
 				3A3441122AB9B3AF009B554A /* MusicSearchResultViewController.swift */,
 			);
@@ -279,17 +402,46 @@
 		3A4487282AB2EB360035DAAE /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				3A2EF1E62AC1AC8600E2C18F /* DailyRecord+CoreDataClass.swift */,
-				3A2EF1E72AC1AC8600E2C18F /* DailyRecord+CoreDataProperties.swift */,
-				3A2EF1E82AC1AC8600E2C18F /* Music+CoreDataClass.swift */,
-				3A2EF1E92AC1AC8600E2C18F /* Music+CoreDataProperties.swift */,
+				3A1E18392E49D73600624431 /* DailyRecord+CoreDataClass.swift */,
+				3A1E183A2E49D73600624431 /* DailyRecord+CoreDataProperties.swift */,
+				3A1E183B2E49D73600624431 /* Music+CoreDataClass.swift */,
+				3A1E183C2E49D73600624431 /* Music+CoreDataProperties.swift */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		3A5299132E435CF500CBFBB9 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				3A1E18252E49CE4500624431 /* Errors */,
+				3A1E18222E49CE1B00624431 /* UseCases */,
+				3A1E181F2E49CDF000624431 /* Repositories */,
+				3A34410C2AB9AD9A009B554A /* Managers */,
+				3A701F832A5ABEF000D6913A /* Models */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		3A5299142E435CFA00CBFBB9 /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				3A4487282AB2EB360035DAAE /* CoreData */,
+			);
+			path = Local;
+			sourceTree = "<group>";
+		};
+		3A5299152E435D1400CBFBB9 /* Remote */ = {
+			isa = PBXGroup;
+			children = (
+				3A1E18342E49D23C00624431 /* MusicKit */,
+			);
+			path = Remote;
 			sourceTree = "<group>";
 		};
 		3A701F752A5ABE8C00D6913A /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				3A1E18312E49D13400624431 /* AppFlow.swift */,
 				3A2202992A5AB7DA009DB223 /* AppDelegate.swift */,
 				3A22029B2A5AB7DA009DB223 /* SceneDelegate.swift */,
 			);
@@ -415,9 +567,9 @@
 		3A701F822A5ABEEC00D6913A /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				3A34410C2AB9AD9A009B554A /* Manager */,
+				3A5299152E435D1400CBFBB9 /* Remote */,
+				3A5299142E435CFA00CBFBB9 /* Local */,
 				3A701F842A5ABEF600D6913A /* Entities */,
-				3A701F832A5ABEF000D6913A /* Models */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -433,7 +585,6 @@
 				3A2EF1C22ABF0CE500E2C18F /* AttMonthlyRecord.swift */,
 				3A2EF1D82AC073D100E2C18F /* MonthlyMoodRecord.swift */,
 				3A985A7B2AB5A6DB003FBD3A /* DateRelation.swift */,
-				3A4487282AB2EB360035DAAE /* CoreData */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -587,6 +738,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3A1E184A2E4B609700624431 /* AttTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A1E18512E4B609700624431 /* Build configuration list for PBXNativeTarget "AttTests" */;
+			buildPhases = (
+				3A1E18472E4B609700624431 /* Sources */,
+				3A1E18482E4B609700624431 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3A1E18502E4B609700624431 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				3A1E184C2E4B609700624431 /* AttTests */,
+			);
+			name = AttTests;
+			packageProductDependencies = (
+			);
+			productName = AttTests;
+			productReference = 3A1E184B2E4B609700624431 /* AttTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		3A2202952A5AB7DA009DB223 /* Att */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3A2202AD2A5AB7DB009DB223 /* Build configuration list for PBXNativeTarget "Att" */;
@@ -604,7 +777,6 @@
 			packageProductDependencies = (
 				3AC996732A5AE22700030AAD /* CombineCocoa */,
 				3AC996762A5AE23500030AAD /* SnapKit */,
-				3A34410A2AB9AD3E009B554A /* MusadoraKit */,
 			);
 			productName = Att;
 			productReference = 3A2202962A5AB7DA009DB223 /* Att.app */;
@@ -617,9 +789,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1430;
+				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					3A1E184A2E4B609700624431 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 3A2202952A5AB7DA009DB223;
+					};
 					3A2202952A5AB7DA009DB223 = {
 						CreatedOnToolsVersion = 14.3;
 					};
@@ -637,13 +813,13 @@
 			packageReferences = (
 				3AC996722A5AE22700030AAD /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				3AC996752A5AE23500030AAD /* XCRemoteSwiftPackageReference "SnapKit" */,
-				3A3441092AB9AD3E009B554A /* XCRemoteSwiftPackageReference "MusadoraKit" */,
 			);
 			productRefGroup = 3A2202972A5AB7DA009DB223 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				3A2202952A5AB7DA009DB223 /* Att */,
+				3A1E184A2E4B609700624431 /* AttTests */,
 			);
 		};
 /* End PBXProject section */
@@ -685,6 +861,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3A1E18472E4B609700624431 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3A2202922A5AB7DA009DB223 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -696,7 +879,6 @@
 				3A9322382AA70ACA00C106DF /* MonthCollectionViewCell.swift in Sources */,
 				3F75EF992AAB3A1200E9FEEB /* NextButton.swift in Sources */,
 				3A5D0BE42A62B9AF00064DCB /* UIFont+.swift in Sources */,
-				3A2EF1EC2AC1AC8600E2C18F /* Music+CoreDataClass.swift in Sources */,
 				3A93222E2AA60BA900C106DF /* MonthlyMoodCollectionViewFlowLayout.swift in Sources */,
 				3A93224C2AA8794100C106DF /* DailyRecordViewModel.swift in Sources */,
 				3A5D0BE62A62B9B800064DCB /* UIColor+.swift in Sources */,
@@ -707,8 +889,8 @@
 				3AE2D7582AAF55CD00052A0B /* Mood.swift in Sources */,
 				3A8D8B412ABB0E8200D7A61A /* UIViewController+.swift in Sources */,
 				3A2EF1C72ABF2B8C00E2C18F /* AnalysisViewModel.swift in Sources */,
+				3A2EF1DB2AC08A1600E2C18F /* DummyCoreDataManager.swift in Sources */,
 				3AE2D74C2AAEB20800052A0B /* RecordBrowseInnerTitleDefaultView.swift in Sources */,
-				3A34410E2AB9ADC7009B554A /* MusicManager.swift in Sources */,
 				3AE2D74E2AAEB3A400052A0B /* TicketDecorationView.swift in Sources */,
 				3AE2D7502AAEB45500052A0B /* FromYesterdayView.swift in Sources */,
 				3AE2D74A2AAEADE800052A0B /* NowPlayingView.swift in Sources */,
@@ -719,6 +901,7 @@
 				3AF9C0612A7CF09200A5A036 /* RecordViewController.swift in Sources */,
 				3A985A7E2AB5A808003FBD3A /* UIImage+.swift in Sources */,
 				3AF9C0652A7CFA9100A5A036 /* ATTWeekdayCollectionViewCell.swift in Sources */,
+				3A1E18302E49D0C500624431 /* SearchViewModel.swift in Sources */,
 				3F95401E2AAF11E500FE75E7 /* CircularSlider.swift in Sources */,
 				3A9321E32A8CA0BB00C106DF /* ATTSegmentedControl.swift in Sources */,
 				3A5D0BE22A61553100064DCB /* TestViewModel.swift in Sources */,
@@ -727,13 +910,15 @@
 				3AF9C0692A7CFE4300A5A036 /* ATTFromYesterdayView.swift in Sources */,
 				3AF9C0732A7D3F2B00A5A036 /* RecordCardCollectionViewCell.swift in Sources */,
 				3A8C805F2ABD7B340039CDE6 /* RecordAnalysisManager.swift in Sources */,
+				3A1E18382E49D27700624431 /* AppleMusicSearchRepository.swift in Sources */,
 				3A22029E2A5AB7DA009DB223 /* ViewController.swift in Sources */,
-				3A2EF1EA2AC1AC8600E2C18F /* DailyRecord+CoreDataClass.swift in Sources */,
 				3A9322262AA5F14C00C106DF /* MonthlyMoodContentView.swift in Sources */,
 				3AE2D7442AAEA94300052A0B /* RecordBrowseViewController.swift in Sources */,
+				3A1E18272E49CE4D00624431 /* DomainError.swift in Sources */,
 				3AF9C0672A7CFDBC00A5A036 /* CardInfoType.swift in Sources */,
 				3AE2D7522AAEB5CA00052A0B /* DiaryView.swift in Sources */,
 				3A9322342AA7072C00C106DF /* AnalysisListViewController.swift in Sources */,
+				3A1E182E2E49CF7A00624431 /* DefaultImageLoader.swift in Sources */,
 				3F75EF972AAB39EC00E9FEEB /* AddRhythmViewController.swift in Sources */,
 				3A9322242AA5E69500C106DF /* MonthlyAnalysisViewController.swift in Sources */,
 				3A93223C2AA70DD700C106DF /* MonthListView.swift in Sources */,
@@ -744,14 +929,21 @@
 				3AF9C0752A7E7C8F00A5A036 /* CardCollectionViewFlowLayout.swift in Sources */,
 				3A2202A42A5AB7DA009DB223 /* Att.xcdatamodeld in Sources */,
 				3A9322282AA5F16900C106DF /* MoodSummaryContentView.swift in Sources */,
+				3A1E18242E49CE3000624431 /* SearchMusicUseCase.swift in Sources */,
+				3A1E18362E49D24F00624431 /* Song+DomainMapper.swift in Sources */,
 				3A985A7C2AB5A6DB003FBD3A /* DateRelation.swift in Sources */,
 				3AF9C0582A7CE5F500A5A036 /* TitleDescriptionView.swift in Sources */,
 				3AE2D75C2AAF590500052A0B /* AttDailyRecord.swift in Sources */,
-				3A2EF1ED2AC1AC8600E2C18F /* Music+CoreDataProperties.swift in Sources */,
 				3A985A672AB47D5F003FBD3A /* CoreDataManager.swift in Sources */,
+				3A1E183D2E49D73600624431 /* Music+CoreDataClass.swift in Sources */,
+				3A1E183E2E49D73600624431 /* DailyRecord+CoreDataProperties.swift in Sources */,
+				3A1E183F2E49D73600624431 /* DailyRecord+CoreDataClass.swift in Sources */,
+				3A1E18402E49D73600624431 /* Music+CoreDataProperties.swift in Sources */,
 				3A8D8B4A2ABC1EA400D7A61A /* MusicDescriptionView.swift in Sources */,
+				3A1E182C2E49CF6C00624431 /* ImageLoader.swift in Sources */,
 				3AE2D75A2AAF588300052A0B /* MusicInfo.swift in Sources */,
 				3AE2D7482AAEABDF00052A0B /* TodaysMoodView.swift in Sources */,
+				3A1E18322E49D13500624431 /* AppFlow.swift in Sources */,
 				3A9322482AA7532900C106DF /* YearSelectorView.swift in Sources */,
 				3AE2D7462AAEAB1900052A0B /* RecordBrowseOuterTitleDefaultView.swift in Sources */,
 				3AF9C05C2A7CEBCC00A5A036 /* ATTCardInfoView.swift in Sources */,
@@ -763,11 +955,13 @@
 				3F75EF902AAB38DB00E9FEEB /* AddRecordsViewController.swift in Sources */,
 				3A2EF1C92ABF3AB500E2C18F /* MusicFrameView.swift in Sources */,
 				3A9322302AA60DCB00C106DF /* MonthlyMoodCollectionViewCell.swift in Sources */,
+				3A1E18462E49E68600624431 /* ArtworkBinder.swift in Sources */,
 				3AE2D73C2AA9E88700052A0B /* CalendarViewController.swift in Sources */,
+				3A1E18212E49CE1100624431 /* MusicSearchRepository.swift in Sources */,
+				3A1E18432E49E43300624431 /* AudioPreviewPlayer.swift in Sources */,
 				3A9322362AA707EA00C106DF /* MonthCollectionViewFlowLayout.swift in Sources */,
 				3F75EF922AAB391600E9FEEB /* AddWordsViewController.swift in Sources */,
 				3A22029A2A5AB7DA009DB223 /* AppDelegate.swift in Sources */,
-				3A2EF1EB2AC1AC8600E2C18F /* DailyRecord+CoreDataProperties.swift in Sources */,
 				3A9322202AA5DCDB00C106DF /* MusicContentView.swift in Sources */,
 				3A22029C2A5AB7DA009DB223 /* SceneDelegate.swift in Sources */,
 				3A3441182AB9B3FE009B554A /* MusicAuthorizationManager.swift in Sources */,
@@ -779,6 +973,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3A1E18502E4B609700624431 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3A2202952A5AB7DA009DB223 /* Att */;
+			targetProxy = 3A1E184F2E4B609700624431 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		3A2202A72A5AB7DB009DB223 /* LaunchScreen.storyboard */ = {
@@ -792,6 +994,53 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		3A1E18522E4B609700624431 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UAM52RQFW9;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jhHwang.AttTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Att.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Att";
+			};
+			name = Debug;
+		};
+		3A1E18532E4B609700624431 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UAM52RQFW9;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jhHwang.AttTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Att.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Att";
+			};
+			name = Release;
+		};
 		3A2202AB2A5AB7DB009DB223 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -914,7 +1163,9 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UAM52RQFW9;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Att/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "\"Music Library Access!\"";
@@ -923,7 +1174,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -946,7 +1197,9 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UAM52RQFW9;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Att/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "\"Music Library Access!\"";
@@ -955,7 +1208,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -973,6 +1226,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3A1E18512E4B609700624431 /* Build configuration list for PBXNativeTarget "AttTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A1E18522E4B609700624431 /* Debug */,
+				3A1E18532E4B609700624431 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3A2202912A5AB7DA009DB223 /* Build configuration list for PBXProject "Att" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -994,14 +1256,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3A3441092AB9AD3E009B554A /* XCRemoteSwiftPackageReference "MusadoraKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/rryam/MusadoraKit.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		3AC996722A5AE22700030AAD /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa";
@@ -1021,11 +1275,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3A34410A2AB9AD3E009B554A /* MusadoraKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3A3441092AB9AD3E009B554A /* XCRemoteSwiftPackageReference "MusadoraKit" */;
-			productName = MusadoraKit;
-		};
 		3AC996732A5AE22700030AAD /* CombineCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3AC996722A5AE22700030AAD /* XCRemoteSwiftPackageReference "CombineCocoa" */;
