@@ -78,6 +78,8 @@ final class RecordBrowseViewController: UIViewController {
         return view
     }()
     
+    private lazy var bottomFadeView = GradientFadeView()
+    
     private lazy var confirmButton: NextButton = {
         let button = NextButton(title: "확인")
         return button
@@ -112,7 +114,6 @@ final class RecordBrowseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        bind()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -133,7 +134,6 @@ final class RecordBrowseViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
         }
@@ -207,21 +207,38 @@ final class RecordBrowseViewController: UIViewController {
         toTomorrowView.snp.makeConstraints { make in
             make.top.equalTo(diaryView.snp.bottom).offset(constraints.space22)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(60)
+            make.bottom.equalTo(contentView.snp.bottom)
         }
         
         switch recordBrowseMode {
         case .read:
             toTomorrowView.snp.makeConstraints { make in
-                make.bottom.equalTo(contentView.snp.bottom)
+                make.height.equalTo(60)
+            }
+            
+            scrollView.snp.makeConstraints { make in
+                make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             }
         case .create:
-            contentView.addSubview(confirmButton)
+            toTomorrowView.snp.makeConstraints { make in
+                make.height.equalTo(80)
+            }
+            
+            [confirmButton, bottomFadeView].forEach { view.addSubview($0) }
             confirmButton.snp.makeConstraints { make in
-                make.top.equalTo(toTomorrowView.snp.bottom).offset(constraints.space22)
-                make.leading.trailing.equalToSuperview().inset(constraints.space20)
+                make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
                 make.height.equalTo(48)
-                make.bottom.equalTo(contentView.snp.bottom).inset(constraints.space22)
+                make.bottom.equalTo(view.safeAreaLayoutGuide)
+            }
+            
+            bottomFadeView.snp.makeConstraints { make in
+                make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+                make.bottom.equalTo(confirmButton.snp.top)
+                make.height.equalTo(24)
+            }
+            
+            scrollView.snp.makeConstraints { make in
+                make.bottom.equalTo(confirmButton.snp.top)
             }
         case .none:
             break

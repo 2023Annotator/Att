@@ -34,7 +34,7 @@ final class ToTomorrowView: RecordBrowseOuterTitleDefaultView {
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(constraints.space12)
             make.leading.trailing.equalToSuperview().inset(constraints.space20)
-            make.bottom.equalToSuperview()
+            make.bottom.lessThanOrEqualToSuperview()
         }
         contentLabel.sizeToFit()
     }
