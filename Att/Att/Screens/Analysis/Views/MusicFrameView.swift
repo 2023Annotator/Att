@@ -128,10 +128,10 @@ final class MusicFrameView: UIImageView {
         clipsToBounds = true
     }
     
-    func setUpComponent(playedFor: Int, musicInfo: MusicInfo) {
+    func setUpComponent(playedFor: Int, music: Music) {
         listenRecordLabel.text = "\(playedFor)회 기록"
-        musicTitleLabel.text = musicInfo.artistAndTitle
-        binder.bind(url: musicInfo.artworkURL, applyMultiple: [ { [weak self] img in self?.thumbnailImageView.image = img},
-                                                                { [weak self] img in self?.image = img } ])
+        musicTitleLabel.text = music.artistAndTitle
+        binder.bind(url: music.artworkURL, applyMultiple: [ { [weak self] img in self?.thumbnailImageView.image = img},
+                                                            { [weak self] img in self?.image = img} ])
     }
 }

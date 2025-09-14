@@ -106,8 +106,8 @@ final class RecordAnalysisManager {
         return Dictionary(uniqueKeysWithValues: dictionary)
     }
     
-    private func getMostPlayedMusicDictionary(dailyRecords: [AttDailyRecord]) -> [MusicInfo: Int]? {
-        let recordedMusicList = dailyRecords.compactMap { $0.musicInfo }
+    private func getMostPlayedMusicDictionary(dailyRecords: [AttDailyRecord]) -> [Music: Int]? {
+        let recordedMusicList = dailyRecords.compactMap { $0.music }
         var tempDictionary: [String: Int] = [:]
         
         for music in recordedMusicList {
@@ -115,11 +115,11 @@ final class RecordAnalysisManager {
             tempDictionary[titleAndArtist, default: 0] += 1
         }
         
-        var mostPlayedMusicDictionary: [MusicInfo: Int] = [:]
+        var mostPlayedMusicDictionary: [Music: Int] = [:]
         for temp in tempDictionary {
-            guard let info = dailyRecords.filter({$0.musicInfo?.artistAndTitle == temp.key}).first else { return nil }
-            guard let musicInfo = info.musicInfo else { return nil }
-            mostPlayedMusicDictionary[musicInfo] = temp.value
+            guard let record = dailyRecords.filter({$0.music?.artistAndTitle == temp.key}).first else { return nil }
+            guard let music = record.music else { return nil }
+            mostPlayedMusicDictionary[music] = temp.value
         }
         
         let sortedMusicDictionary = mostPlayedMusicDictionary

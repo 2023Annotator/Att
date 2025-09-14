@@ -13,13 +13,13 @@ final class MusicAuthorizationManager: ObservableObject {
     static let shared = MusicAuthorizationManager()
 
     @Published private(set) var status: MusicAuthorization.Status = .notDetermined
+    @Published private(set) var storefront: String?
     var isAuthorized: Bool { status == .authorized }
 
     func refreshStatus() {
         status = MusicAuthorization.currentStatus
     }
 
-    /// 필요할 때만 요청(이미 결정된 상태면 요청 안 함)
     @discardableResult
     func requestIfNeeded() async -> MusicAuthorization.Status {
         let current = MusicAuthorization.currentStatus
@@ -44,6 +44,29 @@ final class MusicAuthorizationManager: ObservableObject {
             throw DomainError.unknown
         @unknown default:
             throw DomainError.unknown
+        }
+    }
+
+    func ensureStorefront(forceRefresh: Bool = false) async throws -> String {
+        if let storefront = storefront, !forceRefresh { return storefront }
+        try await ensureAuthorized()
+        let code = try await MusicDataRequest.currentCountryCode   // 예: "KR"
+        let normalized = code.lowercased()
+        storefront = normalized
+        return normalized
+    }
+
+    /// 권한이 없는 상태에서 UI 진입 시, 미리 스토어프론트를 시도 조회하고 싶다면 호출
+    func refreshStorefrontIfAuthorized() async {
+        guard isAuthorized else {
+            storefront = nil
+            return
+        }
+        do {
+            let code = try await MusicDataRequest.currentCountryCode
+            storefront = code.lowercased()
+        } catch {
+            storefront = nil
         }
     }
 }

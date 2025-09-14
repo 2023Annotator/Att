@@ -85,6 +85,6 @@ final class ATTCardInfoView: UIView {
         dayNameLabel.text = record.date.weekday()
         dateLabel.text = record.date.date()
         diaryInfoView.setUpComponent(text: record.diary)
-        musicInfoView.setUpComponent(text: record.musicInfo?.artistAndTitle)
+        musicInfoView.setUpComponent(text: record.music?.artistAndTitle)
     }
 }

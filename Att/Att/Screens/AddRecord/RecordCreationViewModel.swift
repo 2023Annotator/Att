@@ -21,7 +21,8 @@ final class RecordCreationViewModel {
     }
     
     func setMusicInfo(musicInfo: MusicInfo?) {
-        dailyRecord.musicInfo = musicInfo
+        dailyRecord.music = musicInfo?.music
+        dailyRecord.musicSource = musicInfo?.source
     }
     
     func setDiary(as text: String?) {

@@ -20,7 +20,8 @@ struct AttDailyRecord: Hashable {
     
     var date: Date
     var mood: Mood?
-    var musicInfo: MusicInfo?
+    var music: Music?
+    var musicSource: MusicSource?
     var diary: String?
     var phraseToTomorrow: String?
 }

@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24G84" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24G90" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="DailyRecord" representedClassName="DailyRecord" syncable="YES">
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="date" attributeType="Date" defaultDateTimeInterval="778922160" usesScalarValueType="NO"/>
         <attribute name="diary" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="E56DC2F5-47EE-40AB-ABD7-94F1B1081893" usesScalarValueType="NO"/>
         <attribute name="mood" optional="YES" attributeType="String"/>
         <attribute name="phraseToTomorrow" optional="YES" attributeType="String"/>
-        <relationship name="music" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Music" inverseName="dailyRecord" inverseEntity="Music"/>
+        <relationship name="track" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Track" inverseName="dailyRecords" inverseEntity="Track"/>
     </entity>
-    <entity name="Music" representedClassName="Music" syncable="YES">
-        <attribute name="artist" optional="YES" attributeType="String"/>
+    <entity name="Track" representedClassName="Track" syncable="YES">
         <attribute name="artworkURL" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="durationMs" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="E56DC2F5-47EE-40AB-ABD7-94F1B1081893" usesScalarValueType="NO"/>
+        <attribute name="isrc" attributeType="String" defaultValueString=""/>
         <attribute name="previewURL" optional="YES" attributeType="String"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="dailyRecord" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DailyRecord" inverseName="music" inverseEntity="DailyRecord"/>
+        <attribute name="primaryArtistName" attributeType="String" defaultValueString=""/>
+        <attribute name="title" attributeType="String" defaultValueString=""/>
+        <relationship name="dailyRecords" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DailyRecord" inverseName="track" inverseEntity="DailyRecord"/>
+        <relationship name="sources" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TrackSource" inverseName="track" inverseEntity="TrackSource"/>
+    </entity>
+    <entity name="TrackSource" representedClassName="TrackSource" syncable="YES">
+        <attribute name="artworkURLTemplate" optional="YES" attributeType="String"/>
+        <attribute name="deeplinkURI" optional="YES" attributeType="URI"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="E56DC2F5-47EE-40AB-ABD7-94F1B1081893" usesScalarValueType="NO"/>
+        <attribute name="isrc" attributeType="String" defaultValueString=""/>
+        <attribute name="previewURL" optional="YES" attributeType="String"/>
+        <attribute name="storefront" attributeType="String" defaultValueString=""/>
+        <attribute name="vendor" attributeType="String" defaultValueString=""/>
+        <attribute name="vendorTrackId" attributeType="String" defaultValueString=""/>
+        <relationship name="track" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Track" inverseName="sources" inverseEntity="Track"/>
     </entity>
 </model>

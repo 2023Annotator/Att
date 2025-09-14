@@ -87,7 +87,7 @@ final class NowPlayingView: RecordBrowseInnerTitleDefaultView {
         sendSubviewToBack(blurEffectView)
     }
 
-    func configure(with musicInfo: MusicInfo?) {
+    func configure(with musicInfo: Music?) {
         musicTitleLabel.text = musicInfo?.artistAndTitle ?? ""
 
         thumbnailView.image = UIImage(named: "placeholder")

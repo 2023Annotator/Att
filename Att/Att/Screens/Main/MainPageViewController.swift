@@ -65,6 +65,7 @@ final class MainPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        CoreDataManager.shared.deleteDailyRecord(date: Date())
     }
 
     override func viewDidLayoutSubviews() {

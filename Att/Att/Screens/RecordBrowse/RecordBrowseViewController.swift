@@ -299,14 +299,14 @@ final class RecordBrowseViewController: UIViewController {
         dateLabel.text = record.date.date()
         publicationTimeLabel.text = record.date.publicationDate()
         todaysMoodView.setUpColor(color: moodColor)
-        nowPlayingView.configure(with: record.musicInfo)
+        nowPlayingView.configure(with: record.music)
         ticketDecorationView.setUpLineColor(color: moodColor)
         diaryView.setUpComponent(color: moodColor, content: record.diary)
         toTomorrowView.setUpComponent(text: record.phraseToTomorrow)
         
         // READ 모드에서만 미리듣기 자동재생
         guard recordBrowseMode == .read else { return }
-        if let url = record.musicInfo?.previewURL {
+        if let url = record.music?.previewURL {
             if url != currentPreviewURL {
                 currentPreviewURL = url
                 previewPlayer.play(url: url)
