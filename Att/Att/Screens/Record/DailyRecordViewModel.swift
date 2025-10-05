@@ -166,8 +166,8 @@ extension DailyRecordViewModel {
         isCalendarViewDismissed = true
     }
     
-    func getMusicID() -> String? {
-        return currentDailyRecord?.musicInfo?.id
+    func getMusicID() -> UUID? {
+        return currentDailyRecord?.music?.id
     }
 }
 extension DailyRecordViewModel {
@@ -214,7 +214,7 @@ extension DailyRecordViewModel {
                 let date = weekDates[idx].date()
                 let data = dailyRecordList.filter({$0.date.date() == date})
                 if data.count == 0 {
-                    let temp = AttDailyRecord(date: weekDates[idx], mood: nil, musicInfo: nil, diary: nil, phraseToTomorrow: nil)
+                    let temp = AttDailyRecord(date: weekDates[idx], mood: nil, music: nil, diary: nil, phraseToTomorrow: nil)
                     tempDailyRecordList.append(temp)
                 } else {
                     tempDailyRecordList.append(data.first)

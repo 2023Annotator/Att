@@ -9,16 +9,21 @@ import Foundation
 import MusicKit
 
 public final class AppleMusicSearchRepository: MusicSearchRepository {
-    public init() {}
+    private let vendor: MusicVendor = .appleMusic
+    init() {}
 
-    public func search(term: String, limit: Int) async throws -> [MusicInfo] {
+    func search(term: String, limit: Int, storefront: String) async throws -> [MusicInfo] {
         var request = MusicCatalogSearchRequest(term: term, types: [Song.self])
         request.limit = limit
 
         do {
             let response = try await request.response()
-            let songs = response.songs
-            return songs.map { $0.toDomain() }
+            let musicInfos = response.songs.map { song -> MusicInfo in
+                let music = song.toMusic()
+                let source = song.toMusicSource(musicId: music.id, vendor: vendor, storefront: storefront)
+                return MusicInfo(music: music, source: source)
+            }
+            return musicInfos
         } catch {
             throw await mapErrorToDomain(error)
         }

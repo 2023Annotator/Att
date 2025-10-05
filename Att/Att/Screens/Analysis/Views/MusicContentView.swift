@@ -65,12 +65,12 @@ final class MusicContentView: AnalysisDefaultView {
         
     }
     
-    func setUpComponent(mostPlayedMusicDictionary: [MusicInfo: Int]?) {
+    func setUpComponent(mostPlayedMusicDictionary: [Music: Int]?) {
         guard let sortedPlayedMusicArr = mostPlayedMusicDictionary?.sorted(by: { $0.value > $1.value }) else { return }
         let views: [MusicFrameView] = [firstMusicFrameView, secondMusicFrameView, thirdMusicFrameView]
         for idx in 0..<sortedPlayedMusicArr.count {
             let info = sortedPlayedMusicArr[idx]
-            views[idx].setUpComponent(playedFor: info.value, musicInfo: info.key)
+            views[idx].setUpComponent(playedFor: info.value, music: info.key)
         }
     }
     

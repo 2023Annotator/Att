@@ -56,7 +56,7 @@ final class RecordExistCardView: ATTCardView {
     
     func setUpComponent(record: AttDailyRecord) {
         backgroundColor = record.mood?.moodColor
-        binder.bind(url: record.musicInfo?.artworkURL, applyMultiple: [ { [weak self] img in self?.musicThumbnailView.image = img } ])
+        binder.bind(url: record.music?.artworkURL, applyMultiple: [ { [weak self] img in self?.musicThumbnailView.image = img } ])
         cardInfoview.setUpComponent(record: record)
     }
 }

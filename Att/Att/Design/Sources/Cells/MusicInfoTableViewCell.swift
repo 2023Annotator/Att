@@ -81,14 +81,14 @@ final class MusicInfoTableViewCell: UITableViewCell {
         }
     }
     
-    func setUpComponent(info: MusicInfo?) {
-        musicInfo = info
-        titleLabel.text = musicInfo?.title
-        artistLabel.text = musicInfo?.artist
+    func setUpComponent(musicInfo: MusicInfo?) {
+        self.musicInfo = musicInfo
+        titleLabel.text = musicInfo?.music.title
+        artistLabel.text = musicInfo?.music.artist
     }
     
-    func getMusicInfo() -> MusicInfo? {
-        return musicInfo
+    func getMusic() -> Music? {
+        return musicInfo?.music
     }
     
     func setArtworkImage(_ image: UIImage?) {

@@ -64,14 +64,14 @@ final class MusicSearchResultViewController: UIViewController {
         // dataSource 할당 순서 주의: 생성 후 tableView.dataSource에 넣기
         musicInfoTableViewDiffableDataSource = MusicInfoTableViewDiffableDataSource(
             tableView: musicSearchResultTableView
-        ) { [weak self] tableView, indexPath, info in
+        ) { [weak self] tableView, indexPath, musicInfo in
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: MusicInfoTableViewCell.identifier,
                 for: indexPath
             ) as? MusicInfoTableViewCell else { return MusicInfoTableViewCell() }
 
             // 1) 텍스트/메타 즉시 설정
-            cell.setUpComponent(info: info)
+            cell.setUpComponent(musicInfo: musicInfo)
 
             // 2) 이미지는 초기화(placeholder) 후 비동기 로드
             cell.setArtworkImage(nil) // <- 셀 재사용 대비로 초기화
@@ -79,7 +79,7 @@ final class MusicSearchResultViewController: UIViewController {
             // 3) VM 통해 URL 기반 로딩 (재사용 안전하게 indexPath 체크)
             if let viewModel = self?.viewModel {
                 Task { [weak cell] in
-                    let image = await viewModel.loadArtwork(for: info)
+                    let image = await viewModel.loadArtwork(for: musicInfo.music)
                     // 셀 재사용으로 인한 이미지 꼬임 방지
                     if let cell, tableView.indexPath(for: cell) == indexPath {
                         cell.setArtworkImage(image)
@@ -112,8 +112,8 @@ extension MusicSearchResultViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let info = musicInfoTableViewDiffableDataSource.itemIdentifier(for: indexPath) {
-            recordCreationViewModel?.setMusicInfo(musicInfo: info)
+        if let musicInfo = musicInfoTableViewDiffableDataSource.itemIdentifier(for: indexPath) {
+            recordCreationViewModel?.setMusicInfo(musicInfo: musicInfo)
             delegate?.dismissSearchViewController()
         }
     }

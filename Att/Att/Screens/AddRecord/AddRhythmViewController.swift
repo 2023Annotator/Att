@@ -205,7 +205,7 @@ final class AddRhythmViewController: UIViewController {
     
     private func bind() {
         recordCreationViewModel?.$dailyRecord
-            .compactMap { $0.musicInfo }
+            .compactMap { $0.music }
             .receive(on: RunLoop.main)
             .sink { [weak self] info in
                 guard let self = self else { return }

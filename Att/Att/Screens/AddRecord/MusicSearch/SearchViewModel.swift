@@ -34,7 +34,7 @@ final class SearchViewModel: ObservableObject {
         isLoading = false
     }
 
-    func loadArtwork(for item: MusicInfo) async -> UIImage? {
+    func loadArtwork(for item: Music) async -> UIImage? {
         guard let url = item.artworkURL else { return nil }
         return try? await imageLoader.loadImage(from: url,
                                                 targetPointSize: CGSize(width: 500, height: 500),

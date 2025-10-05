@@ -2,7 +2,7 @@
 //  DailyRecord+CoreDataClass.swift
 //  Att
 //
-//  Created by 황정현 on 8/11/25.
+//  Created by 황정현 on 9/14/25.
 //
 //
 

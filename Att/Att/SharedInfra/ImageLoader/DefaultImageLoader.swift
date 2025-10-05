@@ -118,7 +118,7 @@ public final class DefaultImageLoader: ImageLoader, @unchecked Sendable {
             kCGImageSourceCreateThumbnailWithTransform: true,
             kCGImageSourceThumbnailMaxPixelSize: Int(maxPixelSize)
         ]
-        guard let cg = CGImageSourceCreateThumbnailAtIndex(src, 0, options as CFDictionary) else { return nil }
-        return UIImage(cgImage: cg, scale: UIScreen.main.scale, orientation: .up)
+        guard let cgImage = CGImageSourceCreateThumbnailAtIndex(src, 0, options as CFDictionary) else { return nil }
+        return UIImage(cgImage: cgImage, scale: UIScreen.main.scale, orientation: .up)
     }
 }

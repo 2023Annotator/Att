@@ -13,12 +13,13 @@ final class CoreDataManager {
     
     fileprivate var persistentContainer: NSPersistentCloudKitContainer!
     
-    private init() {
-        initializePersistentContainer()
-    }
+    private init() { initializePersistentContainer() }
     
     private func initializePersistentContainer() {
         persistentContainer = NSPersistentCloudKitContainer(name: "Att")
+        
+        persistentContainer.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
         
         persistentContainer.loadPersistentStores { _, error in
             if let error = error as NSError? {
@@ -28,14 +29,12 @@ final class CoreDataManager {
     }
     
     func saveContext () {
-        persistentContainer.viewContext.performAndWait {
-            if self.persistentContainer.viewContext.hasChanges {
+        let context = persistentContainer.viewContext
+        context.performAndWait {
+            if context.hasChanges {
                 do {
-                    try self.persistentContainer.viewContext.save()
-                } catch {
-                    let nserror = error as NSError
-                    print("SAVE NON COMPLETE: \(nserror)")
-                }
+                    try context.save()
+                } catch { print("SAVE NON COMPLETE:", error as NSError) }
             }
         }
     }
@@ -51,77 +50,183 @@ extension CoreDataManager {
 }
 #endif
 
+// MARK: - Track / TrackSource Finder & Upsert
+private extension CoreDataManager {
+    /// Track 존재 여부를 (vendor+vendorTrackId) → isrc → title+artist 순서로 판단.
+    /// 동일 Track이 없으면 새로 생성하고, TrackSource는 vendor 기준으로 upsert.
+    func findTrack(by music: Music, source: MusicSource?, in context: NSManagedObjectContext) -> Track? {
+        
+        func isEqualIgnoreCase(_ lhs: String?, _ rhs: String?) -> Bool {
+            (lhs ?? "").caseInsensitiveCompare(rhs ?? "") == .orderedSame
+        }
+        
+        var orPredicates: [NSPredicate] = []
+        
+        // 1) vendor + vendorTrackId
+        if let vendorName = source?.musicVendor.rawValue,
+           let vendorTrackId = source?.vendorTrackId {
+            let predicate = NSPredicate(
+                format: "SUBQUERY(sources, $src, $src.vendor == %@ AND $src.vendorTrackId == %@).@count > 0",
+                vendorName, vendorTrackId
+            )
+            orPredicates.append(predicate)
+        }
+        
+        // 2) title + artist
+        let predicateTitleArtist = NSPredicate(
+            format: "title ==[cd] %@ AND primaryArtistName ==[cd] %@",
+            music.title, music.artist
+        )
+        orPredicates.append(predicateTitleArtist)
+        
+        // 3) ISRC
+        if let isrcCode = source?.isrc, !isrcCode.isEmpty {
+            let predicateTrack = NSPredicate(format: "isrc == %@", isrcCode)
+            let predicateSource = NSPredicate(
+                format: "SUBQUERY(sources, $src, $src.isrc == %@).@count > 0",
+                isrcCode
+            )
+            orPredicates.append(contentsOf: [predicateTrack, predicateSource])
+        }
+        
+        let fetchRequest: NSFetchRequest<Track> = Track.fetchRequest()
+        fetchRequest.fetchLimit = 10
+        fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: orPredicates)
+        
+        let candidateTracks = (try? context.fetch(fetchRequest)) ?? []
+        
+        if let vendorName = source?.musicVendor.rawValue,
+           let vendorTrackId = source?.vendorTrackId {
+            if let matchedTrack = candidateTracks.first(where: {
+                guard let trackSources = $0.sources as? Set<TrackSource> else { return false }
+                return trackSources.contains { trackSource in
+                    trackSource.vendor == vendorName && trackSource.vendorTrackId == vendorTrackId
+                }
+            }) {
+                return matchedTrack
+            }
+        }
+        
+        if let isrcCode = source?.isrc, !isrcCode.isEmpty {
+            if let matchedTrack = candidateTracks.first(where: { track in
+                let isISRCMatch =
+                track.isrc == isrcCode ||
+                ((track.sources as? Set<TrackSource>)?.contains(where: { $0.isrc == isrcCode }) == true)
+                return isISRCMatch
+                && isEqualIgnoreCase(track.title, music.title)
+                && isEqualIgnoreCase(track.primaryArtistName, music.artist)
+            }) {
+                return matchedTrack
+            }
+        }
+        
+        if let matchedTrack = candidateTracks.first(where: { track in
+            isEqualIgnoreCase(track.title, music.title) &&
+            isEqualIgnoreCase(track.primaryArtistName, music.artist)
+        }) {
+            return matchedTrack
+        }
+        
+        return nil
+    }
+    
+    @discardableResult
+    func upsertTrackAndSource(
+        music: Music,
+        source: MusicSource?,
+        in context: NSManagedObjectContext
+    ) -> Track {
+        // 1) Track 찾기 또는 새로 생성
+        let existingTrack = findTrack(by: music, source: source, in: context)
+        let track = existingTrack ?? Track(context: context)
+        track.apply(from: music)
+        
+        // 2) TrackSource upsert
+        if let sourceInfo = source {
+            let fetchSourceRequest: NSFetchRequest<TrackSource> = TrackSource.fetchRequest()
+            fetchSourceRequest.fetchLimit = 1
+            fetchSourceRequest.predicate = NSPredicate(
+                format: "vendor == %@ AND vendorTrackId == %@",
+                sourceInfo.musicVendor.rawValue, sourceInfo.vendorTrackId
+            )
+            
+            let existingSource = try? context.fetch(fetchSourceRequest).first
+            let trackSource = existingSource ?? TrackSource(context: context)
+            trackSource.apply(from: sourceInfo)
+            trackSource.track = track
+        }
+        
+        return track
+    }
+}
+
 // MARK: DailyRecord CoreData CRUD
 extension CoreDataManager {
     // MARK: C (Upsert)
     func createDailyRecord(dailyRecord: AttDailyRecord) {
+        createDailyRecord(dailyRecord: dailyRecord, source: dailyRecord.musicSource)
+    }
+    
+    func createDailyRecord(dailyRecord: AttDailyRecord, source: MusicSource?) {
         let context = persistentContainer.viewContext
-
+        
         // 0) 동일 날짜 존재 여부 확인
         let fetchRequest: NSFetchRequest<DailyRecord> = DailyRecord.fetchRequest()
         fetchRequest.fetchLimit = 10
         fetchRequest.predicate = NSPredicate(format: "date == %@", dailyRecord.date as CVarArg)
-
+        
         do {
             let matches = try context.fetch(fetchRequest)
-
-            // A) 이미 있으면 → 업데이트(여러 개가 있다면 모두 갱신해 정합성 회복)
+            
+            // A) 이미 있으면 → 업데이트(여러 개가 있다면 모두 갱신)
             if !matches.isEmpty {
                 matches.forEach { $0.update(as: dailyRecord) }
-
-                // 음악 연결 갱신(옵셔널)
-                if let info = dailyRecord.musicInfo {
-                    if let existed = findMusic(by: info, in: context) {
-                        matches.forEach { existed.addToDailyRecord($0) }
-                    } else if let music = NSEntityDescription
-                        .insertNewObject(forEntityName: "Music", into: context) as? Music {
-                        music.apply(from: info)
-                        matches.forEach { music.addToDailyRecord($0) }
-                    }
+                
+                // 음악 연결(옵셔널). 여기서만 source를 명시적으로 넘기면 TrackSource를 업서트함.
+                if let info = dailyRecord.music {
+                    let track = upsertTrackAndSource(music: info, source: source, in: context)
+                    matches.forEach { track.addToDailyRecords($0) }
                 }
+                
                 saveContext()
                 return
             }
         } catch {
             print("Core Data fetch error: \(error.localizedDescription)")
-            // fetch 실패 시엔 신규 생성으로 폴백
         }
-
+        
         // B) 없으면 → 신규 생성
-        guard let dailyRecordEntity = NSEntityDescription
+        guard let daily = NSEntityDescription
             .insertNewObject(forEntityName: "DailyRecord", into: context) as? DailyRecord else { return }
-
-        dailyRecordEntity.setValue(dailyRecord.date, forKey: "date")
-        dailyRecordEntity.setValue(UUID(), forKey: "id")
-        dailyRecordEntity.setValue(dailyRecord.mood?.rawValue, forKey: "mood")
-        dailyRecordEntity.setValue(dailyRecord.diary, forKey: "diary")
-        dailyRecordEntity.setValue(dailyRecord.phraseToTomorrow, forKey: "phraseToTomorrow")
-
-        if let info = dailyRecord.musicInfo {
-            if let existed = findMusic(by: info, in: context) {
-                existed.addToDailyRecord(dailyRecordEntity)
-            } else if let music = NSEntityDescription
-                .insertNewObject(forEntityName: "Music", into: context) as? Music {
-                music.apply(from: info)
-                music.addToDailyRecord(dailyRecordEntity)
-            }
+        
+        // 가능하면 프로퍼티 할당 사용 (래퍼가 있다면 래퍼로)
+        daily.setValue(dailyRecord.date, forKey: "date")
+        daily.setValue(UUID(), forKey: "id")
+        daily.setValue(dailyRecord.mood?.rawValue, forKey: "mood")
+        daily.setValue(dailyRecord.diary, forKey: "diary")
+        daily.setValue(dailyRecord.phraseToTomorrow, forKey: "phraseToTomorrow")
+        
+        if let info = dailyRecord.music {
+            let track = upsertTrackAndSource(music: info, source: source, in: context)
+            track.addToDailyRecords(daily) // 또는 daily.track = track
         }
         saveContext()
     }
-
     
     // MARK: R
+    /// 읽기: TrackSource는 기본적으로 prefetch하지 않음 → 접근 전까지 fault
     func fetchDailyRecords(startDate: Date, endDate: Date) -> [AttDailyRecord]? {
         let context = persistentContainer.viewContext
         let predicate = NSPredicate(format: "(date >= %@) AND (date <= %@)", startDate as NSDate, endDate as NSDate)
         
         let fetchRequest: NSFetchRequest<DailyRecord> = DailyRecord.fetchRequest()
         fetchRequest.predicate = predicate
+        // 필요 시에만 prefetch 추가: fetchRequest.relationshipKeyPathsForPrefetching = ["track", "track.sources"]
         
         do {
-            let filteredData = try context.fetch(fetchRequest)
-            let dailyRecords = filteredData.compactMap { $0.toDomain() }
-            return dailyRecords
+            let filtered = try context.fetch(fetchRequest)
+            
+            return filtered.compactMap { $0.toDomain() }
         } catch {
             print("데이터를 가져올 때 오류 발생: \(error.localizedDescription)")
             return nil
@@ -129,7 +234,13 @@ extension CoreDataManager {
     }
     
     // MARK: U
+    /// 기본 update: TrackSource는 건드리지 않음
     func updateDailyRecord(dailyRecord: AttDailyRecord) {
+        updateDailyRecord(dailyRecord: dailyRecord, source: nil)
+    }
+    
+    /// 필요할 때만 TrackSource까지 함께 업서트
+    func updateDailyRecord(dailyRecord: AttDailyRecord, source: MusicSource?) {
         let context = persistentContainer.viewContext
         let targetDate = dailyRecord.date
         
@@ -137,12 +248,14 @@ extension CoreDataManager {
         fetchRequest.predicate = NSPredicate(format: "date == %@", targetDate as CVarArg)
         
         do {
-            let matchingObjects = try context.fetch(fetchRequest)
-            
-            for object in matchingObjects {
-                object.update(as: dailyRecord)
+            let objs = try context.fetch(fetchRequest)
+            for obj in objs {
+                obj.update(as: dailyRecord)
+                if let info = dailyRecord.music {
+                    let track = upsertTrackAndSource(music: info, source: source, in: context)
+                    track.addToDailyRecords(obj) // 또는 obj.track = track
+                }
             }
-            
             saveContext()
         } catch {
             print("Core Data fetch error: \(error.localizedDescription)")
@@ -158,57 +271,44 @@ extension CoreDataManager {
         fetchRequest.predicate = NSPredicate(format: "date == %@", targetDate as CVarArg)
         
         do {
-            let matchingObjects = try context.fetch(fetchRequest)
-            
-            for object in matchingObjects {
-                context.delete(object)
-            }
-            
+            let objs = try context.fetch(fetchRequest)
+            for obj in objs { context.delete(obj) }
             saveContext()
         } catch {
             print("Core Data fetch error: \(error.localizedDescription)")
         }
     }
     
-    func isMusicExist(title: String?, artist: String?) -> Music? {
+    func deleteDailyRecord(date: Date) {
         let context = persistentContainer.viewContext
-        guard let title = title,
-              let artist = artist else { return nil }
-        let fetchRequest: NSFetchRequest<Music> = Music.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "(title == %@) AND (artist == %@)", title, artist)
+        
+        print(Date())
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: date)
+        guard let nextDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) else { return }
+        
+        let fetchRequest: NSFetchRequest<DailyRecord> = DailyRecord.fetchRequest()
+        fetchRequest.predicate = NSPredicate(
+            format: "date >= %@ AND date < %@",
+            startOfDay as NSDate, nextDay as NSDate
+        )
         
         do {
-            let results = try context.fetch(fetchRequest)
-            
-            if let musicEntity = results.first {
-                return musicEntity
-            }
+            let objs = try context.fetch(fetchRequest)
+            for obj in objs { context.delete(obj) }
+            saveContext()
         } catch {
-            print("데이터 검색 또는 저장 오류: \(error.localizedDescription)")
+            print("Core Data fetch error: \(error.localizedDescription)")
         }
-        return nil
     }
     
-    // id 우선 조회 -> 없으면 title+artist로 폴백
-    private func findMusic(by info: MusicInfo, in context: NSManagedObjectContext) -> Music? {
-        if let foundByID = fetchMusic(byID: info.id, in: context) {
-            return foundByID
-        }
-        return fetchMusic(title: info.title, artist: info.artist, in: context)
-    }
-    
-    private func fetchMusic(byID id: String, in context: NSManagedObjectContext) -> Music? {
-        let req: NSFetchRequest<Music> = Music.fetchRequest()
-        req.fetchLimit = 1
-        req.predicate = NSPredicate(format: "id == %@", id)
-        return try? context.fetch(req).first
-    }
-    
-    private func fetchMusic(title: String, artist: String, in context: NSManagedObjectContext) -> Music? {
-        let req: NSFetchRequest<Music> = Music.fetchRequest()
-        req.fetchLimit = 1
-        req.predicate = NSPredicate(format: "title == %@ AND artist == %@", title, artist)
-        return try? context.fetch(req).first
+    func isTrackExist(title: String?, artist: String?) -> Track? {
+        let context = persistentContainer.viewContext
+        guard let title = title, let artist = artist else { return nil }
+        let fetchRequest: NSFetchRequest<Track> = Track.fetchRequest()
+        fetchRequest.fetchLimit = 1
+        fetchRequest.predicate = NSPredicate(format: "(title == %@) AND (primaryArtistName == %@)", title, artist)
+        return try? context.fetch(fetchRequest).first
     }
 }
 
@@ -219,12 +319,8 @@ extension CoreDataManager {
         let fetchRequest: NSFetchRequest<DailyRecord> = DailyRecord.fetchRequest()
         
         do {
-            let matchingObjects = try context.fetch(fetchRequest)
-            
-            for object in matchingObjects {
-                context.delete(object)
-            }
-            
+            let objects = try context.fetch(fetchRequest)
+            for obj in objects { context.delete(obj) }
             saveContext()
         } catch {
             print("Core Data fetch error: \(error.localizedDescription)")
@@ -246,10 +342,10 @@ extension CoreDataManager {
     
     func fetchAllMusicRecords() {
         let context = persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<Music> = Music.fetchRequest()
+        let fetchRequest: NSFetchRequest<Track> = Track.fetchRequest()
         
         do {
-            let data = try context.fetch(fetchRequest)
+            _ = try context.fetch(fetchRequest)
         } catch {
             print("데이터를 가져올 때 오류 발생: \(error.localizedDescription)")
         }

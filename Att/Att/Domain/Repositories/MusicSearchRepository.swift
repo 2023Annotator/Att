@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol MusicSearchRepository: Sendable {
-    func search(term: String, limit: Int) async throws -> [MusicInfo]
+protocol MusicSearchRepository: Sendable {
+    func search(term: String, limit: Int, storefront: String) async throws -> [MusicInfo]
 }
